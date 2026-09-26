@@ -2767,7 +2767,9 @@ const Sim = (() => {
   const toVal = (amt, e = era()) => amt * e.cur.r;
   const cash = p => p.money / era().cur.r;                 // in current era currency
   const curNow = (cc, e = era()) => (hooks.cur && W && hooks.cur(cc ?? P(W.playerId)?.cc, W.year)) || e.cur;
-  const money = (v, e = era(), cc) => { const c = curNow(cc, e); return c.s ? `${c.s}${U.fmtNum(v / c.r)}` : `${U.fmtNum(v / c.r)} ${c.n}`; };
+  // Small sums keep their fractions, so a third of a gold daric shows as "dar 0.33", not "dar 0"
+  const sum = x => { const a = Math.abs(x); if (a === 0 || a >= 10) return U.fmtNum(x); return (x < 0 ? '−' : '') + (a < 0.01 ? '<0.01' : String(Number(a.toPrecision(2)))); };
+  const money = (v, e = era(), cc) => { const c = curNow(cc, e), n = sum(v / c.r); return c.s ? `${c.s}${n}` : `${n} ${c.n}`; };
   const fullName = p => `${p.title ? p.title + ' ' : ''}${p.fo && !/^(of|the) /.test(p.last) ? `${p.last} ${p.first}` : `${p.first} ${p.last}`}`;
   const assetsVal = p => p.assets.reduce((s, a) => s + a.val, 0);
   const netWorth = p => p.money + assetsVal(p);
@@ -3255,8 +3257,9 @@ const Sim = (() => {
       const pl = me();
       if (pl && pl.id !== sp.id && known(pl).includes(p)) log(pl, `Your ${relLabel(pl, p).toLowerCase()} ${p.first} and ${sp.first} divorced.`, 'family');
     }
-    // children: the woman of a couple rolls
-    if (sp && alive(sp) && p.sex === 'F' && sp.sex === 'M' && a >= 16 && a <= 44) {
+    // children: the woman of a couple rolls. A marriage with the player in it rolls in playerYear instead,
+    // so it works the same whether the player is the husband or the wife
+    if (sp && alive(sp) && p.sex === 'F' && sp.sex === 'M' && sp.id !== W.playerId && a >= 16 && a <= 44) {
       const f = e.life.fert * (a > 35 ? 0.5 : 1) * (p.kids.length > 6 ? 0.3 : 1) * (hooks.fert ? hooks.fert(p, sp) : 1);
       if (U.chance(f)) birth(sp, p);
     }
@@ -3265,8 +3268,8 @@ const Sim = (() => {
   function birth(fa, mo) {
     const e = era();
     const c = childOf(fa, mo, W.year);
-    log(fa, `${c.sex === 'M' ? 'Son' : 'Daughter'} ${c.first} was born.`, 'family');
-    log(mo, `${c.sex === 'M' ? 'Son' : 'Daughter'} ${c.first} was born.`, 'family');
+    // the player's own line is written by whatever brought the baby (playerYear, "Try for a baby"), so it isn't said twice
+    for (const x of [fa, mo]) if (x.id !== W.playerId) log(x, `${c.sex === 'M' ? 'Son' : 'Daughter'} ${c.first} was born.`, 'family');
     if (hooks.onBirth) hooks.onBirth(c, fa, mo);
     const pl = me();
     if (pl && pl.id !== fa.id && pl.id !== mo.id) {
