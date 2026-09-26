@@ -139,6 +139,13 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; margin: 0; text-wr
   border-bottom: 1px solid var(--line);
 }
 .tabs::-webkit-scrollbar { display: none; }
+/* the tab strip stays pinned under the header while you scroll */
+.tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--toph, 58px)); z-index: 15; background: var(--bg); }
+.tab:focus-visible { outline-offset: -3px; }
+/* a faded edge means more tabs that way */
+.tabs.fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
+.tabs.fade-l { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 40px), transparent); }
+.tabs.fade-l.fade-r { -webkit-mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
 .tab {
   flex: none; background: none; border: 0; padding: 10px 12px; color: var(--ink-2); font-weight: 600; font-size: 14px;
   border-bottom: 2px solid transparent; margin-bottom: -1px;

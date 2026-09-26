@@ -161,6 +161,13 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; margin: 0; text-wr
   border-bottom: 1px solid var(--line);
 }
 .tabs::-webkit-scrollbar { display: none; }
+/* the tab strip stays pinned under the header while you scroll */
+.tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--toph, 58px)); z-index: 15; background: var(--bg); }
+.tab:focus-visible { outline-offset: -3px; }
+/* a faded edge means more tabs that way */
+.tabs.fade-r { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
+.tabs.fade-l { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 40px), transparent); }
+.tabs.fade-l.fade-r { -webkit-mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
 .tab {
   flex: none; background: none; border: 0; padding: 10px 12px; color: var(--ink-2); font-weight: 600; font-size: 14px;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
@@ -6093,10 +6100,13 @@ const UI = (() => {
     $('#btnGod').hidden = !(S.godAllowed && S.godAllowed());
     if (!$('#layout')) {
       $('#screen').innerHTML = `<div class="layout" id="layout"><aside class="side"><div class="card" id="card"></div></aside>
-        <section><nav class="tabs" role="tablist" id="tabs"></nav><div id="view"></div></section></div>`;
+        <section><nav class="tabs" role="tablist" id="tabs" aria-label="Parts of your life"></nav><div id="view"></div></section></div>`;
+      $('#tabs').addEventListener('scroll', () => edges($('#tabs')), { passive: true });
     }
     $('#card').innerHTML = ui.cardHTML(p);
-    $('#tabs').innerHTML = ui.tabList().map(([id, n]) => `<button class="tab" role="tab" data-act="tab" data-tab="${id}" aria-selected="${ui.tab === id}">${n}</button>`).join('');
+    $('#tabs').innerHTML = ui.tabList().map(([id, n]) => `<button class="tab" role="tab" data-act="tab" data-tab="${id}" aria-selected="${ui.tab === id}" tabindex="${ui.tab === id ? 0 : -1}">${n}</button>`).join('');
+    const head = document.querySelector('.top'); if (head) document.documentElement.style.setProperty('--toph', head.offsetHeight + 'px');
+    fitTabs();
     renderView();
     const dead = !!w.dead || !S.alive(p);
     $('#agebar').hidden = false;
@@ -6111,16 +6121,37 @@ const UI = (() => {
     if (ui.tab === 'tree' && ui.afterTree) ui.afterTree();
   }
   const TABS = [['life', 'Life'], ['rel', 'Relationships'], ['act', 'Activities'], ['job', 'Occupation'], ['assets', 'Assets'], ['tree', 'Family Tree'], ['world', 'World']];
-  // Each tab remembers where you had scrolled to, so leaving the Life log and coming back keeps your place
+  // The selected tab stays in view: the strip scrolls only when it is cut off, and leaves a glimpse of its neighbours
+  function fitTabs() {
+    const tabs = $('#tabs'), b = tabs && tabs.querySelector('[aria-selected="true"]');
+    if (!b) return;
+    const tr = tabs.getBoundingClientRect(), br = b.getBoundingClientRect(), pad = Math.min(56, tr.width / 6);
+    if (br.left - pad < tr.left) tabs.scrollLeft -= tr.left - br.left + pad;
+    else if (br.right + pad > tr.right) tabs.scrollLeft += br.right + pad - tr.right;
+    edges(tabs);
+  }
+  // fade an edge of the strip when there are more tabs past it
+  const edges = tabs => { tabs.classList.toggle('fade-l', tabs.scrollLeft > 2); tabs.classList.toggle('fade-r', tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 2); };
+
+  // Each tab remembers where you had scrolled to, so leaving the Life log and coming back keeps your place.
+  // A tab you have not opened yet starts at its top, just below the pinned tab strip. Focus stays on the tab you picked.
   const scrollMem = {};
   ui.on.tab = el => {
     scrollMem[ui.tab] = window.scrollY;
     ui.tab = el.dataset.tab; render();
-    const tabs = $('#tabs'), top = tabs.getBoundingClientRect().top + window.scrollY - 70;
-    window.scrollTo(0, scrollMem[ui.tab] ?? Math.min(window.scrollY, Math.max(0, top)));
-    const b = tabs.querySelector('[aria-selected="true"]');
-    if (b) tabs.scrollLeft = b.offsetLeft - (tabs.clientWidth - b.clientWidth) / 2;
+    const tabs = $('#tabs'), head = document.querySelector('.top')?.offsetHeight || 0;
+    const start = Math.max(0, $('#view').getBoundingClientRect().top + window.scrollY - head - tabs.offsetHeight - 14);
+    window.scrollTo(0, scrollMem[ui.tab] ?? Math.min(window.scrollY, start));
+    tabs.querySelector('[aria-selected="true"]')?.focus({ preventScroll: true });
   };
+  // Left and right arrows (and Home, End) move between tabs, as in any tab strip
+  document.addEventListener('keydown', e => {
+    const t = e.target.closest?.('#tabs .tab');
+    if (!t || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    const all = [...$('#tabs').querySelectorAll('.tab')], i = all.indexOf(t);
+    const j = e.key === 'Home' ? 0 : e.key === 'End' ? all.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + all.length) % all.length;
+    e.preventDefault(); ui.on.tab(all[j]);
+  });
 
   /* ---------------- character card ---------------- */
   function card(p) {
