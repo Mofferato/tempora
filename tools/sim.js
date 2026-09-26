@@ -38,7 +38,7 @@ function makeContext() {
   vm.createContext(ctx);
   const code = JS_ORDER.filter(f => f !== 'main.js' && fs.existsSync(path.join(__dirname, '..', 'src', f)))
     .map(f => `/* ${f} */\n` + fs.readFileSync(path.join(__dirname, '..', 'src', f), 'utf8')).join('\n');
-  vm.runInContext(code + '\n;globalThis.__T = { Sim, UI, DATA, U, Gen, Auto: typeof Auto !== "undefined" ? Auto : null, Places: typeof Places !== "undefined" ? Places : null, extraActions: typeof SIM_EXTRA !== "undefined" ? SIM_EXTRA : [], Phone: typeof Phone !== "undefined" ? Phone : null, Sports: typeof Sports !== "undefined" ? Sports : null, Legacy: typeof Legacy !== "undefined" ? Legacy : null, AI: typeof AI !== "undefined" ? AI : null, Delta: typeof Delta !== "undefined" ? Delta : null };', ctx, { filename: 'tempora-bundle.js' });
+  vm.runInContext(code + '\n;globalThis.__T = { Sim, UI, DATA, U, Gen, Auto: typeof Auto !== "undefined" ? Auto : null, Places: typeof Places !== "undefined" ? Places : null, extraActions: typeof SIM_EXTRA !== "undefined" ? SIM_EXTRA : [], Phone: typeof Phone !== "undefined" ? Phone : null, Sports: typeof Sports !== "undefined" ? Sports : null, Legacy: typeof Legacy !== "undefined" ? Legacy : null, AI: typeof AI !== "undefined" ? AI : null, Delta: typeof Delta !== "undefined" ? Delta : null, Intro: typeof Intro !== "undefined" ? Intro : null };', ctx, { filename: 'tempora-bundle.js' });
   return ctx.__T;
 }
 
@@ -61,7 +61,9 @@ function renderAll() {
   ui.worldTab = 'era';
   try { ui.cardHTML(p); } catch (e) { err('card', e); }
   for (const o of [p, ...S.known(p).slice(0, 4)]) { try { ui.person(o.id); } catch (e) { err('person sheet', e); } }
-  if (ui.profile) { try { ui.profile(p.id); } catch (e) { err('profile', e); } }
+  if (ui.profile) { try { ui.profile(p.id); } catch (e) { err('profile', e); } for (const k of S.kids(p).slice(0, 2)) { try { ui.profile(k.id); } catch (e) { err('child profile', e); } } }
+  for (const sub of ['inbox', 'contacts', 'feed']) { ui.phoneTab = sub; try { ui.views.phone && ui.views.phone(p); } catch (e) { err('phone/' + sub, e); } }
+  ui.phoneTab = 'inbox';
 }
 
 // Try a spread of player actions each year
@@ -117,6 +119,21 @@ function playYear(p) {
   if (T.Legacy && S.age(p) >= 30 && U.chance(0.05)) {
     tryIt('legacy.commission', () => T.Legacy.commission(U.ri(0, 1), U.chance(0.5) ? 'The Sim Relic' : ''));
     const c = T.Legacy.candidates(p); if (c.length) p.will = { shares: Object.fromEntries(c.slice(0, 3).map((o, i) => [o.id, i + 1])), hl: {}, charity: U.ri(0, 1) };
+  }
+  // introductions: a child meets someone, now and then
+  if (T.Intro && U.chance(0.35)) { const kids = T.Intro.children(p); if (kids.length) { const c = U.pick(kids), cand = T.Intro.candidates(p, c); if (cand.length) tryIt('introduce', () => T.Intro.introduce(c.id, U.pick(cand).o.id)); } }
+  // auto-play: the tab habits, automatic days and letters, and pins on the newer kinds of action
+  if (T.Auto && U.chance(0.2)) {
+    const A = T.Auto, c = A.cfg();
+    for (const k of ['promo', 'home', 'inbox', 'days', 'invest', 'job', 'school']) c[k] = U.chance(0.5);
+    if (U.chance(0.3)) {
+      const L = S.jobListings(p).find(x => !x.cur); if (L) A.togglePin('apply', { id: L.j.id }, 'apply');
+      const m = S.market()[0]; if (m) A.togglePin('buy', { id: m.a.id }, 'buy');
+      if (T.Places) { const id = U.pick(T.Places.available(p)); A.togglePin('visitAuto', { id }, 'day'); const pa = T.Places.placeActs(p, id); if (pa.length) A.togglePin('sceneA', { place: id, a: pa[0][0] }, 'scene'); }
+      if (T.Phone && T.Phone.device().social) A.togglePin('phonePost', { k: 'update' }, 'post');
+    }
+    tryIt('auto.apply', () => A.apply(p));
+    if (A.pins().length > 12) A.pins().splice(0, 6);
   }
   if (T.AI) { tryIt('ai.advise', () => T.AI.advise(p)); if (U.chance(0.3)) tryIt('ai.autopilot', () => T.AI.autopilot(p, U.pick(T.AI.GOALS)[0])); }
   if (S.age(p) >= 16 && U.chance(0.15)) { const m = S.market().filter(x => x.price < p.money * 0.4); if (m.length) tryIt('buy', () => S.buy(U.pick(m).a.id)); }

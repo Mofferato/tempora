@@ -26,7 +26,7 @@ The game is free and open source, with no ads, no accounts required and no insta
   - Fame, reputation, pets and a family crest.
 - **Every part of life.**
   - School, careers and promotions.
-  - Love, marriage and children.
+  - Love, marriage and children. Introduce your children to friends, mentors or a match.
   - Places to visit: tavern, church, hospital, market, battlefield and palace.
   - Courts and trials, wills and inheritance disputes, heirlooms.
   - Sports careers and the Olympics.
@@ -123,6 +123,8 @@ There are eleven eras, from **Prehistory** (10,000 to 3,001 BC) to the far futur
 | `src/places.js`, `src/places2.js` | Places you can visit: tavern, church, hospital, market, battlefield, palace and more |
 | `src/auto.js` | Repeat last year, pinned actions, and autoplay with a goal and a choice policy |
 | `src/profile.js` | The ID card on the character panel and the full profile of any person |
+| `src/introduce.js` | Introducing your children to people you know: friends, mentors and matches |
+| `src/lifedock.js` | The life log docked above the Age button on every tab |
 | `src/phone.js` | Letters, then telegrams, phones, social media and neural chat; inbox, contacts, posts and followers |
 | `src/sports.js` | Sports careers: training, competitions, trials, going pro, the Olympics |
 | `src/legacy.js` | Heirlooms, wills, inheritance law and disputes, dynasty traits, family crest |
@@ -159,11 +161,18 @@ UI extensions use a different mechanism:
 ## Playing hands-off
 
 - The **repeat button** next to Age repeats last year's actions.
-- **Pins** on activities, interactions and places choose actions to run every year.
+- **Pins** choose actions to run every year. Tap the small **auto** button next to almost any action, including activities, people, places, jobs, things for sale, contacts and posts.
+- An **Auto strip** at the top of each tab switches that tab's yearly habits on and off:
+  - Activities: exercise, study, healer.
+  - Occupation: work hard, promotion when ready, find work, next school.
+  - Assets: buy a home, invest.
+  - Places: a day at each place.
+  - Letters: answer the inbox, keep in touch.
 - The **auto-play button** next to Age (also **Menu → Auto-play**) plays for you:
   - It can play for a set number of years.
   - It follows a goal: wealth, fame, family, long life, scholar or power.
   - A choice policy handles event popups: safe, bold, in character, smart or random.
+- The **book button** next to Age docks your life log above it on every tab, so you can follow your story while you play.
 - The **Guide** (the compass in the header) gives ranked advice with one-tap actions. When Claude is connected, the Guide can also play a year for you, answer questions and suggest choices.
 
 ## Claude

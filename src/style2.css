@@ -124,3 +124,42 @@
   .tiernote { margin-left: 0; }
 }
 @media (max-width: 360px) { .brand h1 { display: none; } }
+
+/* ---------- auto strips: a tab's yearly habits as switches ---------- */
+.autostrip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0 0 12px; padding: 8px 10px; border: 1px dashed var(--line); border-radius: 12px; font-size: 13px; }
+.autostrip .eyebrow { color: var(--era); margin-right: 2px; }
+.autostrip .faint { font-size: 12px; }
+.switch { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px 3px 5px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; font-weight: 500; }
+.switch input { appearance: none; width: 26px; height: 15px; border-radius: 999px; background: var(--line); position: relative; margin: 0; cursor: pointer; transition: background .15s; flex: none; }
+.switch input::after { content: ''; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px; border-radius: 50%; background: var(--surface); transition: transform .15s; }
+.switch input:checked { background: var(--era); }
+.switch input:checked::after { transform: translateX(11px); }
+.switch:has(input:checked) { border-color: var(--era-line); }
+.switch input:focus-visible { outline: 2px solid var(--era); outline-offset: 2px; }
+/* a list row with its auto pin beside it */
+.prow { display: flex; align-items: center; border-top: 1px solid var(--line); }
+.prow:first-child { border-top: 0; }
+.prow > .row { flex: 1; min-width: 0; border-top: 0; }
+.prow > .pin { margin: 0 10px 0 2px; }
+.place .btnrow { align-items: center; }
+
+/* ---------- the life dock: the life log above the Age button, on every tab ---------- */
+:root { --dockh: min(40vh, 340px); }
+.lifedock { position: fixed; left: 0; right: 0; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); z-index: 29; padding: 0 16px; pointer-events: none; }
+.lifedock .wrap { max-width: 1120px; margin: 0 auto; }
+@media (min-width: 900px) { .lifedock .wrap { padding-left: 346px; } }
+.dockbox { pointer-events: auto; height: var(--dockh); display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+.dockhead { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; border-bottom: 1px solid var(--line); }
+.dockhead .grow { flex: 1; }
+.dockhead .iconbtn { width: 30px; height: 30px; }
+.dockbody { position: relative; flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 4px 14px 8px; }
+.dockbody .logyr { grid-template-columns: 64px 1fr; gap: 10px; padding: 9px 0; }
+.dockbody .logyr li { font-size: 13.5px; }
+.dockbody li.fresh { animation: fresh 2.4s ease; border-radius: 6px; }
+@keyframes fresh { 0%, 30% { background: var(--era-soft); } 100% { background: transparent; } }
+/* with the dock open, messages pop up above it rather than over it */
+body.docked #toast { bottom: calc(92px + var(--dockh) + env(safe-area-inset-bottom, 0px)); }
+body.docked #dtoast { bottom: calc(142px + var(--dockh) + env(safe-area-inset-bottom, 0px)); }
+body.docked { padding-bottom: calc(104px + var(--dockh) + env(safe-area-inset-bottom, 0px)); }
+#lifeBtn[aria-pressed="true"] { background: var(--era-soft); border-color: var(--era-line); color: var(--era); }
+@media (max-width: 480px) { :root { --dockh: min(38vh, 300px); } }

@@ -129,6 +129,23 @@ const Phone = (() => {
     return t;
   }
 
+  // Auto-play: answer everything waiting, choosing the reply that does you, and the friendship, the most good
+  function autoAnswer(p) {
+    if (p !== S.me()) return 0;
+    let n = 0;
+    for (const m of (ph(p).inbox || []).filter(x => !x.done && x.y <= yr())) {
+      const [, ch] = text(m, p);
+      let best = -1, bv = -Infinity;
+      ch.forEach(([, fx], i) => {
+        if (fx.$ && p.money < cost(-fx.$)) return;
+        const v = (typeof AI !== 'undefined' ? AI.choiceValue(p, { fx }) : 0) + (fx.c || 0) * 0.6 + Math.random() * 0.3;
+        if (v > bv) { bv = v; best = i; }
+      });
+      if (best >= 0 && answer(m.id, best)) n++;
+    }
+    return n;
+  }
+
   /* ---------- the social feed ---------- */
   const POSTS = [
     ['selfie', 'Post a selfie', p => p.lk], ['update', 'Share a life update', p => 40 + (p.hp - 50) / 2], ['take', 'Post a hot take', p => p.sm * 0.6 + (p.im ?? 50) * 0.4],
@@ -191,7 +208,7 @@ const Phone = (() => {
     { id: 'penpal', n: 'Pen Pal', d: 'Keep up a correspondence with someone in another land.', test: (p, S2) => Object.keys(p.phone?.sent || {}).some(id => S2.P(+id) && S2.P(+id).cc !== p.cc) },
   );
   const unread = p => (p.phone?.inbox || []).filter(m => !m.done && m.y <= yr()).length;
-  return { device, contact, contactActs, answer, text, post, POSTS, feedOf, unread, ph, queue };
+  return { device, contact, contactActs, answer, autoAnswer, text, post, POSTS, feedOf, unread, ph, queue };
 })();
 
 /* ---------------- the Phone tab ---------------- */
@@ -214,14 +231,14 @@ LATE.push(() => {
     if (sub === 'contacts') {
       const people = S.known(p).filter(S.alive).sort((a, b) => (p.rels[b.id]?.c ?? 0) - (p.rels[a.id]?.c ?? 0));
       return head + `<p class="lede" style="margin:2px 2px 10px">${esc(intro)}</p><div class="list">${people.map(o => `<div class="row contact">${ui.av(o, 'sm')}<div class="main"><button class="linkbtn t" data-act="person" data-id="${o.id}">${esc(S.fullName(o))}</button><div class="s">${esc(S.relLabel(p, o))}${o.cc !== p.cc ? ` · in ${esc(S.world.C(o.cc).short)}` : ''}${p.rels[o.id] ? ` · closeness ${Math.round(p.rels[o.id].c)}` : ''}</div>
-        <div class="btnrow" style="margin-top:6px">${Ph.contactActs(p, o).map(([k, l]) => `<button class="btn sm" data-act="phoneAct" data-id="${o.id}" data-a="${k}" data-label="${esc(l)} (${esc(o.first)})" ${p.did[`ph:${o.id}:${k}`] ? 'disabled' : ''}>${esc(l)}</button>${k === 'write' || k === 'fast' ? ui.pinBtn('phoneAct', { id: String(o.id), a: k }, `${l} (${o.first})`) : ''}`).join('')}</div></div></div>`).join('') || '<div class="row muted">You know no one yet.</div>'}</div>`;
+        <div class="btnrow" style="margin-top:6px">${Ph.contactActs(p, o).map(([k, l]) => `<button class="btn sm" data-act="phoneAct" data-id="${o.id}" data-a="${k}" data-label="${esc(l)} (${esc(o.first)})" ${p.did[`ph:${o.id}:${k}`] ? 'disabled' : ''}>${esc(l)}</button>${ui.pinBtn('phoneAct', { id: String(o.id), a: k }, `${l} (${o.first})`)}`).join('')}</div></div></div>`).join('') || '<div class="row muted">You know no one yet.</div>'}</div>`;
     }
     if (sub === 'feed' && d.social) {
       if (!st.handle) return head + `<div class="panel"><div class="eyebrow">${esc(d.app)}</div><h3>Join ${esc(d.app)}</h3><p class="lede">Post, get followed, go viral, get famous, get trolled.</p>
         ${S.age(p) < 13 ? '<p class="why">You must be 13.</p>' : `<div class="field"><label for="ph-handle">Pick a handle</label><input id="ph-handle" maxlength="20" value="${esc((p.first + p.last).replace(/[^A-Za-z0-9]/g, '').toLowerCase())}"></div><button class="btn era" style="margin-top:10px" data-act="phoneJoin">Create account</button>`}</div>`;
       const feed = Ph.feedOf(p);
       return head + `<div class="panel"><div class="eyebrow">@${esc(st.handle)}${st.verified ? ' ✓' : ''}</div><h3>${U.fmtNum(st.followers)} followers</h3>
-        <div class="btnrow" style="margin-top:8px">${Ph.POSTS.map(([k, l]) => `<button class="btn sm" data-act="phonePost" data-k="${k}">${esc(l)}</button>`).join('')}</div>
+        <div class="btnrow" style="margin-top:8px">${Ph.POSTS.map(([k, l]) => `<button class="btn sm" data-act="phonePost" data-k="${k}">${esc(l)}</button>${ui.pinBtn('phonePost', { k }, l)}`).join('')}</div>
         <p class="faint" style="font-size:12.5px;margin:8px 0 0">Up to three posts a year. Followers turn into fame, and past 10,000 into sponsorship money. Hot takes can go very wrong.</p></div>
         ${st.posts.length ? `<div class="sec-h"><h3>Your posts</h3></div>${st.posts.slice().reverse().slice(0, 8).map(x => `<article class="post"><header><b>@${esc(st.handle)}</b> <span class="faint">· ${U.fmtYearAD(x.y)}</span>${x.viral ? ' <span class="tag good">viral</span>' : ''}${x.backlash ? ' <span class="tag bad">pile-on</span>' : ''}</header><p class="ptext">${esc(x.t)}</p><div class="faint" style="font-size:13px">${U.fmtNum(x.likes)} likes · ${x.gain >= 0 ? '+' : ''}${U.fmtNum(x.gain)} followers</div>${x.comments.length ? `<div class="comments">${x.comments.map(c => { const o = S.P(c.from); return o ? `<p><button class="linkbtn" data-act="person" data-id="${o.id}">${esc(o.first)}</button> ${esc(c.t)}</p>` : ''; }).join('')}</div>` : ''}</article>`).join('')}` : ''}
         ${feed.length ? `<div class="sec-h"><h3>People you know</h3></div>${feed.map(f => `<article class="post"><header><button class="linkbtn" data-act="person" data-id="${f.o.id}"><b>${esc(S.fullName(f.o))}</b></button> <span class="faint">· ${U.fmtYearAD(f.y)}</span></header><p class="ptext">${esc(f.t)}</p></article>`).join('')}` : ''}`;
@@ -236,5 +253,5 @@ LATE.push(() => {
   ui.on.phoneAns = el => { const t = Ph.answer(el.dataset.m, el.dataset.i); S.settle(); render(); toast(t); };
   ui.on.phonePost = el => { const t = Ph.post(el.dataset.k); render(); toast(t); };
   ui.on.phoneJoin = () => { const h = (document.querySelector('#ph-handle')?.value || '').trim().replace(/[^A-Za-z0-9_]/g, ''); if (!h) return toast('Pick a handle.'); const st = Ph.ph(S.me()); st.handle = h; st.followers = U.ri(5, 20) + S.known(S.me()).filter(S.alive).length; S.log(S.me(), `You joined ${Ph.device().app} as @${h}.`, 'life'); render(); toast('Welcome aboard.'); };
-  if (typeof Auto !== 'undefined') Auto.replay.phoneAct = ds => Ph.contact(+ds.id, ds.a);
+  if (typeof Auto !== 'undefined') { Auto.replay.phoneAct = ds => Ph.contact(+ds.id, ds.a); Auto.replay.phonePost = ds => Ph.post(ds.k); }
 });

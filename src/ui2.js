@@ -48,7 +48,7 @@
     const L = S.jobListings(p);
     const rows = L.map(({ j: x, why, pay, cur }) => `<div class="row ${why.length && !cur ? 'off' : ''}"><div class="main"><div class="t">${esc((p.sex === 'F' && x.tf) || x.t)}${x.grant ? ` <span class="faint">· grants “${x.grant}”</span>` : ''}</div>
         <div class="s"><span class="mono">${S.money(pay)}</span>/yr${x.risk >= 0.03 ? ' · dangerous' : ''}${x.vol >= 0.5 ? ' · unpredictable pay' : ''}${x.fame >= 2 ? ' · brings fame' : ''}${why.length ? ` · <span class="why">needs ${esc(why.join(', '))}</span>` : ''}</div></div>
-        ${cur ? '<span class="tag era">Current</span>' : `<button class="btn sm" data-act="apply" data-id="${x.id}" ${why.length ? 'disabled' : ''}>Apply</button>`}</div>`).join('');
+        ${cur ? '<span class="tag era">Current</span>' : `<button class="btn sm" data-act="apply" data-id="${x.id}" ${why.length ? 'disabled' : ''}>Apply</button>${ui.pinBtn ? ui.pinBtn('apply', { id: x.id }, `Apply to be a ${((p.sex === 'F' && x.tf) || x.t).toLowerCase()}`) : ''}`}</div>`).join('');
     return `<div class="panel"><div class="eyebrow">Education</div><h3>${esc(e.edu.n[p.edu])}</h3>${edu}</div>
       ${job}<div class="sec-h"><h3>Work in ${U.fmtYearAD(S.W.year)}</h3><span class="faint">${L.filter(x => !x.why.length).length} open to you</span></div><div class="list">${rows}</div>`;
   };
@@ -68,7 +68,7 @@
         <div class="end"><div class="mono">${S.money(x.val)}</div></div><button class="btn sm" data-act="sell" data-id="${x.uid}">Sell</button></div>`).join('');
     const shop = m.map(({ a: x, price }) => `<div class="row"><div class="main"><div class="t">${esc(x.t)}</div>
         <div class="s">${KIND[x.kind] || x.kind}${x.inc ? ` · earns ${pct(x.inc)}/yr` : ''}${x.appr > 0 ? ' · tends to gain value' : x.appr < 0 ? ' · loses value' : ''}${x.vol ? ' · volatile' : ''}</div></div>
-        <div class="end"><div class="mono">${S.money(price)}</div></div><button class="btn sm" data-act="buy" data-id="${x.id}" ${p.money < price || a < 16 ? 'disabled' : ''}>Buy</button></div>`).join('');
+        <div class="end"><div class="mono">${S.money(price)}</div></div><button class="btn sm" data-act="buy" data-id="${x.id}" ${p.money < price || a < 16 ? 'disabled' : ''}>Buy</button>${ui.pinBtn ? ui.pinBtn('buy', { id: x.id }, `Buy a ${x.t.toLowerCase()}`) : ''}</div>`).join('');
     return `<div class="panel"><div class="eyebrow">Your estate</div><div class="facts">
         <div class="fact"><div class="eyebrow">Cash</div><div class="v">${S.money(p.money)}</div></div>
         <div class="fact"><div class="eyebrow">Property</div><div class="v">${S.money(S.assetsVal(p))}</div></div>

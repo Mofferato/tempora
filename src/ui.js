@@ -102,15 +102,25 @@ const UI = (() => {
     $('#agebar').hidden = false;
     $('#ageBtn').disabled = dead;
     $('#ageBtn').innerHTML = `Age +1 <small>→ ${U.fmtYearAD(U.next(w.year))}</small>`;
+    for (const f of ui.afterRender || []) { try { f(p); } catch (err) { console.error(err); } }
     pump();
   }
   function renderView() {
-    const v = ui.views[ui.tab];
-    $('#view').innerHTML = v ? v(S.me()) : '';
+    const v = ui.views[ui.tab], st = ui.tabStrips && ui.autoStrip && ui.tabStrips[ui.tab];
+    $('#view').innerHTML = (st ? ui.autoStrip(...st) : '') + (v ? v(S.me()) : '');
     if (ui.tab === 'tree' && ui.afterTree) ui.afterTree();
   }
   const TABS = [['life', 'Life'], ['rel', 'Relationships'], ['act', 'Activities'], ['job', 'Occupation'], ['assets', 'Assets'], ['tree', 'Family Tree'], ['world', 'World']];
-  ui.on.tab = el => { ui.tab = el.dataset.tab; render(); $('#tabs [aria-selected="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); };
+  // Each tab remembers where you had scrolled to, so leaving the Life log and coming back keeps your place
+  const scrollMem = {};
+  ui.on.tab = el => {
+    scrollMem[ui.tab] = window.scrollY;
+    ui.tab = el.dataset.tab; render();
+    const tabs = $('#tabs'), top = tabs.getBoundingClientRect().top + window.scrollY - 70;
+    window.scrollTo(0, scrollMem[ui.tab] ?? Math.min(window.scrollY, Math.max(0, top)));
+    const b = tabs.querySelector('[aria-selected="true"]');
+    if (b) tabs.scrollLeft = b.offsetLeft - (tabs.clientWidth - b.clientWidth) / 2;
+  };
 
   /* ---------------- character card ---------------- */
   function card(p) {
@@ -135,7 +145,8 @@ const UI = (() => {
   }
 
   /* ---------------- Life log ---------------- */
-  ui.views.life = p => {
+  // The year-by-year log, newest first (also used by the docked log in lifedock.js)
+  ui.logYears = (p, limit) => {
     const groups = [];
     for (const l of p.log) {
       const g = groups[groups.length - 1];
@@ -144,9 +155,11 @@ const UI = (() => {
     groups.reverse();
     const yd = {}; for (const x of p.yd || []) yd[x.y] = x.d;
     const dc = (d, o) => (d && ui.dchips ? ui.dchips(d, o) : '');
-    return `<div class="panel">${groups.slice(0, ui.logLimit || 120).map((g, i) => `<div class="logyr ${i === 0 ? 'now' : ''}"><div class="d"><b>${U.fmtYearAD(g.y)}</b>Age ${g.a}</div>
-      <div><ul>${g.items.map(l => `<li class="${l.k}">${ui.linkify ? ui.linkify(l.t, p) : esc(l.t)}${l.d ? ' ' + dc(l.d, { small: 1, max: 5 }) : ''}</li>`).join('')}</ul>${yd[g.y] ? `<div class="ydelta"><span class="faint">The year:</span> ${dc(yd[g.y], { small: 1, max: 8 })}</div>` : ''}</div></div>`).join('') || '<p class="muted">Your story begins.</p>'}${groups.length > (ui.logLimit || 120) ? '<button class="btn sm block" data-act="moreLog" style="margin-top:10px">Show older years</button>' : ''}</div>`;
+    return groups.slice(0, limit).map((g, i) => `<div class="logyr ${i === 0 ? 'now' : ''}"><div class="d"><b>${U.fmtYearAD(g.y)}</b>Age ${g.a}</div>
+      <div><ul>${g.items.map(l => `<li class="${l.k}">${ui.linkify ? ui.linkify(l.t, p) : esc(l.t)}${l.d ? ' ' + dc(l.d, { small: 1, max: 5 }) : ''}</li>`).join('')}</ul>${yd[g.y] ? `<div class="ydelta"><span class="faint">The year:</span> ${dc(yd[g.y], { small: 1, max: 8 })}</div>` : ''}</div></div>`).join('') || '<p class="muted">Your story begins.</p>';
   };
+  ui.logYearCount = p => new Set(p.log.map(l => l.y)).size;
+  ui.views.life = p => `<div class="panel">${ui.logYears(p, ui.logLimit || 120)}${ui.logYearCount(p) > (ui.logLimit || 120) ? '<button class="btn sm block" data-act="moreLog" style="margin-top:10px">Show older years</button>' : ''}</div>`;
 
   /* ---------------- Relationships ---------------- */
   const GROUPS = [
@@ -230,9 +243,9 @@ const UI = (() => {
     const acts = S.activities(p);
     const row = a => {
       const why = a.jailed ? 'Not from prison' : a.young ? `Age ${a.min}+` : a.done ? 'Done this year' : a.broke ? 'Cannot afford' : '';
-      return `<button class="row ${why ? 'off' : ''}" data-act="activity" data-id="${a.id}" ${why ? 'disabled' : ''}>
+      return `<div class="prow"><button class="row ${why ? 'off' : ''}" data-act="activity" data-id="${a.id}" ${why ? 'disabled' : ''}>
         <div class="main"><div class="t">${esc(a.n)}</div><div class="s">${esc(a.d || '')}</div>${a.src.fx && ui.fxPills ? `<div class="dchips small preview">${ui.fxPills(a.src.fx)}${a.src.risk ? `<span class="dodds alt">${Math.round(a.src.risk.p * 100)}% risk</span>` : ''}</div>` : ''}</div>
-        <div class="end">${why ? `<span class="why">${why}</span>` : a.cost ? `<span class="mono">${S.money(a.cost)}</span>` : '<span class="faint">Free</span>'}</div></button>`;
+        <div class="end">${why ? `<span class="why">${why}</span>` : a.cost ? `<span class="mono">${S.money(a.cost)}</span>` : '<span class="faint">Free</span>'}</div></button>${ui.pinBtn ? ui.pinBtn('activity', { id: a.id }, a.n) : ''}</div>`;
     };
     const eraActs = acts.filter(a => a.era), common = acts.filter(a => !a.era);
     return `<div class="sec-h"><h3>Of the ${esc(S.era().name)} era</h3></div><div class="list">${eraActs.map(row).join('') || '<div class="row muted">Nothing special this year.</div>'}</div>

@@ -149,11 +149,12 @@
     const pets = S.petsOf(p);
     const live = S.known(p).filter(S.alive);
     const family = live.filter(o => p.rels[o.id]?.k === 'fam' || /Father|Mother|Brother|Sister|Son|Daughter|Grand|Uncle|Aunt|Cousin|Nephew|Niece|Husband|Wife|in-law/.test(S.relLabel(p, o)));
+    const pin = (a, g, l) => (ui.pinBtn ? ui.pinBtn('bulk', { a, g }, l) : '');
     const bulk = `<div class="panel bulk"><div class="eyebrow">Everyone at once · ${live.length} people</div><div class="btnrow" style="margin-top:8px">
-      <button class="btn sm" data-act="bulk" data-a="time" data-g="all">Spend time with everyone</button>
-      <button class="btn sm" data-act="bulk" data-a="talk" data-g="family">Talk with all family (${family.length})</button>
-      <button class="btn sm" data-act="bulk" data-a="gift" data-g="all">Send everyone a gift</button>
-      <button class="btn sm" data-act="bulk" data-a="party" data-g="all">Throw a gathering</button></div></div>`;
+      <button class="btn sm" data-act="bulk" data-a="time" data-g="all">Spend time with everyone</button>${pin('time', 'all', 'Spend time with everyone')}
+      <button class="btn sm" data-act="bulk" data-a="talk" data-g="family">Talk with all family (${family.length})</button>${pin('talk', 'family', 'Talk with all family')}
+      <button class="btn sm" data-act="bulk" data-a="gift" data-g="all">Send everyone a gift</button>${pin('gift', 'all', 'Send everyone a gift')}
+      <button class="btn sm" data-act="bulk" data-a="party" data-g="all">Throw a gathering</button>${ui.introBtn ? ui.introBtn(p) : ''}</div></div>`;
     const petBlock = `<div class="sec-h"><h3>Pets</h3><button class="btn sm" data-act="adopt">Adopt a pet</button></div>
       ${pets.length ? `<div class="list">${pets.map(x => { const sp = S.petSpec(x.kind); return `<button class="row" data-act="pet" data-id="${x.id}"><span class="av sm petav" aria-hidden="true">${esc(sp.n[0])}</span><div class="main"><div class="t">${esc(x.n)}</div><div class="s">${esc(sp.n)} · ${plural(S.W.year - x.born, 'year')} old</div></div><div class="end"><div class="mini" title="Bond ${Math.round(x.bond)}">${bar(x.bond, 'era')}</div></div></button>`; }).join('')}</div>` : '<p class="muted" style="margin:0 2px">No pets yet.</p>'}`;
     return bulk + relView(p) + petBlock;

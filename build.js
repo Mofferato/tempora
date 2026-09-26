@@ -10,7 +10,7 @@ const JS_ORDER = [
   'data-core.js', 'data-prehistory.js', 'data-eras1.js', 'data-eras2.js', 'data-eras3.js', 'data-eras4.js', 'data-world.js',
   'data-stats.js', 'data-countries.js', 'data-countries2.js', 'data-regions.js', 'data-extra.js', 'data-life.js',
   'engine.js', 'engine-player.js', 'genetics.js', 'engine-world.js', 'personality.js', 'settlements.js', 'society.js', 'politics.js',
-  'ui.js', 'ui2.js', 'ui3.js', 'ui4.js', 'delta.js', 'places.js', 'places2.js', 'household.js', 'auto.js', 'profile.js', 'phone.js', 'sports.js',
+  'ui.js', 'ui2.js', 'ui3.js', 'ui4.js', 'delta.js', 'places.js', 'places2.js', 'household.js', 'auto.js', 'profile.js', 'introduce.js', 'lifedock.js', 'phone.js', 'sports.js',
   'legacy.js', 'ai.js', 'sound.js', 'fusion.js', 'platform.js', 'community.js', 'tree.js', 'late.js', 'main.js',
 ];
 

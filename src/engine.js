@@ -77,7 +77,7 @@ const Sim = (() => {
     if (spouse(p) && parents(spouse(p)).includes(o)) return M ? 'Father-in-law' : 'Mother-in-law';
     if (kids(p).some(k => k.sp === o.id)) return M ? 'Son-in-law' : 'Daughter-in-law';
     const r = p.rels[o.id];
-    if (r) return { friend: 'Friend', lover: M ? 'Boyfriend' : 'Girlfriend', fiance: M ? 'Fiancé' : 'Fiancée', ex: 'Ex', coworker: 'Coworker', enemy: 'Rival' }[r.k] || 'Acquaintance';
+    if (r) return { friend: 'Friend', lover: M ? 'Boyfriend' : 'Girlfriend', fiance: M ? 'Fiancé' : 'Fiancée', ex: 'Ex', coworker: 'Coworker', enemy: 'Rival', mentor: 'Mentor', protege: 'Protégé' }[r.k] || 'Acquaintance';
     return 'Acquaintance';
   }
 
@@ -490,9 +490,12 @@ const Sim = (() => {
     if (!p.job && a >= 18 && law('ubi', e, p.cc)) p.money += toVal(law('ubi', e, p.cc), e) * 0.1;
     // relationships
     const mA = law('marry', e, p.cc);
-    if (p.sp == null && a >= mA + 2 && a <= 50 && U.chance((a < 30 ? 0.12 : 0.05) * hmul('npcMul', p, 'marry'))) {
-      const sp = mkPerson({ cc: p.cc, near: p, sex: p.orient === 'gay' && sameSexOK(e, p.cc) ? p.sex : p.sex === 'M' ? 'F' : 'M', born: U.add(W.year, -U.clamp(a + U.ri(-5, 5), mA, 80)) });
-      sp.money = toVal(e.cost, e) * U.rand(0, 3); if (age(sp) >= 16) npcJob(sp, e);
+    // someone they are courting (an introduction, say), who is free to marry them; never the player, whose marriage is their own choice
+    const court = p.sp == null && a >= mA ? Object.keys(p.rels).map(id => (['lover', 'fiance'].includes(p.rels[id].k) ? P(+id) : null))
+      .find(q => q && alive(q) && q.sp == null && q.id !== W.playerId && age(q) >= law('marry', e, q.cc)) : null;
+    if (p.sp == null && a <= 50 && (court ? U.chance(0.3 * hmul('npcMul', p, 'marry')) : a >= mA + 2 && U.chance((a < 30 ? 0.12 : 0.05) * hmul('npcMul', p, 'marry')))) {
+      const sp = court || mkPerson({ cc: p.cc, near: p, sex: p.orient === 'gay' && sameSexOK(e, p.cc) ? p.sex : p.sex === 'M' ? 'F' : 'M', born: U.add(W.year, -U.clamp(a + U.ri(-5, 5), mA, 80)) });
+      if (!court) { sp.money = toVal(e.cost, e) * U.rand(0, 3); if (age(sp) >= 16) npcJob(sp, e); }
       marry(p, sp);
       const pl = me();
       if (pl && known(pl).includes(p)) log(pl, `Your ${relLabel(pl, p).toLowerCase()} ${p.first} married ${sp.first} ${sp.last}.`, 'family');

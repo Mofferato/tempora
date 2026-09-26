@@ -215,9 +215,37 @@
     return note + view(p);
   };
 
+  /* ---------- a day spent automatically (auto-play) ---------- */
+  // Uses one of the place's days, and fills its hours with safe things to do: no brawls, cheating, skipping, deserting or scheming
+  const RISKY = /^(argue|armwrestle|brawl|charge|cheat|desert|early|escape|gang|intrigue|skip|cosmetic|round|trade|lunch|nap)$/;
+  // quiet: leave the log to the caller (the yearly routine writes one line for all its days)
+  P.autoDay = (p, id, quiet) => {
+    if (!S.alive(p) || S.W.dead || !P.available(p).includes(id) || (p.did['visit:' + id] || 0) >= P.VISITS) return '';
+    p.did['visit:' + id] = (p.did['visit:' + id] || 0) + 1;
+    P.roster(p, id);   // who is there today (some things to do depend on it)
+    let hours = P.HOURS[id] || 4; const feed = [];
+    for (const [k, , h] of U.shuffle(P.placeActs(p, id).filter(x => !RISKY.test(x[0])))) {
+      if (h > hours) continue;
+      const t = P.doPlace(p, id, k); if (t) feed.push(t);
+      hours -= h; if (hours <= 0 || !S.alive(p)) break;
+    }
+    S.settle();
+    const where = P.title(p, id).toLowerCase();
+    if (feed.length && !quiet) S.log(p, `A day at ${where}: ${feed.slice(-2).join(' ')}`, 'act');
+    P.lastDay = feed;
+    return feed.length ? `You spent a day at ${where}.` : '';
+  };
+
   /* ---------- replaying place actions (auto-play) ---------- */
   LATE.push(() => {
-    Auto.replay.sceneA = ds => { const p = S.me(); if (!P.available(p).includes(ds.place)) return ''; return P.doPlace(p, ds.place, ds.a); };
-    Auto.replay.sceneP = ds => { const p = S.me(); if (!P.available(p).includes(ds.place)) return ''; return P.doPerson(p, ds.place, +ds.o, ds.a); };
+    // Pinned things to do at a place share one day there, and its hours, like a day you spend yourself
+    const useHours = (p, id, h) => {
+      let left = p.did['hrs:' + id];
+      if (left == null) { if ((p.did['visit:' + id] || 0) >= P.VISITS) return false; p.did['visit:' + id] = (p.did['visit:' + id] || 0) + 1; left = P.HOURS[id] || 4; }
+      if (h > left) return false;
+      p.did['hrs:' + id] = left - h; return true;
+    };
+    Auto.replay.sceneA = ds => { const p = S.me(); if (!P.available(p).includes(ds.place)) return ''; const x = P.placeActs(p, ds.place).find(y => y[0] === ds.a); if (!x || !useHours(p, ds.place, x[2] || 1)) return ''; P.roster(p, ds.place); return P.doPlace(p, ds.place, ds.a); };
+    Auto.replay.sceneP = ds => { const p = S.me(), o = S.P(+ds.o); if (!o || !S.alive(o) || !P.available(p).includes(ds.place)) return ''; return useHours(p, ds.place, 1) ? P.doPerson(p, ds.place, +ds.o, ds.a) : ''; };
   });
 })();

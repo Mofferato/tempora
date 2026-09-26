@@ -12,10 +12,12 @@
 
 const Auto = (() => {
   const S = Sim;
+  // [key, label in the Auto-play sheet, short label for a tab's auto strip]
   const OPTS = [
-    ['work', 'Work hard every year'], ['gym', 'Exercise every year'], ['study', 'Study every year'], ['healer', 'See a healer when ill'],
-    ['social', 'Keep in touch with family'], ['job', 'Find work when unemployed'], ['school', 'Enrol in the next school'], ['invest', 'Put spare money into income property'], ['pets', 'Care for pets'],
-    ['repeat', "Repeat last year's actions every year"], ['pinsOn', 'Run my pinned actions every year'],
+    ['work', 'Work hard every year', 'Work hard'], ['promo', 'Ask for a promotion when ready', 'Promotion when ready'], ['gym', 'Exercise every year', 'Exercise'], ['study', 'Study every year', 'Study'], ['healer', 'See a healer when ill', 'Healer when ill'],
+    ['social', 'Keep in touch with family', 'Keep in touch'], ['job', 'Find work when unemployed', 'Find work'], ['school', 'Enrol in the next school', 'Next school'], ['invest', 'Put spare money into income property', 'Invest spare money'], ['home', 'Buy a home when you can afford one', 'Buy a home'], ['pets', 'Care for pets', 'Care for pets'],
+    ['inbox', 'Answer letters and messages', 'Answer the inbox'], ['days', 'Spend a day at each place every year', 'A day at each place'],
+    ['repeat', "Repeat last year's actions every year", 'Repeat last year'], ['pinsOn', 'Run my pinned actions every year', 'Pinned actions'],
   ];
   const cfg = () => (S.W.auto ||= { choices: 'ask', speed: 2, pinsOn: true });
   const macro = () => (S.W.macro ||= { cur: [], last: [] });
@@ -31,6 +33,11 @@ const Auto = (() => {
     house: ds => (typeof House !== 'undefined' ? House.houseAct(S.me(), ds.a) : ''),
     orgAct: ds => (['attend', 'donate', 'rise'].includes(ds.a) ? S.orgAct(ds.id, ds.a) : ''),
     natAct: ds => (ds.a === 'travel' ? S.world.travel(ds.cc) : ds.a === 'invest' ? S.world.invest(ds.cc, 0.2) : ''),
+    // keep trying for a pinned job until you have it
+    apply: ds => { const p = S.me(), L = S.jobListings(p).find(x => x.j.id === ds.id); return !L || L.cur || L.why.length ? '' : S.apply(ds.id).t; },
+    // buy a pinned item every year, but only when it costs under a third of your cash
+    buy: ds => { const m = S.market().find(x => x.a.id === ds.id); return !m || S.age(S.me()) < 16 || S.me().money < m.price * 3 ? '' : S.buy(ds.id); },
+    visitAuto: ds => (typeof Places !== 'undefined' && Places.autoDay ? Places.autoDay(S.me(), ds.id) : ''),
     bulk: ds => { let n = 0; for (const o of S.known(S.me()).filter(S.alive)) { if (ds.g === 'family' && !/Father|Mother|Brother|Sister|Son|Daughter|Grand|Husband|Wife/.test(S.relLabel(S.me(), o))) continue; if (ds.a === 'party') break; const t = S.interact(o.id, ds.a); if (t && !/already|cannot|gone/i.test(t)) n++; } return n ? `Kept up with ${n} people.` : ''; },
   };
   const label = x => x.label || `${x.act}${x.ds.a ? ' · ' + x.ds.a : ''}`;
@@ -77,6 +84,15 @@ const Auto = (() => {
     if (c.school && !p.school && a <= 30) { const o = S.eduOptions(p).find(x => !x.why.length); if (o) S.doEnroll(o.lvl); }
     if (c.invest && p.money > S.toVal(e.cost * 20)) { const m = S.market().filter(x => x.a.inc > 0 && x.price < p.money * 0.5).sort((x, y) => y.a.inc - x.a.inc)[0]; if (m) S.buy(m.a.id); }
     if (c.pets) for (const pet of S.petsOf(p)) { S.petAct(pet.id, 'play'); if (pet.h < 50) S.petAct(pet.id, 'vet'); }
+    // ask only when a promotion is likely: ready for the next rank, and performing well
+    if (c.promo && p.job && !p.did.promo && p.job.rank < 4 && p.job.perf >= 70 && S.promoReady(p.job)) S.askPromotion();
+    if (c.home && a >= 18 && !p.assets.some(x => x.kind === 'home')) { const h = S.market().filter(x => x.a.kind === 'home' && x.price <= p.money * 0.7).sort((x, y) => x.price - y.price)[0]; if (h) S.buy(h.a.id); }
+    if (c.inbox && typeof Phone !== 'undefined' && Phone.autoAnswer) Phone.autoAnswer(p);
+    if (c.days && typeof Places !== 'undefined' && Places.autoDay) {
+      const where = [], best = [];
+      for (const id of Places.available(p)) if (Places.autoDay(p, id, true)) { where.push(Places.title(p, id).split(' · ')[0].toLowerCase()); best.push(U.pick(Places.lastDay)); }
+      if (where.length) S.log(p, `Your days: ${where.length > 1 ? where.slice(0, -1).join(', ') + ' and ' + where[where.length - 1] : where[0]}. ${best.slice(0, 2).join(' ')}`, 'act');
+    }
     if (c.pinsOn !== false) runPins();
     if (c.repeat) repeatLast();
     S.settle();
@@ -137,6 +153,24 @@ const Auto = (() => {
   // roll the recorder over at the start of every year, before the player acts again
   (ui.beforeAge ||= []).push(age0);
 
+  // Each tab's auto strip: [its yearly habits, the kinds of action that can be pinned on it]. renderView puts it at the top.
+  ui.tabStrips = {
+    act: [['gym', 'study', 'healer', 'pets'], ['activity', 'petAct', 'sportTrain', 'sportCompete']],
+    rel: [['social'], ['interact', 'bulk']],
+    phone: [['inbox', 'social'], ['phoneAct', 'phonePost']],
+    places: [['days'], ['visitAuto', 'sceneA', 'sceneP']],
+    job: [['work', 'promo', 'job', 'school'], ['apply']],
+    assets: [['home', 'invest'], ['buy']],
+  };
+  // A tab's auto strip: its yearly habits as switches, and how many of its actions are pinned
+  ui.autoStrip = (keys, pinActs = []) => {
+    if (!S.W || S.W.dead) return '';
+    const c = Auto.cfg(), n = Auto.pins().filter(x => pinActs.includes(x.act)).length;
+    const opts = keys.map(k => Auto.OPTS.find(o => o[0] === k)).filter(Boolean);
+    return `<div class="autostrip"><button class="linkbtn eyebrow" data-act="auto" title="All auto-play settings">Auto</button>${opts.map(([k, l, sh]) => `<label class="switch" title="${esc(l)}"><input type="checkbox" data-input="autoOpt" data-k="${k}" ${c[k] ? 'checked' : ''}><span>${esc(sh)}</span></label>`).join('')}
+      <span class="faint">${n ? `· ${n} pinned here` : '· tap <b>auto</b> on an action to repeat it yearly'}</span></div>`;
+  };
+
   // A small "auto" toggle placed next to an action button
   ui.pinBtn = (act, ds, lab) => {
     if (!S.W) return '';
@@ -171,7 +205,7 @@ const Auto = (() => {
   }
   ui.on.auto = () => { ui.open = null; autoSheet(); };
   ui.on.unpin = el => { Auto.pins().splice(+el.dataset.i, 1); ui.save(); ui.open = null; autoSheet('Unpinned.'); };
-  ui.input.autoOpt = el => { Auto.cfg()[el.dataset.k] = el.checked; ui.save(); };
+  ui.input.autoOpt = el => { Auto.cfg()[el.dataset.k] = el.checked; ui.save(); if (el.closest('.autostrip')) toast(el.checked ? `Auto: ${el.closest('label').title.toLowerCase()}.` : 'Turned off.'); };
   ui.input.autoSel = el => { Auto.cfg()[el.dataset.k] = el.dataset.k === 'speed' ? +el.value : el.value || null; if (running()) { stop(); start(); } ui.save(); };
   function start() { stop(); timer = setInterval(tick, Math.max(300, Auto.cfg().speed * 1000)); $('#autoBtn')?.setAttribute('aria-pressed', 'true'); }
   ui.on.autoToggle = () => { if (running()) { stop(); toast('Auto-aging stopped.'); } else { ui.open = null; $('#modal').innerHTML = ''; start(); toast('Auto-aging. Press the auto button to stop.'); } };

@@ -36,7 +36,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html, body { height: 100%; }
+html { height: 100%; }
+/* min-height, not height: the body must grow with the page so its bottom padding clears the fixed age bar */
+body { min-height: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
   font: 15px/1.5 var(--f-body); -webkit-font-smoothing: antialiased;
@@ -92,7 +94,8 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 400; margin: 0; text-wr
 .layout > * { min-width: 0; }
 @media (min-width: 900px) {
   .layout { grid-template-columns: 330px minmax(0, 1fr); align-items: start; }
-  .side { position: sticky; top: 84px; }
+  /* the card stays in view, and scrolls on its own when it is taller than the space above the age bar */
+  .side { position: sticky; top: 84px; max-height: calc(100dvh - 84px - 96px - env(safe-area-inset-bottom, 0px)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 }
 
 /* ---------- character card ---------- */
