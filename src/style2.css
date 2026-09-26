@@ -78,6 +78,9 @@
 .acts.two { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .actrow { display: flex; gap: 6px; align-items: stretch; }
 .actrow > .btn { flex: 1; }
+/* a once-a-year action already used up: the label, then why it is greyed out */
+.btn.used { flex-direction: column; gap: 2px; line-height: 1.2; }
+.btn.used .note { font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
 .logyr li.gossip { color: var(--ink-2); }
 .logyr li.gossip::before { background: #8B6CF0; }
 

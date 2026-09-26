@@ -354,13 +354,23 @@ Object.assign(Sim, (() => {
       out.push({ id: 'divorce', l: S.law('divorce', e, p.cc) ? 'Divorce' : 'Seek an annulment' });
     }
     if (r && r.k === 'lover' && p.sex !== o.sex && a >= 16) out.push({ id: 'baby', l: 'Try for a baby' });
-    return out;
+    // once-a-year actions already used up show as done ('auto' when auto-play did them)
+    return out.map(x => (ONCE[x.id] && p.did[`r:${o.id}:${x.id}`] ? { ...x, done: p.did[`r:${o.id}:${x.id}`] } : x));
   }
+  // Actions you can take with each person once a year, and how to say you already did
+  const ONCE = { time: n => `spent time with ${n}`, talk: n => `had a long talk with ${n}`, gift: n => `gave ${n} a gift`, money: n => `asked ${n} for money`, flirt: n => `asked ${n} out`, baby: () => 'tried for a baby' };
+  // Auto-play (pins, repeats, the autopilot) runs inside asAuto, so the player can be told who used up an action
+  let autoDepth = 0;
+  function asAuto(f) { autoDepth++; try { return f(); } finally { autoDepth--; } }
   function interact(oid, act) {
     const p = S.me(), o = S.P(oid), e = S.era();
     if (!o || !S.alive(o) || !S.alive(p)) return 'They are gone.';
     const r = S.rel(p, o), key = `r:${oid}:${act}`;
-    if (['time', 'talk', 'gift', 'money', 'flirt', 'baby'].includes(act)) { if (p.did[key]) return 'You already did that this year.'; p.did[key] = 1; }
+    if (ONCE[act]) {
+      const prev = p.did[key];
+      if (prev) return `${prev === 'auto' ? 'Auto-play already' : 'You already'} ${ONCE[act](o.first)} this year. Try again next year.`;
+      p.did[key] = autoDepth ? 'auto' : 1;
+    }
     let t = '';
     switch (act) {
       case 'time': r.c = U.clamp(r.c + U.ri(4, 12) + S.hadd('relGain', p, o, 'time')); p.hp = U.clamp(p.hp + 2); t = `You spent a lovely day with ${o.first}.`; break;
@@ -404,11 +414,15 @@ Object.assign(Sim, (() => {
           p.kids.push(c.id); o.kids.push(c.id); S.rel(p, c).c = 85;
           t = `You adopted ${c.first}, aged ${S.age(c)}.`; break;
         }
-        const mo = p.sex === 'F' ? p : o, ma = S.age(mo);
-        if (ma < 16 || ma > 46) { t = 'It is not going to happen at this age.'; break; }
-        if (mo.kids.some(k => S.P(k)?.born === W().year)) { t = 'You already had a baby this year.'; break; }
+        // reasons it cannot happen don't use up this year's try
+        const mo = p.sex === 'F' ? p : o, ma = S.age(mo), me = mo === p;
+        const nope = s => { p.did[key] = 0; return s; };
+        if (ma < 16) { t = nope(me ? 'You are too young to have a baby yet.' : `${mo.first} is too young to have a baby yet.`); break; }
+        if (ma > 46) { t = nope(me ? 'You are past the age of having children.' : `${mo.first} is past the age of having children.`); break; }
+        const newborn = mo.kids.map(S.P).find(k => k && k.born === W().year);
+        if (newborn) { t = nope(`${me ? 'You' : mo.first} already had a baby this year: ${newborn.first}.`); break; }
         const lim = S.law('kids', e, p.cc);
-        if (lim && mo.kids.length >= lim) { t = `The law here allows only ${lim} child${lim > 1 ? 'ren' : ''} per family.`; break; }
+        if (lim && mo.kids.length >= lim) { t = nope(`The law here allows only ${lim} child${lim > 1 ? 'ren' : ''} per family.`); break; }
         if (U.chance(U.clamp(e.life.fert * 2, 0.15, 0.5) * (mo.kids.length > 6 ? 0.4 : 1) * (S.hooks.fert ? S.hooks.fert(mo, p.sex === 'M' ? p : o) : 1))) {
           const c = S.birth(p.sex === 'M' ? p : o, mo); S.rel(p, c).c = 90;
           t = `A baby ${c.sex === 'M' ? 'boy' : 'girl'}: ${c.first}!`;
@@ -624,7 +638,7 @@ Object.assign(Sim, (() => {
 
   return {
     ageUp, eduOptions, doEnroll, dropOut, jobListings, apply, workHard, askPromotion, quitJob, retire, rankName,
-    activities, doActivity, actionsFor, interact, market, buy, sell, heirs, continueAs, become, checkAch, settle, newHouse,
+    activities, doActivity, actionsFor, interact, asAuto, market, buy, sell, heirs, continueAs, become, checkAch, settle, newHouse,
     jump, forceHistory, forceEvent, eventPool, serialize, load, workAge, lifeScore, EDU_YEARS, EDU_AGE, rankPay, promoReady, runEvent, eventOK, payerFor, rankName, tone, afford, autoSchool, enroll,
   };
 })());

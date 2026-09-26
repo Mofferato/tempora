@@ -201,10 +201,14 @@ const UI = (() => {
         ${r && !self ? `<div class="stat"><span class="k">Closeness</span>${bar(r.c, 'era')}<span class="v">${Math.round(r.c)}</span></div>` : ''}</div>` : ''}
       <dl class="kv">${kv.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
       ${res ? `<div class="result" role="status">${esc(res)}</div>` : ''}
-      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => `<button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>`).join('')}</div>` : ''}
+      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => ui.interactBtn(o, a)).join('')}</div>` : ''}
       ${!self && liv && S.alive(p) ? `<button class="btn era block" style="margin-top:10px" data-act="become" data-id="${o.id}">Become ${esc(o.first)}</button>
         <p class="faint" style="font-size:12px;margin:8px 0 0">${esc(p.first)} keeps living in the world as an ordinary person.</p>` : ''}`, { label: S.fullName(o) });
   }
+  // A button for something to do with a person; once-a-year actions already used up are greyed out and say so
+  ui.interactBtn = (o, a) => a.done
+    ? `<button class="btn used" disabled title="${a.done === 'auto' ? 'Auto-play did this for you this year' : 'You did this this year'}">${esc(a.l)}<span class="note">${a.done === 'auto' ? 'Done by auto-play this year' : 'Done this year'}</span></button>`
+    : `<button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>`;
   ui.on.person = el => ui.person(+el.dataset.id);
   ui.on.interact = el => {
     const t = S.interact(+el.dataset.id, el.dataset.a);

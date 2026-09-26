@@ -47,7 +47,7 @@ const Auto = (() => {
   function rollYear() { const m = macro(); if (m.cur.length) m.last = m.cur; m.cur = []; }
   function repeatLast() {
     const m = macro(), out = [];
-    for (const x of m.last) { const t = exec(x); if (t && !/already|cannot|not |need|too young/i.test(t)) out.push(t); }
+    S.asAuto(() => { for (const x of m.last) { const t = exec(x); if (t && !/already|cannot|not |need|too young/i.test(t)) out.push(t); } });
     return out;
   }
 
@@ -60,10 +60,11 @@ const Auto = (() => {
     if (i >= 0) { list.splice(i, 1); return false; }
     list.push({ key: k, act, ds, label: lab }); return true;
   }
-  function runPins() { const out = []; for (const x of pins().slice()) { const t = exec(x); if (t) out.push(t); } return out; }
+  function runPins() { const out = []; S.asAuto(() => { for (const x of pins().slice()) { const t = exec(x); if (t) out.push(t); } }); return out; }
 
   /* ---------- the yearly routine ---------- */
-  function apply(p) {
+  function apply(p) { S.asAuto(() => routine(p)); }
+  function routine(p) {
     const c = cfg(), e = S.era(), a = S.age(p);
     if (!S.alive(p) || S.W.dead) return;
     if (c.goal && typeof AI !== 'undefined') AI.autopilot(p, c.goal);

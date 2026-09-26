@@ -84,7 +84,7 @@ const AI = (() => {
     if (p.sp == null && !lover && a >= 18 && a <= 45 && actOK('u:love')) add(30, actOK('u:love').n, 'Marriage lifts happiness for life, and brings children.', 'activity', { id: 'u:love' });
     if (lover) { const [id, r] = lover, o = S.P(+id); if (r.k === 'lover' && r.c >= 60) add(45, `Propose to ${o.first}`, `Closeness ${Math.round(r.c)}: a good chance they will say yes.`, 'interact', { id: String(o.id), a: 'propose' }); if (r.k === 'fiance') add(55, `Marry ${o.first}`, 'You are engaged. Seal it.', 'interact', { id: String(o.id), a: 'wed' }); }
     const sp = S.spouse(p);
-    if (sp && S.alive(sp) && sp.sex !== p.sex && p.kids.length < 3 && a >= 20 && a <= 40) add(35, 'Try for a baby', 'Children carry your dynasty on after you.', 'interact', { id: String(sp.id), a: 'baby' });
+    if (sp && S.alive(sp) && sp.sex !== p.sex && p.kids.length < 3 && a >= 20 && a <= 40 && !p.did[`r:${sp.id}:baby`]) add(35, 'Try for a baby', 'Children carry your dynasty on after you.', 'interact', { id: String(sp.id), a: 'baby' });
     const cold = S.known(p).filter(o => S.alive(o) && /Father|Mother|Husband|Wife|Son|Daughter|Brother|Sister/.test(S.relLabel(p, o)) && (p.rels[o.id]?.c ?? 50) < 35).sort((x, y) => (p.rels[x.id]?.c ?? 50) - (p.rels[y.id]?.c ?? 50))[0];
     if (cold) add(38, `Spend time with ${cold.first}`, `Your ${S.relLabel(p, cold).toLowerCase()} is drifting away (closeness ${Math.round(p.rels[cold.id]?.c ?? 0)}).`, 'interact', { id: String(cold.id), a: 'time' });
     if (typeof Phone !== 'undefined' && Phone.unread(p)) add(30, 'Answer your messages', `${Phone.unread(p)} unanswered. People notice silence.`, 'tab', { tab: 'phone' });
@@ -114,7 +114,8 @@ const AI = (() => {
   }
 
   /* ---------- autopilot: a year played toward a goal ---------- */
-  function autopilot(p, goal) {
+  function autopilot(p, goal) { S.asAuto(() => pilot(p, goal)); }
+  function pilot(p, goal) {
     if (!S.alive(p) || S.W.dead || p.prison) return;
     const a = S.age(p), e = S.era(), act = id => { try { S.doActivity(id); } catch { /* not available */ } };
     const tryRun = (x, ds) => { try { return run(x, ds); } catch { return ''; } };
@@ -283,7 +284,7 @@ Reply as JSON: "reply" is what you say; "mood" is how this exchange made you fee
   function menu(p) {
     const items = [];
     for (const a of S.activities(p)) if (!a.young && !a.done && !a.broke && !a.jailed) items.push([`activity:${a.id}`, `${a.n}${a.cost ? ` (costs ${S.money(a.cost)})` : ''}`]);
-    for (const o of S.known(p).filter(S.alive).slice(0, 10)) for (const x of S.actionsFor(p, o)) if (!['divorce', 'breakup', 'argue', 'money'].includes(x.id)) items.push([`interact:${o.id}:${x.id}`, `${x.l} with ${o.first} (${S.relLabel(p, o).toLowerCase()})`]);
+    for (const o of S.known(p).filter(S.alive).slice(0, 10)) for (const x of S.actionsFor(p, o)) if (!x.done && !['divorce', 'breakup', 'argue', 'money'].includes(x.id)) items.push([`interact:${o.id}:${x.id}`, `${x.l} with ${o.first} (${S.relLabel(p, o).toLowerCase()})`]);
     if (p.job) { items.push(['workHard', 'Work hard this year']); items.push(['promo', 'Ask for a promotion']); }
     else for (const L of S.jobListings(p).filter(x => !x.why.length).sort((x, y) => y.pay - x.pay).slice(0, 5)) items.push([`apply:${L.j.id}`, `Apply to be a ${L.j.t.toLowerCase()} (${S.money(L.pay)}/yr)`]);
     const o = S.eduOptions(p).find(x => !x.why.length); if (o && !p.school) items.push([`enroll:${o.lvl}`, `Enrol in ${o.n.toLowerCase()}`]);
@@ -306,13 +307,15 @@ Reply as JSON: "reply" is what you say; "mood" is how this exchange made you fee
       const [k, a, b] = id.split(':');
       let t = '';
       try {
-        if (k === 'activity') t = S.doActivity(`${a}:${b}`);
-        else if (k === 'interact') t = S.interact(+a, b);
-        else if (k === 'apply') t = S.apply(a).t;
-        else if (k === 'enroll') t = S.doEnroll(+a);
-        else if (k === 'buy') t = S.buy(a);
-        else if (k === 'polSeek') t = S.pol.seek(+a);
-        else t = run(k);
+        S.asAuto(() => {
+          if (k === 'activity') t = S.doActivity(`${a}:${b}`);
+          else if (k === 'interact') t = S.interact(+a, b);
+          else if (k === 'apply') t = S.apply(a).t;
+          else if (k === 'enroll') t = S.doEnroll(+a);
+          else if (k === 'buy') t = S.buy(a);
+          else if (k === 'polSeek') t = S.pol.seek(+a);
+          else t = run(k);
+        });
       } catch { t = ''; }
       S.settle();
       if (t) done.push(t);

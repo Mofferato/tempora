@@ -549,6 +549,9 @@ button.row:disabled { cursor: default; }
 .acts.two { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .actrow { display: flex; gap: 6px; align-items: stretch; }
 .actrow > .btn { flex: 1; }
+/* a once-a-year action already used up: the label, then why it is greyed out */
+.btn.used { flex-direction: column; gap: 2px; line-height: 1.2; }
+.btn.used .note { font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
 .logyr li.gossip { color: var(--ink-2); }
 .logyr li.gossip::before { background: #8B6CF0; }
 
@@ -3672,13 +3675,23 @@ Object.assign(Sim, (() => {
       out.push({ id: 'divorce', l: S.law('divorce', e, p.cc) ? 'Divorce' : 'Seek an annulment' });
     }
     if (r && r.k === 'lover' && p.sex !== o.sex && a >= 16) out.push({ id: 'baby', l: 'Try for a baby' });
-    return out;
+    // once-a-year actions already used up show as done ('auto' when auto-play did them)
+    return out.map(x => (ONCE[x.id] && p.did[`r:${o.id}:${x.id}`] ? { ...x, done: p.did[`r:${o.id}:${x.id}`] } : x));
   }
+  // Actions you can take with each person once a year, and how to say you already did
+  const ONCE = { time: n => `spent time with ${n}`, talk: n => `had a long talk with ${n}`, gift: n => `gave ${n} a gift`, money: n => `asked ${n} for money`, flirt: n => `asked ${n} out`, baby: () => 'tried for a baby' };
+  // Auto-play (pins, repeats, the autopilot) runs inside asAuto, so the player can be told who used up an action
+  let autoDepth = 0;
+  function asAuto(f) { autoDepth++; try { return f(); } finally { autoDepth--; } }
   function interact(oid, act) {
     const p = S.me(), o = S.P(oid), e = S.era();
     if (!o || !S.alive(o) || !S.alive(p)) return 'They are gone.';
     const r = S.rel(p, o), key = `r:${oid}:${act}`;
-    if (['time', 'talk', 'gift', 'money', 'flirt', 'baby'].includes(act)) { if (p.did[key]) return 'You already did that this year.'; p.did[key] = 1; }
+    if (ONCE[act]) {
+      const prev = p.did[key];
+      if (prev) return `${prev === 'auto' ? 'Auto-play already' : 'You already'} ${ONCE[act](o.first)} this year. Try again next year.`;
+      p.did[key] = autoDepth ? 'auto' : 1;
+    }
     let t = '';
     switch (act) {
       case 'time': r.c = U.clamp(r.c + U.ri(4, 12) + S.hadd('relGain', p, o, 'time')); p.hp = U.clamp(p.hp + 2); t = `You spent a lovely day with ${o.first}.`; break;
@@ -3722,11 +3735,15 @@ Object.assign(Sim, (() => {
           p.kids.push(c.id); o.kids.push(c.id); S.rel(p, c).c = 85;
           t = `You adopted ${c.first}, aged ${S.age(c)}.`; break;
         }
-        const mo = p.sex === 'F' ? p : o, ma = S.age(mo);
-        if (ma < 16 || ma > 46) { t = 'It is not going to happen at this age.'; break; }
-        if (mo.kids.some(k => S.P(k)?.born === W().year)) { t = 'You already had a baby this year.'; break; }
+        // reasons it cannot happen don't use up this year's try
+        const mo = p.sex === 'F' ? p : o, ma = S.age(mo), me = mo === p;
+        const nope = s => { p.did[key] = 0; return s; };
+        if (ma < 16) { t = nope(me ? 'You are too young to have a baby yet.' : `${mo.first} is too young to have a baby yet.`); break; }
+        if (ma > 46) { t = nope(me ? 'You are past the age of having children.' : `${mo.first} is past the age of having children.`); break; }
+        const newborn = mo.kids.map(S.P).find(k => k && k.born === W().year);
+        if (newborn) { t = nope(`${me ? 'You' : mo.first} already had a baby this year: ${newborn.first}.`); break; }
         const lim = S.law('kids', e, p.cc);
-        if (lim && mo.kids.length >= lim) { t = `The law here allows only ${lim} child${lim > 1 ? 'ren' : ''} per family.`; break; }
+        if (lim && mo.kids.length >= lim) { t = nope(`The law here allows only ${lim} child${lim > 1 ? 'ren' : ''} per family.`); break; }
         if (U.chance(U.clamp(e.life.fert * 2, 0.15, 0.5) * (mo.kids.length > 6 ? 0.4 : 1) * (S.hooks.fert ? S.hooks.fert(mo, p.sex === 'M' ? p : o) : 1))) {
           const c = S.birth(p.sex === 'M' ? p : o, mo); S.rel(p, c).c = 90;
           t = `A baby ${c.sex === 'M' ? 'boy' : 'girl'}: ${c.first}!`;
@@ -3942,7 +3959,7 @@ Object.assign(Sim, (() => {
 
   return {
     ageUp, eduOptions, doEnroll, dropOut, jobListings, apply, workHard, askPromotion, quitJob, retire, rankName,
-    activities, doActivity, actionsFor, interact, market, buy, sell, heirs, continueAs, become, checkAch, settle, newHouse,
+    activities, doActivity, actionsFor, interact, asAuto, market, buy, sell, heirs, continueAs, become, checkAch, settle, newHouse,
     jump, forceHistory, forceEvent, eventPool, serialize, load, workAge, lifeScore, EDU_YEARS, EDU_AGE, rankPay, promoReady, runEvent, eventOK, payerFor, rankName, tone, afford, autoSchool, enroll,
   };
 })());
@@ -6135,10 +6152,14 @@ const UI = (() => {
         ${r && !self ? `<div class="stat"><span class="k">Closeness</span>${bar(r.c, 'era')}<span class="v">${Math.round(r.c)}</span></div>` : ''}</div>` : ''}
       <dl class="kv">${kv.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
       ${res ? `<div class="result" role="status">${esc(res)}</div>` : ''}
-      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => `<button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>`).join('')}</div>` : ''}
+      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => ui.interactBtn(o, a)).join('')}</div>` : ''}
       ${!self && liv && S.alive(p) ? `<button class="btn era block" style="margin-top:10px" data-act="become" data-id="${o.id}">Become ${esc(o.first)}</button>
         <p class="faint" style="font-size:12px;margin:8px 0 0">${esc(p.first)} keeps living in the world as an ordinary person.</p>` : ''}`, { label: S.fullName(o) });
   }
+  // A button for something to do with a person; once-a-year actions already used up are greyed out and say so
+  ui.interactBtn = (o, a) => a.done
+    ? `<button class="btn used" disabled title="${a.done === 'auto' ? 'Auto-play did this for you this year' : 'You did this this year'}">${esc(a.l)}<span class="note">${a.done === 'auto' ? 'Done by auto-play this year' : 'Done this year'}</span></button>`
+    : `<button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>`;
   ui.on.person = el => ui.person(+el.dataset.id);
   ui.on.interact = el => {
     const t = S.interact(+el.dataset.id, el.dataset.a);
@@ -6558,7 +6579,7 @@ const UI = (() => {
       ${look}
       <dl class="kv">${kv.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
       ${res ? `<div class="result" role="status">${esc(res)}</div>` : ''}
-      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => `<button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>`).join('')}</div>` : ''}
+      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => ui.interactBtn(o, a)).join('')}</div>` : ''}
       ${!self && liv && S.alive(p) ? `<button class="btn era block" style="margin-top:10px" data-act="become" data-id="${o.id}">Become ${esc(o.first)}</button>
         <p class="faint" style="font-size:12px;margin:8px 0 0">${esc(p.first)} keeps living in the world as an ordinary person.</p>` : ''}
       ${S.godAllowed() ? `<button class="btn sm" style="margin-top:10px" data-act="godEdit" data-id="${o.id}">Edit with god powers</button>` : ''}`, { label: S.fullName(o) });
@@ -7632,7 +7653,7 @@ const Auto = (() => {
   function rollYear() { const m = macro(); if (m.cur.length) m.last = m.cur; m.cur = []; }
   function repeatLast() {
     const m = macro(), out = [];
-    for (const x of m.last) { const t = exec(x); if (t && !/already|cannot|not |need|too young/i.test(t)) out.push(t); }
+    S.asAuto(() => { for (const x of m.last) { const t = exec(x); if (t && !/already|cannot|not |need|too young/i.test(t)) out.push(t); } });
     return out;
   }
 
@@ -7645,10 +7666,11 @@ const Auto = (() => {
     if (i >= 0) { list.splice(i, 1); return false; }
     list.push({ key: k, act, ds, label: lab }); return true;
   }
-  function runPins() { const out = []; for (const x of pins().slice()) { const t = exec(x); if (t) out.push(t); } return out; }
+  function runPins() { const out = []; S.asAuto(() => { for (const x of pins().slice()) { const t = exec(x); if (t) out.push(t); } }); return out; }
 
   /* ---------- the yearly routine ---------- */
-  function apply(p) {
+  function apply(p) { S.asAuto(() => routine(p)); }
+  function routine(p) {
     const c = cfg(), e = S.era(), a = S.age(p);
     if (!S.alive(p) || S.W.dead) return;
     if (c.goal && typeof AI !== 'undefined') AI.autopilot(p, c.goal);
@@ -7892,7 +7914,7 @@ const Auto = (() => {
       <div class="subtabs" role="tablist" style="margin-top:12px">${tabs.map(([t, n]) => `<button data-act="profTab" data-id="${o.id}" data-v="${t}" aria-selected="${tab === t}">${n}</button>`).join('')}</div>
       <div class="profbody">${body}</div>
       ${res ? `<div class="result" role="status">${esc(res)}</div>` : ''}
-      ${acts.length ? `<div class="eyebrow" style="margin-top:14px">Do something together</div><div class="acts two" style="margin-top:6px">${acts.map(a => `<div class="actrow"><button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>${ui.pinBtn ? ui.pinBtn('interact', { id: o.id, a: a.id }, `${a.l} with ${o.first}`) : ''}</div>`).join('')}</div>` : ''}
+      ${acts.length ? `<div class="eyebrow" style="margin-top:14px">Do something together</div><div class="acts two" style="margin-top:6px">${acts.map(a => `<div class="actrow">${ui.interactBtn(o, a)}${ui.pinBtn ? ui.pinBtn('interact', { id: o.id, a: a.id }, `${a.l} with ${o.first}`) : ''}</div>`).join('')}</div>` : ''}
       ${ui.personExtra ? ui.personExtra(p, o) : ''}
       ${!self && liv && S.alive(p) ? `<button class="btn era block" style="margin-top:10px" data-act="become" data-id="${o.id}">Become ${esc(o.first)}</button>
         <p class="faint" style="font-size:12px;margin:8px 0 0">You would take over ${esc(o.first)}'s life with everything in it: their family, work, places and choices. ${esc(p.first)} keeps living in the world.</p>` : ''}
@@ -8729,7 +8751,7 @@ const AI = (() => {
     if (p.sp == null && !lover && a >= 18 && a <= 45 && actOK('u:love')) add(30, actOK('u:love').n, 'Marriage lifts happiness for life, and brings children.', 'activity', { id: 'u:love' });
     if (lover) { const [id, r] = lover, o = S.P(+id); if (r.k === 'lover' && r.c >= 60) add(45, `Propose to ${o.first}`, `Closeness ${Math.round(r.c)}: a good chance they will say yes.`, 'interact', { id: String(o.id), a: 'propose' }); if (r.k === 'fiance') add(55, `Marry ${o.first}`, 'You are engaged. Seal it.', 'interact', { id: String(o.id), a: 'wed' }); }
     const sp = S.spouse(p);
-    if (sp && S.alive(sp) && sp.sex !== p.sex && p.kids.length < 3 && a >= 20 && a <= 40) add(35, 'Try for a baby', 'Children carry your dynasty on after you.', 'interact', { id: String(sp.id), a: 'baby' });
+    if (sp && S.alive(sp) && sp.sex !== p.sex && p.kids.length < 3 && a >= 20 && a <= 40 && !p.did[`r:${sp.id}:baby`]) add(35, 'Try for a baby', 'Children carry your dynasty on after you.', 'interact', { id: String(sp.id), a: 'baby' });
     const cold = S.known(p).filter(o => S.alive(o) && /Father|Mother|Husband|Wife|Son|Daughter|Brother|Sister/.test(S.relLabel(p, o)) && (p.rels[o.id]?.c ?? 50) < 35).sort((x, y) => (p.rels[x.id]?.c ?? 50) - (p.rels[y.id]?.c ?? 50))[0];
     if (cold) add(38, `Spend time with ${cold.first}`, `Your ${S.relLabel(p, cold).toLowerCase()} is drifting away (closeness ${Math.round(p.rels[cold.id]?.c ?? 0)}).`, 'interact', { id: String(cold.id), a: 'time' });
     if (typeof Phone !== 'undefined' && Phone.unread(p)) add(30, 'Answer your messages', `${Phone.unread(p)} unanswered. People notice silence.`, 'tab', { tab: 'phone' });
@@ -8759,7 +8781,8 @@ const AI = (() => {
   }
 
   /* ---------- autopilot: a year played toward a goal ---------- */
-  function autopilot(p, goal) {
+  function autopilot(p, goal) { S.asAuto(() => pilot(p, goal)); }
+  function pilot(p, goal) {
     if (!S.alive(p) || S.W.dead || p.prison) return;
     const a = S.age(p), e = S.era(), act = id => { try { S.doActivity(id); } catch { /* not available */ } };
     const tryRun = (x, ds) => { try { return run(x, ds); } catch { return ''; } };
@@ -8928,7 +8951,7 @@ Reply as JSON: "reply" is what you say; "mood" is how this exchange made you fee
   function menu(p) {
     const items = [];
     for (const a of S.activities(p)) if (!a.young && !a.done && !a.broke && !a.jailed) items.push([`activity:${a.id}`, `${a.n}${a.cost ? ` (costs ${S.money(a.cost)})` : ''}`]);
-    for (const o of S.known(p).filter(S.alive).slice(0, 10)) for (const x of S.actionsFor(p, o)) if (!['divorce', 'breakup', 'argue', 'money'].includes(x.id)) items.push([`interact:${o.id}:${x.id}`, `${x.l} with ${o.first} (${S.relLabel(p, o).toLowerCase()})`]);
+    for (const o of S.known(p).filter(S.alive).slice(0, 10)) for (const x of S.actionsFor(p, o)) if (!x.done && !['divorce', 'breakup', 'argue', 'money'].includes(x.id)) items.push([`interact:${o.id}:${x.id}`, `${x.l} with ${o.first} (${S.relLabel(p, o).toLowerCase()})`]);
     if (p.job) { items.push(['workHard', 'Work hard this year']); items.push(['promo', 'Ask for a promotion']); }
     else for (const L of S.jobListings(p).filter(x => !x.why.length).sort((x, y) => y.pay - x.pay).slice(0, 5)) items.push([`apply:${L.j.id}`, `Apply to be a ${L.j.t.toLowerCase()} (${S.money(L.pay)}/yr)`]);
     const o = S.eduOptions(p).find(x => !x.why.length); if (o && !p.school) items.push([`enroll:${o.lvl}`, `Enrol in ${o.n.toLowerCase()}`]);
@@ -8951,13 +8974,15 @@ Reply as JSON: "reply" is what you say; "mood" is how this exchange made you fee
       const [k, a, b] = id.split(':');
       let t = '';
       try {
-        if (k === 'activity') t = S.doActivity(`${a}:${b}`);
-        else if (k === 'interact') t = S.interact(+a, b);
-        else if (k === 'apply') t = S.apply(a).t;
-        else if (k === 'enroll') t = S.doEnroll(+a);
-        else if (k === 'buy') t = S.buy(a);
-        else if (k === 'polSeek') t = S.pol.seek(+a);
-        else t = run(k);
+        S.asAuto(() => {
+          if (k === 'activity') t = S.doActivity(`${a}:${b}`);
+          else if (k === 'interact') t = S.interact(+a, b);
+          else if (k === 'apply') t = S.apply(a).t;
+          else if (k === 'enroll') t = S.doEnroll(+a);
+          else if (k === 'buy') t = S.buy(a);
+          else if (k === 'polSeek') t = S.pol.seek(+a);
+          else t = run(k);
+        });
       } catch { t = ''; }
       S.settle();
       if (t) done.push(t);

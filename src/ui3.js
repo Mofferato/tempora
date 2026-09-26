@@ -126,7 +126,7 @@
       ${look}
       <dl class="kv">${kv.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
       ${res ? `<div class="result" role="status">${esc(res)}</div>` : ''}
-      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => `<button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>`).join('')}</div>` : ''}
+      ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => ui.interactBtn(o, a)).join('')}</div>` : ''}
       ${!self && liv && S.alive(p) ? `<button class="btn era block" style="margin-top:10px" data-act="become" data-id="${o.id}">Become ${esc(o.first)}</button>
         <p class="faint" style="font-size:12px;margin:8px 0 0">${esc(p.first)} keeps living in the world as an ordinary person.</p>` : ''}
       ${S.godAllowed() ? `<button class="btn sm" style="margin-top:10px" data-act="godEdit" data-id="${o.id}">Edit with god powers</button>` : ''}`, { label: S.fullName(o) });

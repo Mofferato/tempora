@@ -110,7 +110,7 @@
       <div class="subtabs" role="tablist" style="margin-top:12px">${tabs.map(([t, n]) => `<button data-act="profTab" data-id="${o.id}" data-v="${t}" aria-selected="${tab === t}">${n}</button>`).join('')}</div>
       <div class="profbody">${body}</div>
       ${res ? `<div class="result" role="status">${esc(res)}</div>` : ''}
-      ${acts.length ? `<div class="eyebrow" style="margin-top:14px">Do something together</div><div class="acts two" style="margin-top:6px">${acts.map(a => `<div class="actrow"><button class="btn" data-act="interact" data-id="${o.id}" data-a="${a.id}">${esc(a.l)}</button>${ui.pinBtn ? ui.pinBtn('interact', { id: o.id, a: a.id }, `${a.l} with ${o.first}`) : ''}</div>`).join('')}</div>` : ''}
+      ${acts.length ? `<div class="eyebrow" style="margin-top:14px">Do something together</div><div class="acts two" style="margin-top:6px">${acts.map(a => `<div class="actrow">${ui.interactBtn(o, a)}${ui.pinBtn ? ui.pinBtn('interact', { id: o.id, a: a.id }, `${a.l} with ${o.first}`) : ''}</div>`).join('')}</div>` : ''}
       ${ui.personExtra ? ui.personExtra(p, o) : ''}
       ${!self && liv && S.alive(p) ? `<button class="btn era block" style="margin-top:10px" data-act="become" data-id="${o.id}">Become ${esc(o.first)}</button>
         <p class="faint" style="font-size:12px;margin:8px 0 0">You would take over ${esc(o.first)}'s life with everything in it: their family, work, places and choices. ${esc(p.first)} keeps living in the world.</p>` : ''}
