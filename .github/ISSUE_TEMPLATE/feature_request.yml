@@ -1,0 +1,20 @@
+name: Idea or feature request
+description: Suggest a feature, an era, a land, events or a balance change
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: What would you like to see in Tempora?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would it make the game better?
+  - type: textarea
+    id: history
+    attributes:
+      label: Historical background (optional)
+      description: For new lands, cultures or events, any sources, dates or details that would help.

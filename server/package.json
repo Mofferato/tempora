@@ -1,0 +1,16 @@
+{
+  "name": "tempora-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Accounts, cloud saves, a shared community and Claude for Tempora.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest"
+  }
+}

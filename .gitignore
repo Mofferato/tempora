@@ -1,0 +1,12 @@
+# Platform server runtime data (accounts, saves, community) and dependencies
+server/data*/
+server/node_modules/
+node_modules/
+
+# Build output for hosted publishing (regenerate with `node build.js`)
+dist/
+
+# Local tooling
+.claude/
+.DS_Store
+Thumbs.db

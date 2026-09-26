@@ -1,0 +1,72 @@
+name: Test and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build
+        run: node build.js
+
+      - name: Check the committed index.html is up to date
+        run: |
+          if ! git diff --quiet -- index.html; then
+            echo "::error file=index.html::index.html is out of date. Run 'node build.js' and commit the result."
+            exit 1
+          fi
+
+      - name: Simulate lives, pressing every button
+        run: node tools/sim.js 12 all --years 150 --quiet
+
+      - name: Simulate lives, playing like a typical player
+        run: node tools/sim.js 12 all --years 150 --quiet --typical
+
+      - name: Check the platform server starts
+        run: |
+          node server/server.js --port=8099 --data="$RUNNER_TEMP/tempora-data" &
+          for i in $(seq 1 20); do curl -fs http://127.0.0.1:8099/api/ping > /dev/null && break; sleep 0.5; done
+          curl -fs http://127.0.0.1:8099/ | grep -q "<title>Tempora"
+
+      - name: Package the site
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p _site/assets
+          cp index.html _site/
+          cp assets/*.png _site/assets/
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

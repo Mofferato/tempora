@@ -1,0 +1,21 @@
+{
+  "name": "tempora",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A life simulator across twelve thousand years: be born anywhere from 10,000 BC to the far future and live one year at a time in a living world.",
+  "homepage": "https://mofferato.github.io/tempora/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mofferato/tempora.git"
+  },
+  "bugs": "https://github.com/Mofferato/tempora/issues",
+  "license": "MIT",
+  "scripts": {
+    "build": "node build.js",
+    "test": "node build.js && node tools/sim.js 12 all --years 150 --quiet && node tools/sim.js 12 all --years 150 --quiet --typical",
+    "start": "node build.js && node server/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

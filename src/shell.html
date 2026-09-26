@@ -1,0 +1,56 @@
+<!--DOC--><title>Tempora: a life simulator across twelve thousand years</title>
+<meta name="description" content="A free, open-source life simulator from 10,000 BC to the far future. Live one year at a time in a living world of dynasties, migrations, wars and politics, then carry on as your children.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tempora">
+<meta property="og:title" content="Tempora: a life simulator across twelve thousand years">
+<meta property="og:description" content="Be born anywhere from 10,000 BC to the far future. Live one year at a time, raise a family and keep playing through your descendants while the world changes around you.">
+<meta property="og:url" content="https://mofferato.github.io/tempora/">
+<meta property="og:image" content="https://mofferato.github.io/tempora/assets/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334469C' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 2.5h13M5.5 21.5h13'/%3E%3Cpath d='M7 2.5v2.2c0 3.1 5 4.6 5 7.3s-5 4.2-5 7.3v2.2M17 2.5v2.2c0 3.1-5 4.6-5 7.3s5 4.2 5 7.3v2.2'/%3E%3Cpath d='M9 19.6c.6-1.4 1.8-2.3 3-2.8 1.2.5 2.4 1.4 3 2.8z' fill='%2334469C' stroke='none'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#34469C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IM+Fell+English:ital@0;1&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+/*CSS*/
+</style>
+<!--BODY-->
+<div id="app">
+  <header class="top">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5.5 2.5h13M5.5 21.5h13"/><path d="M7 2.5v2.2c0 3.1 5 4.6 5 7.3s-5 4.2-5 7.3v2.2M17 2.5v2.2c0 3.1-5 4.6-5 7.3s5 4.2 5 7.3v2.2"/>
+        <path d="M9 19.6c.6-1.4 1.8-2.3 3-2.8 1.2.5 2.4 1.4 3 2.8z" fill="currentColor" stroke="none"/><path d="M9.6 6.2h4.8c-.5.9-1.4 1.6-2.4 2.1-1-.5-1.9-1.2-2.4-2.1z" fill="currentColor" stroke="none"/>
+      </svg>
+      <h1>Tempora</h1>
+    </div>
+    <div class="when" id="when"></div>
+    <button class="iconbtn" id="btnGod" data-act="god" aria-pressed="false" title="Sandbox (god mode)" aria-label="Sandbox (god mode)" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/></svg>
+    </button>
+    <button class="iconbtn" id="btnAI" data-act="ai" title="Guide and AI" aria-label="Guide: advice, autopilot and Claude">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+    </button>
+    <button class="iconbtn" id="btnSound" data-act="sound" title="Music and sound" aria-label="Music and sound settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+    </button>
+    <button class="iconbtn" id="btnTheme" title="Light or dark" aria-label="Switch light or dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+    </button>
+    <button class="iconbtn" id="btnMenu" data-act="menu" title="Menu" aria-label="Menu: save, load, export, new game">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </header>
+  <div class="ribbon" id="ribbon" aria-hidden="true"></div>
+  <main id="screen"></main>
+</div>
+<footer class="agebar" id="agebar" hidden><div class="in"><button class="iconbtn autob" id="autoBtn" data-act="autoBtn" aria-pressed="false" title="Auto-play" aria-label="Auto-play settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></button><button class="iconbtn autob" id="repeatBtn" data-act="repeatLast" title="Repeat last year's actions" aria-label="Repeat last year's actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 8 0 0 1 13.7-5.6L20 7.5"/><path d="M20 3.5v4h-4"/><path d="M20 13a8 8 0 0 1-13.7 5.6L4 16.5"/><path d="M4 20.5v-4h4"/></svg></button><button class="agebtn" id="ageBtn">Age +1</button></div></footer>
+<div id="modal"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+/*JS*/
+</script>
+<!--END-->

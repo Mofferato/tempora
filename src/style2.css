@@ -1,0 +1,123 @@
+/* =====================================================================
+   Styles for the second expansion: change indicators, the ID card and
+   profiles, personality, pins, the phone, chat, sport, dynasty crests.
+   Built on the tokens in style.css, so light and dark both work.
+   ===================================================================== */
+
+/* ---------- change chips ---------- */
+.dchips { display: inline-flex; flex-wrap: wrap; gap: 4px; vertical-align: middle; }
+.dchips.small { gap: 3px; }
+.dchip {
+  display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 999px; font: 600 11.5px/1.55 var(--f-body);
+  background: var(--surface-2); color: var(--ink-2); white-space: nowrap;
+}
+.dchips.small .dchip { font-size: 10.5px; padding: 0 6px; }
+.dchip.up { background: color-mix(in srgb, var(--good) 15%, var(--surface)); color: var(--good); }
+.dchip.down { background: color-mix(in srgb, var(--bad) 13%, var(--surface)); color: var(--bad); }
+.dchip.money { font-family: var(--f-mono); font-weight: 500; }
+.dchip.minor { opacity: .7; }
+.dchip.more { background: none; color: var(--ink-3); }
+.dodds { font: 600 10.5px/1.55 var(--f-mono); color: var(--ink-2); padding: 0 2px; }
+.dodds.alt { color: var(--ink-3); }
+.preview { margin-top: 5px; }
+.row .preview { display: flex; }
+#dtoast {
+  position: fixed; left: 50%; bottom: calc(136px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(8px);
+  z-index: 61; max-width: min(560px, calc(100vw - 32px)); padding: 8px 10px; border-radius: 12px; background: var(--surface);
+  border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+#dtoast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#dtoast .dlabel { font: 600 11px/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-right: 2px; }
+.stat.srow, .wealth { position: relative; }
+.stat.srow[data-d]::after, .wealth[data-d]::after {
+  content: attr(data-d); position: absolute; right: 38px; top: -7px; font: 700 10.5px/1 var(--f-mono); padding: 2px 5px; border-radius: 6px;
+  animation: dfade 5s ease forwards; pointer-events: none;
+}
+.wealth[data-d]::after { right: 0; top: -2px; }
+[data-dir="up"]::after { background: color-mix(in srgb, var(--good) 18%, var(--surface)); color: var(--good); }
+[data-dir="down"]::after { background: color-mix(in srgb, var(--bad) 16%, var(--surface)); color: var(--bad); }
+@keyframes dfade { 0% { opacity: 0; transform: translateY(4px); } 10%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.ydelta { margin-top: 6px; font-size: 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.logyr li .dchips { margin-left: 4px; }
+
+/* ---------- choices with previews ---------- */
+.btn.choice { flex-direction: column; align-items: flex-start; text-align: left; gap: 2px; padding: 10px 14px; }
+.btn.choice .preview { margin-top: 3px; }
+.btn.era .dchip { background: color-mix(in srgb, var(--on-era) 22%, transparent); color: var(--on-era); }
+.btn.era .dodds { color: var(--on-era); }
+.btn.hint { outline: 2px solid var(--warn); outline-offset: 2px; }
+
+/* ---------- character card: avatar button and ID card ---------- */
+.avbtn { border: 0; padding: 0; background: none; border-radius: 50%; cursor: pointer; flex: none; }
+.avbtn:hover .av, .avbtn:focus-visible .av { box-shadow: 0 0 0 3px var(--era-line); }
+.idcard { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin: 12px 0 0; font-size: 12.5px; }
+.idcard dt { color: var(--ink-3); font-weight: 600; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding-top: 1px; }
+.idcard dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+
+/* ---------- profiles ---------- */
+.profbody { margin-top: 4px; }
+.profkv { grid-template-columns: minmax(96px, auto) 1fr; }
+.profkv dd { font-family: var(--f-body); font-size: 14px; }
+.tiernote { font-size: 11.5px; color: var(--ink-3); margin: -5px 0 2px 102px; }
+.mbti { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+.mbti .type { font: 600 24px/1 var(--f-mono); padding: 10px 12px; border-radius: 10px; background: var(--era-soft); color: var(--era); letter-spacing: .06em; }
+.axes { display: grid; gap: 8px; margin-top: 12px; }
+.axis { display: grid; grid-template-columns: 96px 1fr 96px; gap: 8px; align-items: center; font-size: 12.5px; color: var(--ink-3); }
+.axis span:last-child { text-align: right; }
+.axis span.on { color: var(--ink); font-weight: 600; }
+.axbar { position: relative; height: 6px; border-radius: 3px; background: var(--surface-2); }
+.axbar i { position: absolute; top: -4px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--era); box-shadow: 0 0 0 3px var(--surface); }
+.traits { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 6px; font-size: 13.5px; }
+.plog { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 7px; font-size: 13.5px; max-height: 50vh; overflow: auto; }
+.plog li { padding-left: 10px; border-left: 3px solid var(--line); }
+.plog li.good { border-color: var(--good); } .plog li.bad, .plog li.death { border-color: var(--bad); } .plog li.love { border-color: #C2477A; } .plog li.world { font-style: italic; }
+.plog .mono { font-size: 11.5px; margin-right: 4px; }
+.plink { border: 0; background: none; padding: 0; font: inherit; color: var(--era); text-decoration: underline; text-decoration-color: var(--era-line); text-underline-offset: 2px; cursor: pointer; }
+.plink:hover { text-decoration-color: var(--era); }
+.acts.two { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.actrow { display: flex; gap: 6px; align-items: stretch; }
+.actrow > .btn { flex: 1; }
+.logyr li.gossip { color: var(--ink-2); }
+.logyr li.gossip::before { background: #8B6CF0; }
+
+/* ---------- auto pins ---------- */
+.pin {
+  border: 1px dashed var(--line); background: none; color: var(--ink-3); font: 600 10.5px/1 var(--f-body); letter-spacing: .05em; text-transform: uppercase;
+  padding: 4px 7px; border-radius: 7px; cursor: pointer; align-self: center;
+}
+.pin:hover { color: var(--ink); border-color: var(--era-line); }
+.pin.on { border-style: solid; border-color: var(--era); color: var(--era); background: var(--era-soft); }
+.row .pin { margin-left: 4px; }
+
+/* ---------- notices, sport, phone, chat ---------- */
+.panel.notice { border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); background: color-mix(in srgb, var(--warn) 9%, var(--surface)); margin-bottom: 12px; }
+.panel.sport { margin-bottom: 14px; }
+.post.msg.done { opacity: .7; }
+.contact { align-items: flex-start; }
+.contact .linkbtn.t { font-size: 14.5px; color: var(--ink); }
+.chatlog { display: grid; gap: 8px; margin: 12px 0; max-height: 46vh; overflow: auto; padding: 2px; }
+.chatlog p { margin: 0; padding: 8px 12px; border-radius: 12px; font-size: 14.5px; max-width: 85%; white-space: pre-wrap; }
+.chatlog p.user { justify-self: end; background: var(--era); color: var(--on-era); border-bottom-right-radius: 4px; }
+.chatlog p.assistant { justify-self: start; background: var(--surface-2); border-bottom-left-radius: 4px; }
+.chatlog p.faint { max-width: none; background: none; padding: 0; }
+.aibody { margin-top: 10px; }
+.story .prose { font-family: var(--f-display); font-size: 17px; line-height: 1.6; color: var(--ink); }
+
+/* ---------- dynasty ---------- */
+.crestrow { display: flex; gap: 14px; align-items: center; }
+.crestrow svg { flex: none; filter: drop-shadow(0 1px 2px rgb(0 0 0 / .25)); }
+.dyn h3 { font-style: italic; }
+
+/* ---------- small screens ---------- */
+@media (max-width: 480px) {
+  .top .iconbtn { width: 32px; height: 32px; }
+  .top .iconbtn svg { width: 16px; height: 16px; }
+  .top { gap: 6px; }
+  #btnSound { display: none; }
+  .when .yr { font-size: 15px; }
+  .agebar .autob { width: 46px; }
+  .axis { grid-template-columns: 78px 1fr 78px; font-size: 11.5px; }
+  .tiernote { margin-left: 0; }
+}
+@media (max-width: 360px) { .brand h1 { display: none; } }

@@ -1,0 +1,43 @@
+name: Bug report
+description: Something in the game is broken or behaves wrongly
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: when
+    attributes:
+      label: Era, land and year
+      placeholder: e.g. Ancient era, Egypt, 440 BC, age 11
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start a life in ...
+        2. Age up to ...
+        3. Click ...
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where were you playing?
+      options:
+        - The website (GitHub Pages)
+        - index.html opened from my computer
+        - A Tempora platform server
+        - Somewhere else
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: e.g. Chrome 140 on Windows, Safari on iPhone
+  - type: textarea
+    id: save
+    attributes:
+      label: Save file (optional)
+      description: Menu → Export save, then attach the file or paste the text. It makes bugs much easier to reproduce.
