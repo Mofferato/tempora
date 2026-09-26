@@ -102,6 +102,7 @@ Object.assign(Sim, (() => {
       r.c = U.clamp(r.c + U.ri(-4, 1) + S.hadd('relDrift', p, o, r));
       if ((r.k === 'lover' || r.k === 'fiance') && r.c < 20 && U.chance(0.4)) { r.k = 'ex'; S.log(p, `${o.first} broke up with you.`, 'love'); p.hp = U.clamp(p.hp - 8); }
       if (r.k === 'friend' && r.c < 8 && U.chance(0.3)) { delete p.rels[id]; S.log(p, `You and ${o.first} drifted apart.`, 'life'); }
+      else if (r.k === 'acq' && r.c < 12 && U.chance(0.4)) delete p.rels[id];   // someone you met once, and never saw again
     }
     const sp = S.spouse(p);
     if (sp && S.alive(sp)) {
@@ -346,6 +347,7 @@ Object.assign(Sim, (() => {
     if (!kid) out.push({ id: 'argue', l: 'Pick an argument' });
     const parentLike = p.fa === o.id || p.mo === o.id || S.grandparents(p).includes(o);
     if (parentLike || (r && r.k === 'friend')) out.push({ id: 'money', l: 'Ask for money' });
+    if (a >= 4 && oa >= 3 && canBefriend(p, o)) out.push({ id: 'befriend', l: 'Offer friendship' });
     if (r && r.k === 'friend' && a >= 14 && oa >= 14 && p.sp == null) out.push({ id: 'flirt', l: 'Ask them out' });
     if (r && r.k === 'lover') { out.push({ id: 'propose', l: 'Propose' }); out.push({ id: 'breakup', l: 'Break up' }); }
     if (r && r.k === 'fiance') { out.push({ id: 'wed', l: `Get married (${S.money(S.toVal(e.cost * 0.2))})` }); out.push({ id: 'breakup', l: 'Call off the engagement' }); }
@@ -357,8 +359,32 @@ Object.assign(Sim, (() => {
     // once-a-year actions already used up show as done ('auto' when auto-play did them)
     return out.map(x => (ONCE[x.id] && p.did[`r:${o.id}:${x.id}`] ? { ...x, done: p.did[`r:${o.id}:${x.id}`] } : x));
   }
+  // Anyone you know can become a friend, except those who already are, your family and your partner
+  const FAMILY = /Father|Mother|Brother|Sister|Son|Daughter|Grand|Uncle|Aunt|Cousin|Nephew|Niece|Husband|Wife|in-law/;
+  function canBefriend(p, o) {
+    const r = p.rels[o.id];
+    return !(r && ['friend', 'lover', 'fiance'].includes(r.k)) && p.sp !== o.id && o.id !== p.id && !FAMILY.test(S.relLabel(p, o));
+  }
+  // How likely an offer of friendship is to be taken up: sure once you are close, and never hopeless,
+  // since every offer that is turned down still brings you a little closer
+  function befriendOdds(p, o) {
+    const r = p.rels[o.id], c = r ? r.c : 30;
+    if (c >= 40) return 1;
+    const has = t => !!S.pers?.has(p, t);
+    return U.clamp(0.3 + (c - 30) / 50 + (S.pers ? S.pers.compat(p, o) * 0.25 : 0) + (has('charming') || has('gregarious') ? 0.1 : 0) - (has('shy') ? 0.08 : 0), 0.15, 0.9);
+  }
+  // Becoming friends, both ways (the caller writes the log line)
+  function befriend(p, o) {
+    const r = S.rel(p, o);
+    if (U.chance(befriendOdds(p, o))) {
+      r.k = 'friend'; r.c = U.clamp(r.c + U.ri(3, 6)); const back = S.rel(o, p); if (back.k !== 'fam') back.k = 'friend';
+      return { ok: true, t: `You and ${o.first} became friends.` };
+    }
+    r.c = U.clamp(r.c + U.ri(2, 4));
+    return { ok: false, t: `${o.first} is not sure about you yet.` };
+  }
   // Actions you can take with each person once a year, and how to say you already did
-  const ONCE = { time: n => `spent time with ${n}`, talk: n => `had a long talk with ${n}`, gift: n => `gave ${n} a gift`, money: n => `asked ${n} for money`, flirt: n => `asked ${n} out`, baby: () => 'tried for a baby' };
+  const ONCE = { time: n => `spent time with ${n}`, talk: n => `had a long talk with ${n}`, gift: n => `gave ${n} a gift`, money: n => `asked ${n} for money`, flirt: n => `asked ${n} out`, befriend: n => `offered ${n} your friendship`, baby: () => 'tried for a baby' };
   // Auto-play (pins, repeats, the autopilot) runs inside asAuto, so the player can be told who used up an action
   let autoDepth = 0;
   function asAuto(f) { autoDepth++; try { return f(); } finally { autoDepth--; } }
@@ -380,6 +406,7 @@ Object.assign(Sim, (() => {
         if (payerFor(p, c).money < c) { p.did[key] = 0; return 'You cannot afford a gift.'; }
         payerFor(p, c).money -= c; r.c = U.clamp(r.c + U.ri(6, 15)); t = `${o.first} loved your gift.`; break;
       }
+      case 'befriend': { if (!canBefriend(p, o)) { p.did[key] = 0; t = `You and ${o.first} are already close.`; break; } t = befriend(p, o).t; break; }
       case 'argue': r.c = U.clamp(r.c - U.ri(8, 20) + S.hadd('relGain', p, o, 'argue')); p.hp = U.clamp(p.hp - 3); t = `You and ${o.first} had a shouting match.`; break;
       case 'money': {
         if (S.age(o) < 16 || o.money <= 0 || !U.chance(r.c / 150)) { r.c = U.clamp(r.c - 4); t = `${o.first} refused.`; break; }
@@ -638,7 +665,7 @@ Object.assign(Sim, (() => {
 
   return {
     ageUp, eduOptions, doEnroll, dropOut, jobListings, apply, workHard, askPromotion, quitJob, retire, rankName,
-    activities, doActivity, actionsFor, interact, asAuto, market, buy, sell, heirs, continueAs, become, checkAch, settle, newHouse,
+    activities, doActivity, actionsFor, interact, asAuto, canBefriend, befriendOdds, befriend, market, buy, sell, heirs, continueAs, become, checkAch, settle, newHouse,
     jump, forceHistory, forceEvent, eventPool, serialize, load, workAge, lifeScore, EDU_YEARS, EDU_AGE, rankPay, promoReady, runEvent, eventOK, payerFor, rankName, tone, afford, autoSchool, enroll,
   };
 })());

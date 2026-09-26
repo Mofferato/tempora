@@ -114,7 +114,7 @@
     switch (act) {
       case 'drink': fx(p, { hp: 3, h: -1 }); if ((p.wp ?? 50) < 35 && U.chance(0.3)) { fx(p, { h: -3, rep: -2, wp: -1 }); return 'One drink became six. You do not remember getting home.'; } return 'A good drink among good company.';
       case 'cider': fx(p, { hp: 2 }); return 'Sticky, sweet and delicious.';
-      case 'round': { const c = cost(0.004 * (people().length + 1)); if (p.money < c) return `A round would cost ${S.money(c)}.`; p.money -= c; people().forEach(o => P.knowAs(p, o, 'friend', 5)); fx(p, { rep: 2, hp: 3 }); S.pers?.nudge(p, 'generous', 0.5); return 'Cheers went up all round. You are everyone’s friend tonight.'; }
+      case 'round': { const c = cost(0.004 * (people().length + 1)); if (p.money < c) return `A round would cost ${S.money(c)}.`; p.money -= c; people().forEach(o => P.knowAs(p, o, 'acq', 5)); fx(p, { rep: 2, hp: 3 }); S.pers?.nudge(p, 'generous', 0.5); return 'Cheers went up all round. You are everyone’s friend tonight.'; }
       case 'dicegame': { const st = cost(0.01); if (p.money < st) return 'You have nothing to stake.'; if (U.chance(0.45 + (has('deceitful') ? 0.05 : 0))) { p.money += st; fx(p, { hp: 3 }); return `You won ${S.money(st)}.`; } p.money -= st; fx(p, { hp: -2 }); S.pers?.nudge(p, 'reckless', 0.3); return `You lost ${S.money(st)}.`; }
       case 'gossipt': { const n = U.pick(S.W.news.slice(-20)); fx(p, { sm: 1 }); const k = U.pick(S.known(p).filter(S.alive)); return n ? `Word is: ${n.t}${k && U.chance(0.4) ? ` And people say ${k.first} ${U.pick(['has money troubles', 'is sweet on someone', 'is doing very well', 'had a row with the neighbours'])}.` : ''}` : 'Nothing but idle chatter.'; }
       case 'sing': if (U.chance((p.im ?? 50) / 110 + (has('gregarious') ? 0.1 : 0))) { fx(p, { hp: 5, fm: 1, rep: 1 }); return 'The whole room joined the chorus.'; } fx(p, { hp: -1 }); return 'You forgot the second verse.';
@@ -124,7 +124,7 @@
       case 'counsel': fx(p, { mh: 5, wp: 1 }); return 'Wise words, kindly meant. You left lighter.';
       case 'alms': { const c = cost(0.02); if (p.money < c) return 'You have nothing to spare.'; p.money -= c; fx(p, { rep: 3, mh: 2 }); S.pers?.nudge(p, 'generous', 1); return 'Your gift fed a family for a week.'; }
       case 'volunteer': fx(p, { rep: 3, mh: 3, h: -1 }); S.pers?.nudge(p, 'kind', 1); if (U.chance(0.3)) { const f = S.newFriend(p); return `You ladled soup for hours, and met ${f.first}.`; } return 'You ladled soup for hours. It mattered.';
-      case 'festival': fx(p, { hp: 6, rep: 1 }); people().forEach(o => P.knowAs(p, o, 'friend', 3)); return 'Music, food and the whole community together.';
+      case 'festival': fx(p, { hp: 6, rep: 1 }); people().forEach(o => P.knowAs(p, o, 'acq', 3)); return 'Music, food and the whole community together.';
       case 'sermon': fx(p, { mh: 2, sm: 1, hp: -1 }); return U.pick(['The sermon was long, but it stayed with you.', 'You dozed off, and woke to a stern look.', 'Words about mercy. You thought about them all week.']);
       case 'checkup': { const c = cost(0.02); if (p.money < c) return `A check-up costs ${S.money(c)}.`; p.money -= c; const g = Math.round(U.ri(2, 5) * (0.5 + S.medicine())); fx(p, { h: g }); return pre() && U.chance(0.2) ? 'They bled you for good measure. You feel faint.' : 'A clean bill of health, and sensible advice.'; }
       case 'treat': { const c = cost(0.05); if (p.money < c) return `Treatment costs ${S.money(c)}.`; p.money -= c; const cured = curePlayer(p); fx(p, { h: 2 }); return cured.length ? `You were cured of ${cured.join(' and ').toLowerCase()}.` : 'They tried everything they knew. It was not enough.'; }
@@ -139,7 +139,7 @@
       case 'trade': { const st = cost(0.05); if (p.money < st) return `Trading needs a stake of ${S.money(st)}.`; const w = U.chance(0.4 + p.sm / 300 + (has('greedy') ? 0.05 : 0)); p.money += w ? st * U.rand(0.2, 0.8) : -st * U.rand(0.2, 0.7); fx(p, { sm: 1 }); return w ? 'You bought low and sold high.' : 'You bought high and sold low. Lesson learned.'; }
       case 'hold': if (U.chance(0.25)) { fx(p, { h: -U.ri(6, 18) }); S.log(p, 'You were wounded holding the line.', 'bad'); return 'Shrapnel and screaming. You were hit, but held.'; } fx(p, { rep: 3, wp: 2, mh: -2 }); S.pers?.nudge(p, 'brave', 0.5); return 'The line held. So did you.';
       case 'charge': { S.pers?.nudge(p, 'brave', 1); if (U.chance(0.45 + S.hadd('odds', p, { tag: 'fight' }))) { fx(p, { rep: 8, fm: 6, hp: 4 }); S.log(p, 'You led a charge that broke the enemy line. Your name was mentioned in dispatches.', 'good'); p.flags.medal = (p.flags.medal || 0) + 1; return 'The charge broke through. You are a hero.'; } fx(p, { h: -U.ri(15, 35) }); if (p.h <= 0) S.kill(p, 'wounds from a charge'); return 'The charge was cut to pieces. You crawled back.'; }
-      case 'wounded': fx(p, { rep: 3, mh: -2 }); S.pers?.nudge(p, 'kind', 0.8); people().forEach(o => P.knowAs(p, o, 'friend', 4)); return 'You bound wounds until your hands shook.';
+      case 'wounded': fx(p, { rep: 3, mh: -2 }); S.pers?.nudge(p, 'kind', 0.8); people().forEach(o => P.knowAs(p, o, 'coworker', 4)); return 'You bound wounds until your hands shook.';
       case 'forage': if (U.chance(0.7)) { fx(p, { h: 2, hp: 3 }); return 'You found potatoes, and a chicken nobody claimed.'; } fx(p, { h: -5 }); return 'A sniper nearly had you.';
       case 'letter': { const who = [S.spouse(p), ...S.parents(p)].filter(o => o && S.alive(o)); who.forEach(o => { S.rel(p, o).c = U.clamp(S.rel(p, o).c + 6); }); fx(p, { mh: 3 }); return who.length ? `You wrote to ${who.map(o => o.first).join(' and ')}. They will keep the letter forever.` : 'You wrote a letter to nobody in particular, and felt better.'; }
       case 'desert': if (U.chance(0.4)) { delete p.flags.war; p.flags.fugitive = yr(); fx(p, { rep: -10, mh: -4 }); S.log(p, 'You deserted from the front and slipped away.', 'bad'); return 'You slipped away in the night. You are a deserter now.'; } return S.hooks.arrest ? S.hooks.arrest(p, { crime: 'desertion', yrs: 5, sev: 3 }) : 'You were caught.';
@@ -156,7 +156,7 @@
     if (!ROLES[id]) return base.personActs(p, id, x);
     const a = S.age(p), oa = S.age(x.o);
     const L = [['talk', 'Talk'], ['joke', 'Tell a joke'], ['compliment', 'Compliment them']];
-    if (!p.rels[x.o.id] || p.rels[x.o.id].k !== 'friend') L.push(['befriend', 'Offer friendship']);
+    if (S.canBefriend(p, x.o)) L.push(['befriend', 'Offer friendship']);
     if (id === 'tavern' && a >= 16) L.push(['buydrink', 'Buy them a drink']);
     if (id === 'church') L.push(['praywith', 'Pray together']);
     if (id === 'hospital' && x.k === 'patient') L.push(['comfort', 'Comfort them']);
@@ -169,13 +169,13 @@
   P.doPerson = (p, id, oid, act) => {
     if (!ROLES[id]) return base.doPerson(p, id, oid, act);
     const x = P.roster(p, id).find(r => r.o.id === oid); if (!x) return '';
-    const o = x.o, e = S.era(), r = P.knowAs(p, o, x.k === 'officer' || x.k === 'comrade' ? 'coworker' : 'friend'), f = q => S.applyFx(p, q);
+    const o = x.o, e = S.era(), r = P.knowAs(p, o, x.k === 'officer' || x.k === 'comrade' ? 'coworker' : 'acq'), f = q => S.applyFx(p, q);
     const gain = (lo, hi) => { r.c = U.clamp(r.c + U.ri(lo, hi) + S.hadd('relGain', p, o, 'talk')); };
     switch (act) {
       case 'talk': gain(3, 8); f({ hp: 1 }); return `You and ${o.first} talked. ${U.pick(['They told you about their family.', 'You found you both like the same things.', 'Mostly small talk, but pleasant.'])}`;
       case 'joke': if (U.chance(0.35 + (p.im ?? 50) / 200)) { gain(8, 12); return `${o.first} laughed until they cried.`; } r.c = U.clamp(r.c - 3); return `${o.first} did not get it.`;
       case 'compliment': gain(4, 6); o.hp = U.clamp(o.hp + 3); return `${o.first} blushed.`;
-      case 'befriend': if (r.c >= 40 || U.chance(0.3)) { r.k = 'friend'; o.rels[p.id].k = 'friend'; gain(3, 6); S.log(p, `You became friends with ${o.first} ${o.last}.`, 'life'); return `${o.first} is your friend now.`; } gain(2, 4); return `${o.first} is not sure about you yet.`;
+      case 'befriend': { const b = S.befriend(p, o); if (b.ok) S.log(p, `You became friends with ${o.first} ${o.last}.`, 'life'); return b.t; }
       case 'buydrink': { const c = S.toVal(e.cost * 0.002); p.money -= c; gain(6, 12); return `${o.first} raised the glass to you.`; }
       case 'praywith': gain(4, 8); f({ mh: 2 }); return `You prayed side by side with ${o.first}.`;
       case 'comfort': gain(6, 10); o.hp = U.clamp(o.hp + 6); f({ mh: 1, rep: 1 }); return `You held ${o.first}'s hand. They were grateful.`;

@@ -123,17 +123,18 @@ const Places = (() => {
   }
 
   /* ---------- people actions ---------- */
+  // Meeting someone makes them an acquaintance (or a classmate, coworker...). Friendship is offered, not assumed.
   function knowAs(p, o, k, dc = 0) {
     const r = p.rels[o.id];
-    if (!r) p.rels[o.id] = { k: k || 'friend', c: U.clamp(35 + dc) };
+    if (!r) p.rels[o.id] = { k: k || 'acq', c: U.clamp(35 + dc) };
     else r.c = U.clamp(r.c + dc);
-    o.rels[p.id] ||= { k: k || 'friend', c: 35 };
+    o.rels[p.id] ||= { k: k || 'acq', c: 35 };
     return p.rels[o.id];
   }
   function personActs(p, id, x) {
     const a = S.age(p), oa = S.age(x.o), fam = id === 'home';
     const L = [['talk', 'Talk'], ['joke', 'Tell a joke'], ['compliment', 'Compliment them']];
-    if (!fam && (!p.rels[x.o.id] || p.rels[x.o.id].k !== 'friend')) L.push(['befriend', 'Offer friendship']);
+    if (!fam && S.canBefriend(p, x.o)) L.push(['befriend', 'Offer friendship']);
     if (x.k === 'classmate') L.push(['study', 'Study together']);
     if (x.k === 'teacher' || x.k === 'head') L.push(['askhelp', 'Ask for extra help']);
     if (x.k === 'coworker') L.push(['gossip', 'Gossip together']);
@@ -146,13 +147,13 @@ const Places = (() => {
   }
   function doPerson(p, id, oid, act) {
     const e = S.era(), rs = roster(p, id), x = rs.find(r => r.o.id === oid); if (!x) return '';
-    const o = x.o, k = { classmate: 'classmate', teacher: 'teacher', head: 'teacher', coworker: 'coworker', boss: 'boss', inmate: 'inmate', guard: 'guard', stranger: 'friend' }[x.k] || 'fam';
+    const o = x.o, k = { classmate: 'classmate', teacher: 'teacher', head: 'teacher', coworker: 'coworker', boss: 'boss', inmate: 'inmate', guard: 'guard', stranger: 'acq' }[x.k] || 'fam';
     const r = knowAs(p, o, k), fx = f => S.applyFx(p, f), sc = p.school;
     switch (act) {
       case 'talk': r.c = U.clamp(r.c + U.ri(3, 8)); fx({ hp: 1 }); return `You and ${o.first} talked. ${U.pick(['They told you about their family.', 'You found you both like the same things.', 'Mostly small talk, but pleasant.'])}`;
       case 'joke': if (U.chance(0.35 + (p.im ?? 50) / 200)) { r.c = U.clamp(r.c + 10); return `${o.first} laughed until they cried.`; } r.c = U.clamp(r.c - 3); return `${o.first} did not get it.`;
       case 'compliment': r.c = U.clamp(r.c + 5); o.hp = U.clamp(o.hp + 3); return `${o.first} blushed.`;
-      case 'befriend': if (r.c >= 40 || U.chance(0.3)) { if (r.k !== 'fam') r.k = 'friend'; o.rels[p.id].k = 'friend'; r.c = U.clamp(r.c + 5); S.log(p, `You became friends with ${o.first} ${o.last}.`, 'life'); return `${o.first} is your friend now.`; } r.c = U.clamp(r.c + 3); return `${o.first} is not sure about you yet.`;
+      case 'befriend': { const b = S.befriend(p, o); if (b.ok) S.log(p, `You became friends with ${o.first} ${o.last}.`, 'life'); return b.t; }
       case 'study': sc && (sc.gr = U.clamp((sc.gr ?? 60) + 3)); fx({ sm: 1 }); r.c = U.clamp(r.c + 5); return `You and ${o.first} quizzed each other.`;
       case 'askhelp': sc && (sc.gr = U.clamp((sc.gr ?? 60) + 5)); fx({ sm: 2 }); r.c = U.clamp(r.c + 4); return `${o.first} explained it until it clicked.`;
       case 'gossip': r.c = U.clamp(r.c + 6); if (U.chance(0.15)) { fx({ rep: -2 }); return 'Your gossip got back to the person you gossiped about.'; } return `You and ${o.first} traded the juiciest stories.`;
