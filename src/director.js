@@ -276,8 +276,9 @@ const Director = (() => {
   }
   function propose(p) {
     const st = state(); if (st.quests.length >= 3) return;
-    const opts = offerQuests(p); if (!opts.length) return;
-    const q = pick(opts);
+    const opts = offerQuests(p); const ai = st.goalQ; delete st.goalQ;
+    if (!opts.length && !ai) return;
+    const q = ai || pick(opts);
     S.prompt({ title: 'A goal worth chasing', text: `${q.title}. ${q.why} You have until ${U.fmtYearAD(q.by)}.`, choices: [
       { l: 'Take it on', go: () => { st.quests.push(q); S.log(p, `New goal: ${q.title}.`, 'life'); return 'Goal set.'; } },
       { l: 'Not now', go: () => { st.done.push(q.id); return 'Perhaps another time.'; } }] });
@@ -332,6 +333,23 @@ const Director = (() => {
     if (ch.length < 2) return null;
     return { id: `ai-${yr()}-${Math.random().toString(36).slice(2, 6)}`, p: 1, min: 0, title: str(raw.title, 60) || 'A turn of events', t: str(raw.text, 700), ch, dir: 1, ai: 1, thread: str(raw.thread, 40), hook: str(raw.hook, 160) };
   }
+  // a goal Claude proposes: only the objective types the game knows, with bounded targets
+  const RANGE = { money: [0.5, 80], stat: [30, 98], friends: [1, 12], kids: [1, 8], perf: [40, 98], travel: [1, 10], piety: [30, 98], followers: [100, 1000000], office: [1, 5], edu: [1, 4] };
+  const REW = { happiness: { hp: 6, mh: 3 }, health: { h: 6, mh: 2 }, smarts: { sm: 5, im: 2 }, reputation: { rep: 5, fm: 2 }, willpower: { wp: 5 }, mind: { mh: 6, hp: 2 } };
+  function validGoal(g, p) {
+    if (!g || typeof g !== 'object' || !OBJ[g.kind] || typeof g.title !== 'string') return null;
+    const str = (x, n) => String(x ?? '').replace(/[<>]/g, '').slice(0, n);
+    const yrs = Math.max(2, Math.min(15, Math.round(+g.years) || 6)), e = S.era();
+    const obj = { type: g.kind };
+    if (g.kind in RANGE) {
+      let v = +g.target; if (!isFinite(v)) return null;
+      const [lo, hi] = RANGE[g.kind]; v = Math.max(lo, Math.min(hi, v));
+      if (g.kind === 'money') v = S.toVal(e.cost * v) + Math.max(0, p.money);
+      if (g.kind === 'stat') { if (!FX_KEYS.includes(g.stat)) return null; obj.k = g.stat; obj.n = (DATA.stats.find(x => x.k === g.stat)?.n || g.stat).toLowerCase(); }
+      obj.v = Math.round(v);
+    }
+    return { id: `ai-${g.kind}-${yr()}`, title: str(g.title, 80), why: str(g.why, 140), obj, by: U.add(yr(), yrs), reward: REW[g.reward] || REW.happiness, from: yr(), ai: 1 };
+  }
   function improvise(p) {
     const cx = ctx(p), pool = U.shuffle(T.filter(t => { try { return t.when(cx); } catch { return false; } }));
     const seen = state().seen;
@@ -372,12 +390,13 @@ const Director = (() => {
   /* ---------- Claude as the Director ---------- */
   const EVENT_SCHEMA = { type: 'object', additionalProperties: false, required: ['title', 'text', 'choices'], properties: {
     title: { type: 'string' }, text: { type: 'string' }, thread: { type: 'string' }, hook: { type: 'string' },
+    goal: { type: 'object', additionalProperties: false, properties: { title: { type: 'string' }, why: { type: 'string' }, kind: { type: 'string', enum: ['money', 'stat', 'friends', 'married', 'kids', 'job', 'perf', 'travel', 'piety', 'nation', 'edu', 'office', 'followers'] }, stat: { type: 'string', enum: ['h', 'hp', 'sm', 'lk', 'rep', 'mh', 'im', 'wp', 'fm'] }, target: { type: 'number' }, years: { type: 'integer' }, reward: { type: 'string', enum: ['happiness', 'health', 'smarts', 'reputation', 'willpower', 'mind'] } } },
     choices: { type: 'array', minItems: 2, maxItems: 4, items: { type: 'object', additionalProperties: false, required: ['label', 'result', 'fx'], properties: {
       label: { type: 'string' }, result: { type: 'string' },
       fx: { type: 'object', additionalProperties: false, properties: { h: { type: 'integer' }, hp: { type: 'integer' }, sm: { type: 'integer' }, lk: { type: 'integer' }, rep: { type: 'integer' }, mh: { type: 'integer' }, im: { type: 'integer' }, wp: { type: 'integer' }, fm: { type: 'integer' }, money: { type: 'number' }, family: { type: 'integer' } } },
       risk: { type: 'object', additionalProperties: false, properties: { chance: { type: 'number' }, result: { type: 'string' }, fx: { type: 'object', additionalProperties: false, properties: { h: { type: 'integer' }, hp: { type: 'integer' }, sm: { type: 'integer' }, rep: { type: 'integer' }, mh: { type: 'integer' }, money: { type: 'number' }, family: { type: 'integer' } } } } } } } } } };
   function system(p, cx) {
-    return `You are the Director of Tempora, a life simulator that runs year by year from 10,000 BC to the far future. Write ONE short, vivid event for the player's coming year, in the voice and technology of ${U.fmtYearAD(yr())} (${cx.e.name} era): no anachronisms. Ground it in this person's actual situation, their country (${cx.name}: ${cx.custom.slice(0, 2).join('; ')}), their faith (${cx.faith.n}), their people and relationships, and what is going on in the world. The event is a dilemma with 2 to 4 choices. Each choice has a short "label", a one-sentence "result", and "fx": small integer changes to stats (h health, hp happiness, sm smarts, lk looks, rep reputation, mh mental health, im imagination, wp willpower, fm fame) within -12..12, "money" as a fraction of one year's living costs within -1..1, and "family" closeness change within -10..10. A choice may carry a "risk" ({chance 0..1 that it goes badly, result, fx}). Keep the text under 80 words. Use "thread" for a short slug if this continues a storyline, and "hook" for one sentence about what could come next. Never mention being an AI or a game. Reply with JSON only.`;
+    return `You are the Director of Tempora, a life simulator that runs year by year from 10,000 BC to the far future. Write ONE short, vivid event for the player's coming year, in the voice and technology of ${U.fmtYearAD(yr())} (${cx.e.name} era): no anachronisms. Ground it in this person's actual situation, their country (${cx.name}: ${cx.custom.slice(0, 2).join('; ')}), their faith (${cx.faith.n}), their people and relationships, and what is going on in the world. The event is a dilemma with 2 to 4 choices. Each choice has a short "label", a one-sentence "result", and "fx": small integer changes to stats (h health, hp happiness, sm smarts, lk looks, rep reputation, mh mental health, im imagination, wp willpower, fm fame) within -12..12, "money" as a fraction of one year's living costs within -1..1, and "family" closeness change within -10..10. A choice may carry a "risk" ({chance 0..1 that it goes badly, result, fx}). Keep the text under 80 words. Use "thread" for a short slug if this continues a storyline, and "hook" for one sentence about what could come next. You may also propose one "goal" worth chasing, in the player's own terms (kind, a stat if the kind is stat, a realistic target and years to reach it, and a reward). Never mention being an AI or a game. Reply with JSON only.`;
   }
   async function requestAI(p) {
     const st = state(); if (st.busy || st.q.length >= 2) return;
@@ -391,6 +410,7 @@ const Director = (() => {
       const raw = r.data && r.data.choices ? r.data : (() => { try { return JSON.parse(r.text); } catch { return null; } })();
       const ev = validEvent(raw);
       if (ev) { st.q.push({ y: U.add(yr(), 1), ev }); if (ev.thread && ev.hook) st.thr[ev.thread] = ev.hook; st.ai++; }
+      const g = raw && validGoal(raw.goal, p); if (g && st.quests.length < 3 && !st.quests.some(q => q.id === g.id)) st.goalQ = g;
     } catch (e) { /* offline or refused: the improviser covers it */ }
     st.busy = false;
   }
@@ -431,5 +451,5 @@ const Director = (() => {
     return { line, gain, mood };
   }
 
-  return { ctx, improvise, eventsFor, requestAI, validEvent, propose, offerQuests, checkQuests, questView, reply, TOPICS, OBJ, ARCS, T, state, milestone, EVENT_SCHEMA };
+  return { validGoal, ctx, improvise, eventsFor, requestAI, validEvent, propose, offerQuests, checkQuests, questView, reply, TOPICS, OBJ, ARCS, T, state, milestone, EVENT_SCHEMA };
 })();

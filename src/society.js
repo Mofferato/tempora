@@ -50,7 +50,7 @@ const Society = (() => {
   }
   function exile(p) {
     const opts = S.world.countriesAt().filter(c => c.id !== p.cc && c.region !== 'space' && c.region === S.world.C(p.cc)?.region);
-    const dest = (opts.length ? U.pick(opts) : U.pick(S.world.countriesAt().filter(c => c.id !== p.cc && c.region !== 'space'))).id;
+    const dest = Geo.pickNear(p.cc, (opts.length ? opts : S.world.countriesAt().filter(c => c.id !== p.cc && c.region !== 'space')).map(c => c.id));
     if (Sim.towns) Sim.towns.emigrateCheap(p, dest, 'exiled');
     else p.cc = dest;
     p.flags.exiled = yr();

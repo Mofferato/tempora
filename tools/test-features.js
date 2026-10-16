@@ -258,4 +258,13 @@ test('God mode is now Sandbox mode, and old saves are carried over', () => {
   fresh({ year: 1900, cc: 'FRA', mode: 'sandbox' }); ok(S.sandboxAllowed()); ok(ui.views.world(S.me()).includes('Sandbox'), 'tab shown');
 });
 
+
+test('Claude’s goals are bounded to the objectives the game knows', () => {
+  const { Director: D } = T; fresh({ year: 2000, cc: 'USA' }); const p = S.me(); p.born = 1975; p.money = 100;
+  ok(!D.validGoal({ kind: 'win-the-lottery', title: 'x' }, p), 'unknown kind'); ok(!D.validGoal({ kind: 'stat', title: 'x', target: 90, stat: 'cheese' }, p), 'unknown stat');
+  const g = D.validGoal({ kind: 'friends', title: '<i>Befriend</i> many', why: 'ok', target: 9999, years: 99, reward: 'reputation' }, p);
+  ok(g && g.obj.v === 12 && !/[<>]/.test(g.title) && U.span(S.W.year, g.by) <= 15, 'clamped'); ok(g.reward.rep > 0);
+  const m = D.validGoal({ kind: 'money', title: 'Rich', target: 1e9 }, p); ok(m.obj.v < 1e8 * 0 + 1e12, 'money bounded');
+});
+
 runAll().then(() => { console.log(`\n${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0); });

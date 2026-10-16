@@ -33,6 +33,12 @@ jobs:
             exit 1
           fi
 
+      - name: Check the country atlas
+        run: node tools/check-atlas.js
+
+      - name: Feature tests
+        run: node tools/test-features.js
+
       - name: Simulate lives, pressing every button
         run: node tools/sim.js 12 all --years 150 --quiet
 

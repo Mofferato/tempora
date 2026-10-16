@@ -12,8 +12,10 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.js",
-    "test": "node build.js && node tools/sim.js 12 all --years 150 --quiet && node tools/sim.js 12 all --years 150 --quiet --typical",
-    "start": "node build.js && node server/server.js"
+    "test": "node build.js && node tools/check-atlas.js && node tools/test-features.js && node tools/sim.js 12 all --years 150 --quiet && node tools/sim.js 12 all --years 150 --quiet --typical",
+    "start": "node build.js && node server/server.js",
+    "test:features": "node tools/test-features.js",
+    "check:atlas": "node tools/check-atlas.js"
   },
   "engines": {
     "node": ">=18"

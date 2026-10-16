@@ -49,6 +49,11 @@ const Geo = (() => {
     for (const id of ids()) if (id !== cc && dist(cc, id) < reach) set.add(id);
     return (nearCache[cc] = [...set]);
   }
+  // pick a land from a list, favouring those close to cc (refugees go to neighbours more than to the other side of the world)
+  function pickNear(cc, ids) {
+    if (!ids.length) return null;
+    return U.wpick(ids, id => Math.exp(-dist(cc, id) / 1800) + 0.015);
+  }
   // depth of knowledge by era
   const REACH = { prehistory: 1, ancient: 2, medieval: 3, renaissance: 4, colonial: 5, industrial: 6, wars: 99, modern: 99, digital: 99, near: 99, far: 99 };
   function known(p) {
@@ -198,5 +203,5 @@ const Geo = (() => {
     return '';
   }
 
-  return { sideOf, fighting, shape, ids, decode, near, dist, known, power, ranking, allied, alliesOf, ally, unally, atWar, tick, diplomacy, isLeader, state, REACH };
+  return { pickNear, sideOf, fighting, shape, ids, decode, near, dist, known, power, ranking, allied, alliesOf, ally, unally, atWar, tick, diplomacy, isLeader, state, REACH };
 })();

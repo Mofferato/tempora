@@ -277,13 +277,13 @@ LATE.push(() => {
     const wars = live() ? S.activeWars().filter(h => h.where?.length > 1) : [];
     const allies = live() ? G.state().allies.slice(-8) : [];
     const news = live() ? S.W.news.filter(n => n.type === 'war' || n.type === 'politics' || n.type === 'revolution').slice(-8).reverse() : [];
-    return `<div class="sec-h"><h3>Great powers${live() ? '' : ` in ${U.fmtYearAD(y)}`}</h3></div>
+    return `<div class="adv"><div class="sec-h"><h3>Great powers${live() ? '' : ` in ${U.fmtYearAD(y)}`}</h3></div>
       <div class="list">${lands.map((x, i) => `<button class="row" data-act="mapSelect" data-cc="${x.cc}"><span class="flagchip">${i + 1}</span><div class="main"><div class="t">${esc(shortName(nameAt(x.cc, y)))}${x.cc === p.cc ? ' <span class="tag era">home</span>' : ''}</div><div class="s">${fmtPop(live() ? S.world.popAt(x.cc) : popAtYear(A.C(x.cc), y))} · ${['', 'high income', 'prosperous', 'middle income', 'low income', 'very poor'][A.tier(x.cc)]}${wars.some(h => h.where.includes(x.cc)) ? ' · at war' : ''}</div></div>
         <div class="end">${live() && prev.length ? (prev.indexOf(x.cc) < 0 ? '↑' : prev.indexOf(x.cc) > i ? '↑' : prev.indexOf(x.cc) < i ? '↓' : '') : ''}</div></button>`).join('')}</div>
       ${live() ? `<div class="sec-h"><h3>Wars and alliances</h3></div><div class="list">
         ${wars.map(h => `<div class="row"><span class="flagchip" style="--c:#c0392b">⚔</span><div class="main"><div class="t">${esc(h.n)}</div><div class="s">${h.where.slice(0, 6).map(c => esc(shortName(S.world.name(c)))).join(', ')}${h.world ? ' · a world war' : ''}</div></div></div>`).join('') || '<div class="row muted">No wars between nations at this time.</div>'}
         ${allies.map(x => { const [a, b] = x.k.split('|'); return `<div class="row"><span class="flagchip" style="--c:#2fa36b">⚑</span><div class="main"><div class="t">${esc(shortName(S.world.name(a)))} and ${esc(shortName(S.world.name(b)))}</div><div class="s">Allied since ${esc(U.fmtYearAD(x.y))}</div></div></div>`; }).join('')}</div>
-      ${news.length ? `<div class="sec-h"><h3>Dispatches</h3></div><div class="list">${news.map(n => `<div class="row"><div class="main"><div class="t">${esc(n.t)}</div><div class="s">${esc(U.fmtYearAD(n.y))}</div></div></div>`).join('')}</div>` : ''}` : ''}`;
+      ${news.length ? `<div class="sec-h"><h3>Dispatches</h3></div><div class="list">${news.map(n => `<div class="row"><div class="main"><div class="t">${esc(n.t)}</div><div class="s">${esc(U.fmtYearAD(n.y))}</div></div></div>`).join('')}</div>` : ''}` : ''}</div>`;
   }
 
   /* ---------- mounting and input ---------- */

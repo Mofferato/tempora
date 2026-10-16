@@ -71,6 +71,13 @@ function playYear(p) {
     }
   }
   if (S.hooks.playerExtras) tryIt('extras', () => S.hooks.playerExtras(p));
+  // the newer systems: the internet, faith, citizenship, the map, the director
+  if (T.Net && S.age(p) >= 8) for (const id of U.shuffle(Object.keys(T.Net.ACTS)).slice(0, 2)) tryIt('net ' + id, () => T.Net.act(id));
+  if (T.Faith && S.age(p) >= 14 && U.chance(0.04)) { const o = T.Faith.options(p); if (o.length) tryIt('convert', () => T.Faith.convert(p, U.pick(o))); }
+  if (T.Identity && S.age(p) >= 18 && U.chance(0.1)) { const c = T.Identity.descentClaims(p)[0] || p.cc; tryIt('citizenship', () => T.Identity.apply(c)); }
+  if (T.Geo && U.chance(0.1)) { const to = U.pick(S.world.countriesAt()); tryIt('diplomacy', () => T.Geo.diplomacy(to.id, U.pick(['alliance', 'trade', 'aid', 'sanction', 'peace', 'break']))); }
+  if (T.Director && U.chance(0.1)) { tryIt('goal', () => T.Director.propose(p)); const o = people[0]; if (o) tryIt('talk', () => T.Director.reply(p, o, U.pick(T.Director.TOPICS)[0])); }
+  if (U.chance(0.15)) { const cc = U.pick(S.world.countriesAt()).id; tryIt('map panel', () => { ui.mapState.sel = cc; ui.views.map(p); ui.mapState.sel = null; }); }
   if (S.pol && S.age(p) >= 18 && U.chance(0.25)) {
     const lvl = Math.min(5, (p.office?.lvl || 0) + 1);
     tryIt('pol.seek', () => S.pol.seek(lvl));
