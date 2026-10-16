@@ -115,5 +115,19 @@ LATE.push(() => {
   };
   ui.on.install = async () => { const e = window.__installEvt; if (!e) return; e.prompt(); try { await e.userChoice; } catch { /* dismissed */ } window.__installEvt = null; ui.open = null; $('#modal').innerHTML = ''; };
 
+  // skip ahead: age until something needs a decision (a choice, a death), at most ten years
+  const bar = $('#agebar .in'), age = $('#ageBtn');
+  if (bar && age && !$('#ffBtn')) age.insertAdjacentHTML('beforebegin', `<button class="iconbtn autob" id="ffBtn" data-act="ffwd" title="Skip ahead until something needs you" aria-label="Skip ahead until something needs you"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l7 7-7 7zM13 5l7 7-7 7z"/></svg></button>`);
+  ui.on.ffwd = () => {
+    if (!S.W || S.W.dead || ui.open) return;
+    let n = 0;
+    const step = () => {
+      if (!S.W || S.W.dead || ui.open || S.prompts.length || n >= 10) { if (n) toast(`${n} year${n > 1 ? 's' : ''} passed.`); return; }
+      ui.age(); n++;
+      setTimeout(step, 70);
+    };
+    step();
+  };
+
   applyDens();
 });

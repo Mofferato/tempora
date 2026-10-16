@@ -24,7 +24,7 @@ npm start
 
 1. **Edit `src/`, not `index.html`.** `index.html` is generated.
 2. **Rebuild.** Run `node build.js`, then commit the rebuilt `index.html` together with your source changes. CI fails if the two don't match.
-3. **Run the tests.** Use `npm test`. It plays dozens of lives across every era, presses every button, and reports runtime errors and balance statistics. It must end with `No runtime errors.`
+3. **Run the tests.** Use `npm test`. It validates the country atlas (`tools/check-atlas.js`), runs the feature tests (`tools/test-features.js`) and then simulates lives. It plays dozens of lives across every era, presses every button, and reports runtime errors and balance statistics. It must end with `No runtime errors.`
 4. **Check balance.** If your change affects balance, run `node tools/sim.js 40 all --years 200 --quiet --typical` before and after, and mention any shift in the PR. The numbers to watch are age at death, class at 40, fame and net worth.
 
 ## How the code fits together

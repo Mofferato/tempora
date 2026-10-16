@@ -361,6 +361,11 @@ const Director = (() => {
     }
     return null;
   }
+  // sandbox: make one particular improvised event happen now
+  function force(p, id) {
+    const t = T.find(x => x.id === id), ev = t && t.build(ctx(p)); if (!ev) return false;
+    S.runEvent(p, { id: `dir-${id}-${yr()}`, p: 1, min: 0, dir: 1, ...ev }); return true;
+  }
   function eventsFor(p) {
     if (p.id !== S.W.playerId || age(p) < 5 || p.prison > 0) return [];
     const st = state(), out = [], cx = ctx(p);
@@ -451,5 +456,5 @@ const Director = (() => {
     return { line, gain, mood };
   }
 
-  return { validGoal, ctx, improvise, eventsFor, requestAI, validEvent, propose, offerQuests, checkQuests, questView, reply, TOPICS, OBJ, ARCS, T, state, milestone, EVENT_SCHEMA };
+  return { force, validGoal, ctx, improvise, eventsFor, requestAI, validEvent, propose, offerQuests, checkQuests, questView, reply, TOPICS, OBJ, ARCS, T, state, milestone, EVENT_SCHEMA };
 })();

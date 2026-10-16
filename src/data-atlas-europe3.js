@@ -12,7 +12,7 @@ ov=mongol:1240:1480|golden:1240:1480|rusemp:1721:1917|soviet:1922:1991; bl=warsa
 
 Land(`UKR|Ukraine|Ukrainian|eu-east
 pre=eue:-400; nm=-400:the Scythian and Sarmatian steppe:Nomad kingdoms|300:the Goths and Slavs of the Dnieper:Tribes|882:Kievan Rus:Principality|1240:the lands of the Golden Horde and Lithuania:Principalities under the Horde|1569:the Polish–Lithuanian Ukraine:Part of the Commonwealth|1654:the Cossack Hetmanate:Cossack state|1764:Little Russia:Province of the Tsar|1917:the Ukrainian People's Republic:Republic|1922:the Ukrainian SSR:Soviet republic|1991:Ukraine:Semi-presidential republic;
-cap=882:Kyiv|1240:Kyiv|1654:Chyhyryn|1764:Hlukhiv|1922:Kharkiv|1934:Kyiv|99999:Kyiv; cur=1800:rubles:₽:0.5|1913:rubles:₽:0.5|1922:karbovanets:krb:0.01|1945:Soviet rubles:₽:0.5|1991:karbovanets:krb:0.00001|1996:hryvnia:₴:0.55|2029:hryvnia:₴:0.03|hryvnia:₴:0.03;
+cap=882:Kyiv|1240:Kyiv|1654:Chyhyryn|1764:Hlukhiv|1922:Kharkiv|1934:Kyiv|99999:Kyiv; cur=1800:rubles:₽:0.5|1913:rubles:₽:0.5|1922:karbovanets:krb:0.01|1945:Soviet rubles:₽:0.5|1991:karbovanets:krb:0.00001|1996:hryvnia:₴:0.55|2000:hryvnia:₴:0.03|hryvnia:₴:0.03;
 pop=1800:9,1900:28,1950:37,1991:52,2000:49,2025:38; pm=0.5; nc=882:slavic_pre|1569:ukrainian|ukrainian; fem=1; ga=slav; eth=Ukrainians:77:slav,Russians:17:slav,Crimean Tatars:1:turkic,Other:5:slav;
 rs=-10000>an:100|-400>tn:50 an:50|882>sl:70 or:30|988>or:100|1596>or:70 ch:30|1950>sc:40 or:50 ch:8 ju:2|2025>or:68 sc:20 ch:6 pr:3 ot:3;
 cu=slavic R-5; lg=Ukrainian,Russian,Crimean Tatar; fd=borscht@1600,varenyky@1500,salo@1500; fs=Ivana Kupala@1000,Independence Day@1991,Pysanky Easter eggs@1000; sp=football@1900,boxing@1990,chess@1990;
@@ -25,7 +25,7 @@ ci=Kyiv~482~0~482:2 882:4 1100:5 1240:2 1600:3 1800:4 1900:5 1950:6|Lviv~1256~0~
 
 Land(`BLR|Belarus|Belarusian|eu-east
 pre=eue:-400; nm=-400:the forest hunters and farmers:Forest villages|500:the Slavic Krivichi and Dregovichi:Tribes|1000:the principalities of Polotsk:Principalities|1236:the Grand Duchy of Lithuania:Grand duchy|1569:the Polish–Lithuanian Commonwealth:Elective monarchy|1795:the Northwestern Territory of the Tsars:Province of Russia|1919:the Belarusian People's Republic:Republic|1922:the Byelorussian SSR:Soviet republic|1991:Belarus:Presidential republic|Belarus:Presidential republic;
-cap=1000:Polotsk|1236:Navahrudak|1795:Minsk|99999:Minsk; cur=1800:rubles:₽:0.5|1913:rubles:₽:0.5|1945:Soviet rubles:₽:0.5|1992:Belarusian rubles:Br:0.001|2016:rubles:Br:0.5|rubles:Br:0.35;
+cap=1000:Polotsk|1236:Navahrudak|1795:Minsk|99999:Minsk; cur=1800:rubles:₽:0.5|1913:rubles:₽:0.5|1945:Soviet rubles:₽:0.5|1992:Belarusian rubles:Br:0.001|2016:rubles:Br:0.35|rubles:Br:0.35;
 pop=1800:3,1900:7.5,1950:7.7,2000:10,2025:9.2; pm=0.4; nc=500:slavic_pre|1569:ukrainian|ukrainian; fem=1; ga=slav; eth=Belarusians:84:slav,Russians:8:slav,Poles:3:slav,Other:5:slav;
 rs=-10000>an:100|500>sl:70 an:30|988>or:100|1596>or:80 ch:15 ju:5|1941>or:70 ch:12 ju:1 sc:17|2025>or:70 ch:8 sc:18 pr:1 ot:3;
 cu=slavic G-3 R-10 T5; lg=Belarusian,Russian; fd=draniki@1700,kolduny@1700,machanka@1700; fs=Kupalle@1000,Dziady, the day of remembering the dead@1000,Independence Day@1944; sp=ice hockey@1990,rhythmic gymnastics@1990,biathlon@1990;
@@ -37,7 +37,7 @@ ci=Polotsk~862~0~862:3 1000:4 1500:3|Minsk~1067~0~1067:2 1500:3 1795:4 1900:5 19
 
 Land(`MDA|Moldova|Moldovan|eu-east
 pre=eue:-400; nm=-400:the Cucuteni and steppe peoples:Tribal kingdoms|106:Roman Dacia's frontier:Roman borderlands|300:the Goths, Huns and Slavs:Tribes|1359:the Principality of Moldavia:Principality|1538:Ottoman Moldavia:Ottoman vassal|1812:Bessarabia under the Tsars:Province of Russia|1918:Bessarabia in Romania:Part of Romania|1940:the Moldavian SSR:Soviet republic|1991:Moldova:Parliamentary republic;
-cap=1359:Suceava|1564:Iași|1812:Chișinău|99999:Chișinău; cur=1800:lei:L:0.1|1913:rubles:₽:0.5|1918:lei:L:0.19|1940:rubles:₽:0.5|1991:rubles:₽:0.00001|1993:lei:L:0.2|2029:lei:L:0.055|lei:L:0.055;
+cap=1359:Suceava|1564:Iași|1812:Chișinău|99999:Chișinău; cur=1800:lei:L:0.1|1913:rubles:₽:0.5|1918:lei:L:0.19|1940:rubles:₽:0.5|1991:rubles:₽:0.00001|1993:lei:L:0.2|2000:lei:L:0.055|lei:L:0.055;
 pop=1800:0.3,1900:1.9,1950:2.3,2000:3.6,2025:2.4; pm=0.4; nc=1359:balkan_ro|romanian; ga=balk; eth=Moldovans:76:slav,Ukrainians:7:slav,Russians:4:slav,Gagauz and Bulgarians:6:turk,Other:7:slav;
 rs=-10000>pa:100|300>pa:100|1359>or:100|1950>or:90 sc:8 ju:2|2025>or:94 pr:2 sc:2 ot:2;
 cu=balkan R10; lg=Romanian,Russian,Gagauz,Ukrainian; fd=mămăligă@1500,plăcinte@1700,sarmale@1700; fs=Mărțișor@1000,Wine Day@2002,Independence Day@1991; sp=wrestling@1990,football@1990,boxing@1990;
@@ -49,7 +49,7 @@ ci=Suceava~1388~0~1388:3 1564:2 1900:3|Chișinău~1436~0~1436:1 1812:3 1900:4 19
 
 Land(`GEO|Georgia|Georgian|as-cauc
 pre=cauc:-900; nm=-900:the kingdoms of Colchis and Iberia:Early kingdoms|-65:Roman Colchis and Caucasian Iberia:Client kingdoms|330:the Kingdom of Kartli (Iberia):Kingdom|580:Persian and Byzantine Georgia:Contested kingdoms|1008:the Georgian Kingdom:Kingdom|1122:the Georgian Golden Age:Kingdom|1490:the Georgian realms:Divided kingdoms|1801:Russian Georgia:Province of Russia|1918:the Georgian Democratic Republic:Republic|1921:the Georgian SSR:Soviet republic|1991:Georgia:Parliamentary republic;
-cap=-900:Aia|330:Mtskheta|1010:Kutaisi|1122:Tbilisi|99999:Tbilisi; cur=-300:silver by weight:sh :30|-65:drachmae:dr:20|395:denarii:d:20|1122:dirhams:dir :30|1800:abazi:ab:0.2|1913:rubles:₽:0.5|1921:lari:₾:0.5|1945:Soviet rubles:₽:0.5|1995:lari:₾:0.8|lari:₾:0.36;
+cap=-900:Aia|330:Mtskheta|1010:Kutaisi|1122:Tbilisi|99999:Tbilisi; cur=-300:silver by weight:sh :30|-65:drachmae:dr:20|395:denarii:d:20|1122:dirhams:dir :30|1800:abazi:ab:0.2|1913:rubles:₽:0.5|1921:lari:₾:0.5|1945:Soviet rubles:₽:0.5|1995:lari:₾:0.8|2000:lari:₾:0.36;
 pop=1800:0.8,1900:1.9,1950:3.6,2000:4.4,2025:3.7; pm=0.9; nc=-65:caucasus_pre|1122:georgian|georgian; ga=cauc; eth=Georgians:87:cauc,Azerbaijanis:6:turkic,Armenians:5:cauc,Other:2:slav;
 rs=-10000>an:100|-300>zo:30 pa:70|337>or:100|1122>or:96 su:4|1950>or:78 su:10 sc:10 co:2|2025>or:83 su:11 co:3 sc:2 ot:1;
 cu=caucasus; lg=Georgian,Abkhaz,Ossetian,Mingrelian; fd=khachapuri@1500,khinkali@1500,churchkhela@1500; fs=Easter and Tbilisoba@1000,Georgia Day (Giorgoba)@1000,Independence Day@1991; sp=rugby@1990,wrestling@1920,chess@1900;
@@ -62,7 +62,7 @@ ci=Mtskheta~-300~0~-300:3 330:4 500:3 1900:2|Tbilisi~455~0~455:2 1122:4 1600:4 1
 
 Land(`ARM|Armenia|Armenian|as-cauc
 pre=cauc:-900; nm=-900:the Urartian highland kingdom:Early kingdom|-600:the Orontid satrapy of Armenia:Satrapy|-189:the Kingdom of Greater Armenia:Kingdom|428:Persian and Roman Armenia:Partitioned kingdom|884:the Bagratid kingdom of Armenia:Kingdom|1045:the Armenian principalities:Principalities|1375:Cilician Armenia and the highlands:Kingdom and principalities|1514:Persian and Ottoman Armenia:Partitioned|1828:Russian Armenia:Province of Russia|1920:the First Republic of Armenia:Republic|1922:the Armenian SSR:Soviet republic|1991:Armenia:Parliamentary republic;
-cap=-900:Tushpa|-189:Artaxata|330:Vagharshapat|884:Ani|1375:Sis|1514:Yerevan|99999:Yerevan; cur=-300:silver by weight:sh :30|-65:drachmae:dr:20|395:denarii:d:20|884:dirhams:dir :30|1800:abazi:ab:0.2|1913:rubles:₽:0.5|1920:dram:դր:0.2|1945:Soviet rubles:₽:0.5|1993:dram:֏:0.002|dram:֏:0.0026;
+cap=-900:Tushpa|-189:Artaxata|330:Vagharshapat|884:Ani|1375:Sis|1514:Yerevan|99999:Yerevan; cur=-300:silver by weight:sh :30|-65:drachmae:dr:20|395:denarii:d:20|884:dirhams:dir :30|1800:abazi:ab:0.2|1913:rubles:₽:0.5|1920:dram:դր:0.2|1945:Soviet rubles:₽:0.5|1993:dram:֏:0.002|2000:dram:֏:0.0026;
 pop=1800:0.4,1900:1.1,1950:1.3,2000:3.1,2025:3; pm=0.8; nc=-65:caucasus_pre|884:armenian|armenian; ga=cauc; eth=Armenians:98:cauc,Yazidis and Kurds:1:turkic,Russians and others:1:slav;
 rs=-10000>an:100|-300>zo:50 pa:50|301>co:100|1514>co:94 su:6|1950>co:90 sc:8 or:2|2025>co:93 sc:3 pr:2 ot:2;
 cu=caucasus R5; lg=Armenian,Kurdish,Russian; fd=lavash@1000,dolma@1500,khorovats@1500; fs=Vardavar@1000,Armenian Genocide Remembrance Day@1915,Independence Day@1991; sp=chess@1960,weightlifting@1990,wrestling@1990;
@@ -75,7 +75,7 @@ ci=Armavir~-800~0~-800:3 -300:4 100:4 1000:2 1900:2|Ani~961~1400~961:5 1050:5|Dv
 
 Land(`AZE|Azerbaijan|Azerbaijani|as-cauc
 pre=cauc:-900; nm=-900:the kingdom of Manna and the Median east:Early kingdoms|-330:Caucasian Albania:Kingdom|428:Persian Arran and Albania:Satrapy|651:the Arab emirate of Arran:Caliphate province|1030:the Shirvanshah kingdom:Kingdom|1236:Mongol and Timurid Azerbaijan:Mongol and Turkic realms|1501:Safavid Azerbaijan:Safavid province|1747:the Khanates of Azerbaijan:Khanates|1813:Russian Azerbaijan:Province of Russia|1918:the Azerbaijan Democratic Republic:Republic|1920:the Azerbaijan SSR:Soviet republic|1991:Azerbaijan:Presidential republic;
-cap=-330:Qabala|651:Barda|1030:Shamakhi|1501:Tabriz|1828:Baku|99999:Baku; cur=-300:silver by weight:sh :30|-65:drachmae:dr:20|395:denarii:d:20|651:dirhams:dir :30|1800:toman:tm :0.1|1913:rubles:₽:0.5|1918:manat:₼:0.5|1945:Soviet rubles:₽:0.5|1992:manat:₼:0.002|2006:manat:₼:1.2|manat:₼:0.59;
+cap=-330:Qabala|651:Barda|1030:Shamakhi|1501:Tabriz|1828:Baku|99999:Baku; cur=-300:silver by weight:sh :30|-65:drachmae:dr:20|395:denarii:d:20|651:dirhams:dir :30|1800:toman:tm :0.1|1913:rubles:₽:0.5|1918:manat:₼:0.5|1945:Soviet rubles:₽:0.5|1992:manat:₼:0.002|2006:manat:₼:0.59|manat:₼:0.59;
 pop=1800:0.7,1900:1.9,1950:2.9,2000:8.1,2025:10.2; pm=1; nc=651:caucasus_pre|1030:azeri|azeri; ga=cauc; eth=Azerbaijanis:91:turkic,Lezgins and Talysh:3:cauc,Russians and Armenians:3:slav,Other:3:turkic;
 rs=-10000>an:100|-300>zo:50 pa:50|313>or:60 zo:40|651>su:50 sh:50|1500>sh:70 su:30|1950>sh:65 su:30 sc:5|2025>sh:65 su:30 or:3 sc:2;
 cu=turkic R-10 G5; lg=Azerbaijani,Russian,Lezgian,Talysh; fd=plov@1500,dolma@1500,baklava@1500; fs=Novruz@-500,Republic Day@1918,Victory Day@2020; sp=wrestling@1990,football@1990,mugham music@1700;

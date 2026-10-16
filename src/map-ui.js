@@ -91,15 +91,25 @@ LATE.push(() => {
     st.cx = Math.max(-180 + st.w / 2 / st.k, Math.min(180 - st.w / 2 / st.k, st.cx));
     st.cy = Math.max(-84 + st.h / 2 / st.k, Math.min(58 - st.h / 2 / st.k, st.cy));
   }
-  function focusOn(id, zoom) {
-    const s = DATA.map.shapes[id], sh = G.shape(id); if (!s) return;
-    // the biggest piece of land, so far-off territories do not decide the zoom
+  // the box around a land's biggest piece, so far-off territories do not decide the view
+  function mainBB(id) {
+    const sh = G.shape(id), s = DATA.map.shapes[id]; if (!sh) return null;
     let best = null, ba = -1;
     for (const r of sh.rings) { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (let i = 0; i < r.length; i += 2) { x0 = Math.min(x0, r[i]); x1 = Math.max(x1, r[i]); y0 = Math.min(y0, r[i + 1]); y1 = Math.max(y1, r[i + 1]); } const a = (x1 - x0) * (y1 - y0); if (a > ba) { ba = a; best = [x0, y0, x1, y1]; } }
-    const bb = best || s.bb;
+    return best || s.bb;
+  }
+  function focusOn(id, zoom) {
+    const bb = mainBB(id); if (!bb) return;
     st.cx = (bb[0] + bb[2]) / 2; st.cy = -(bb[1] + bb[3]) / 2;
     if (zoom) { const w = Math.max(3, bb[2] - bb[0]), h = Math.max(3, bb[3] - bb[1]); st.k = Math.min(st.w / (w * 2.4), st.h / (h * 2.4), 24); }
     clampView();
+  }
+  function focusRegion(sub) {
+    const ids = sub ? DATA.countries.filter(c => c.sub === sub && A.C(c.id)).map(c => c.id) : [];
+    if (!ids.length) { st.cx = 10; st.cy = -15; st.k = 0; clampView(); return; }
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const id of ids) { const b = mainBB(id); if (!b) continue; x0 = Math.min(x0, b[0]); y0 = Math.min(y0, b[1]); x1 = Math.max(x1, b[2]); y1 = Math.max(y1, b[3]); }
+    st.cx = (x0 + x1) / 2; st.cy = -(y0 + y1) / 2; st.k = Math.min(st.w / ((x1 - x0) * 1.25 + 4), st.h / ((y1 - y0) * 1.25 + 4), 24); clampView();
   }
   function draw() {
     raf = 0; if (!canvas || !canvas.isConnected) return;
@@ -153,8 +163,8 @@ LATE.push(() => {
     }
     for (const [id, nm, x, yy, fs] of labs) {
       ctx.font = `${id === me ? '700 ' : '600 '}${Math.round(fs)}px system-ui, sans-serif`;
-      ctx.strokeStyle = dark ? 'rgba(10,14,20,.85)' : 'rgba(255,255,255,.9)'; ctx.lineWidth = 3; ctx.strokeText(nm, x, yy + (DATA.map.shapes[id].pt ? 11 : 0));
-      ctx.fillStyle = dark ? '#eef2f6' : '#1b2430'; ctx.fillText(nm, x, yy + (DATA.map.shapes[id].pt ? 11 : 0));
+      ctx.strokeStyle = dark ? 'rgba(10,14,20,.85)' : 'rgba(255,255,255,.9)'; ctx.lineWidth = 3; ctx.strokeText(nm, x, yy + (DATA.map.shapes[id].pt ? 11 : id === me ? 13 : 0));
+      ctx.fillStyle = dark ? '#eef2f6' : '#1b2430'; ctx.fillText(nm, x, yy + (DATA.map.shapes[id].pt ? 11 : id === me ? 13 : 0));
     }
     // your own marker
     const ms = DATA.map.shapes[me];
@@ -194,7 +204,8 @@ LATE.push(() => {
     const y = viewYear(), sel = st.sel, fogOn = st.fog;
     const modes = MODES.filter(m => !(m[0] === 'net' && yearNow() < 1991)).map(([id, n, d]) => `<button class="chip" data-act="mapMode" data-v="${id}" aria-pressed="${st.mode === id}" title="${esc(d)}">${n}</button>`).join('');
     const eras = DATA.eras;
-    return `<div class="mapbox"><div class="maptools"><div class="chips">${modes}</div></div>
+    const subs = Object.entries(DATA.atlas.subs).filter(([k]) => DATA.countries.some(c => c.sub === k && y >= c.from));
+    return `<div class="mapbox"><div class="maptools"><div class="chips">${modes}</div><select id="mapregion" class="mapregion" data-input="mapRegion" aria-label="Go to a region"><option value="">World</option>${subs.map(([k, v]) => `<option value="${k}">${esc(v[0])}</option>`).join('')}</select></div>
       <div class="mapwrap" id="mapwrap"><canvas id="worldmap" aria-label="World map" tabindex="0"></canvas>
         <div class="mapzoom"><button class="iconbtn" data-act="mapZoom" data-v="1" aria-label="Zoom in">+</button><button class="iconbtn" data-act="mapZoom" data-v="-1" aria-label="Zoom out">−</button><button class="iconbtn" data-act="mapHome" aria-label="Centre on my land">◎</button></div>
         <div class="maptip" id="maptip" hidden></div>
@@ -346,6 +357,7 @@ LATE.push(() => {
   ui.on.mapHome = () => { focusOn(S.me().cc, true); redraw(); };
   ui.on.mapNow = () => { st.year = null; render(); };
   ui.input.mapYear = el => { st.year = +el.value; const l = $('#mapyearl'); if (l) l.textContent = U.fmtYearAD(viewYear()); if (st.mode === 'gov' || st.mode === 'stab' || st.mode === 'rel') st.mode = 'political'; sync(); const sel = $('#mapsel'); if (sel && st.sel) sel.innerHTML = panel(st.sel); };
+  ui.input.mapRegion = el => { focusRegion(el.value); redraw(); };
   ui.input.mapFog = el => { st.fog = el.checked; redraw(); };
   const after = f => { S.settle?.(); render(); ui.save?.(); };
   ui.on.mapTravel = el => { const t = S.world.travel(el.dataset.cc); toast(t); after(); };

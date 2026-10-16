@@ -304,6 +304,7 @@ const Sim = (() => {
     delete a.rels[b.id]; delete b.rels[a.id];
     a.rels[b.id] = { k: 'fam', c: U.ri(65, 95) }; b.rels[a.id] = { k: 'fam', c: U.ri(65, 95) };
     if (!silent) { log(a, `Married ${b.first} ${b.last}.`, 'love'); log(b, `Married ${a.first} ${a.last}.`, 'love'); }
+    if (hooks.onWed) hooks.onWed(a, b, silent);
   }
   function unmarry(a, b) {
     if (a.sp === b.id) a.sp = null; if (b.sp === a.id) b.sp = null;

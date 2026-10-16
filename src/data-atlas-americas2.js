@@ -5,7 +5,7 @@
 
 Land(`PER|Peru|Peruvian|am-andes
 pre=and:-900; nm=-900:the Chavín temple towns:Temple towns|-200:the Paracas, Nazca and Moche peoples:Early states|600:the Wari and Tiwanaku empires:Empires|1200:the Chimú and the rising Inca:Kingdoms|1438:the Inca Empire (Tawantinsuyu):Empire|1532:the Viceroyalty of Peru:Spanish viceroyalty|1821:the Republic of Peru:Republic;
-cap=-900:Chavín de Huántar|600:Huari|1200:Chan Chan|1438:Cusco|1535:Lima; cur=1438:barter goods:_:8|1535:reales:rs :12|1800:pesos:$:1.4|1863:soles:S/:1|1930:soles:S/:0.3|1945:soles:S/:0.15|1985:intis:I/.:0.5|1991:soles:S/:1|1999:soles:S/:0.29|2029:soles:S/:0.27;
+cap=-900:Chavín de Huántar|600:Huari|1200:Chan Chan|1438:Cusco|1535:Lima; cur=1438:barter goods:_:8|1535:reales:rs :12|1800:pesos:$:1.4|1863:soles:S/:1|1930:soles:S/:0.3|1945:soles:S/:0.15|1985:intis:I/.:0.5|1991:soles:S/:1|1999:soles:S/:0.29|2000:soles:S/:0.27;
 pop=1800:1.5,1900:3.7,1950:8.5,2000:26,2025:34; pm=1.5; nc=1438:quechua|1532:spanish|spanish; ga=andes; mix=MEX:.55,ITA:.2,CHN:.1,JPN:.05,WAF:.1; eth=Mestizo:60:amer@1535,Quechua:22:amer,White Peruvians:6:iber@1535,Aymara and Amazonian peoples:5:amer,Afro-Peruvians, Asian Peruvians and others:7:waf@1560;
 rs=-9000>an:100|1438>an:100|1532>an:20 ch:80|1700>ch:97 an:3|1950>ch:92 pr:5 an:2 ot:1|2025>ch:63 pr:17 pe:5 sc:11 an:2 ot:2;
 cu=andean O5 T10; lg=Spanish,Quechua,Aymara; fd=ceviche@1800,potatoes@-8000,cuy@1000,lomo saltado@1900; fs=Inti Raymi@1430,Independence Day@1821,Lord of Miracles@1651,Corpus Christi@1572; sp=football@1900,bullfighting@1560,surfing@1950;
@@ -17,7 +17,7 @@ ci=Caral~-3000~-1800~-3000:3|Chavín de Huántar~-900~-200~-900:2|Chan Chan~850~
 
 Land(`BOL|Bolivia|Bolivian|am-andes
 pre=and:-900; nm=-900:the Tiwanaku and Pucará highlands:Early states|600:the Tiwanaku Empire:Empire|1000:the Aymara kingdoms:Kingdoms|1450:the Inca province of Collasuyu:Province|1538:the Audiencia of Charcas:Spanish colony|1825:the Republic of Bolivia:Republic|2009:the Plurinational State of Bolivia:Plurinational republic;
-cap=600:Tiwanaku|1450:Cusco|1559:La Plata|1825:Sucre|1899:La Paz; cur=1450:barter goods:_:8|1538:reales:rs :12|1825:bolivianos:Bs:1|1945:bolivianos:Bs:0.05|1963:peso bolivianos:$b:0.08|1987:bolivianos:Bs:0.5|1999:bolivianos:Bs:0.17|2029:bolivianos:Bs:0.14;
+cap=600:Tiwanaku|1450:Cusco|1559:La Plata|1825:Sucre|1899:La Paz; cur=1450:barter goods:_:8|1538:reales:rs :12|1825:bolivianos:Bs:1|1945:bolivianos:Bs:0.05|1963:peso bolivianos:$b:0.08|1987:bolivianos:Bs:0.5|1999:bolivianos:Bs:0.17|2000:bolivianos:Bs:0.14;
 pop=1800:1,1900:1.8,1950:3,2000:8.3,2025:12.4; pm=1; nc=1450:quechua|1538:spanish|spanish; ga=andes; eth=Indigenous (Quechua, Aymara, Guaraní):41:amer,Mestizo:68:amer@1538,White Bolivians:5:iber@1538,Other:1:world;
 rs=-9000>an:100|1450>an:100|1538>an:10 ch:90|1700>ch:97 an:3|1950>ch:94 pr:3 an:3|2025>ch:77 pr:16 an:3 sc:3 ot:1;
 cu=andean O5 T10 G10; lg=Spanish,Quechua,Aymara,Guaraní; fd=salteñas@1850,chuño@-500,anticuchos@1700,silpancho@1900; fs=Alasitas@1781,Carnaval de Oruro@1789,Gran Poder@1923,Independence Day@1825; sp=football@1900,cholita wrestling@2000,Andean music@1000;
@@ -41,7 +41,7 @@ ci=Tomebamba~1470~1534~1470:3|Quito~1534~0~1534:2 1700:3 1800:3 1900:4 1950:6 20
 
 Land(`COL|Colombia|Colombian|am-andes
 pre=and:-900; nm=-900:the Muisca, Tairona and Zenú peoples:Chiefdoms|1000:the Muisca Confederation and Tairona towns:Chiefdoms|1499:the Muisca, Tairona and Zenú chiefdoms:Chiefdoms|1538:the New Kingdom of Granada:Spanish colony|1819:Gran Colombia:Federal republic|1831:the Republic of New Granada:Republic|1886:the Republic of Colombia:Republic;
-cap=1499:Hunza|1538:Santafé de Bogotá|1819:Bogotá; cur=1499:barter goods:_:8|1538:reales:rs :12|1819:pesos:$:1.4|1880:pesos:$:0.7|1945:pesos:$:0.4|1999:pesos:$:0.0005|2029:pesos:$:0.00023;
+cap=1499:Hunza|1538:Santafé de Bogotá|1819:Bogotá; cur=1499:barter goods:_:8|1538:reales:rs :12|1819:pesos:$:1.4|1880:pesos:$:0.7|1945:pesos:$:0.4|1999:pesos:$:0.0005|2000:pesos:$:0.00023;
 pop=1800:1.2,1900:4,1950:12,2000:40,2025:52; pm=1.5; nc=1499:native_na|1538:spanish|spanish; ga=latam; mix=MEX:.5,ITA:.3,WAF:.2; eth=Mestizo and White:87:latam,Afro-Colombian:10:waf@1530,Indigenous:3:amer;
 rs=-9000>an:100|1538>an:10 ch:90|1700>ch:98 an:2|1950>ch:94 pr:4 sc:2|2025>ch:67 pr:16 pe:4 sc:11 ot:2;
 cu=latam O10 G20; lg=Spanish,Wayuu,Nasa Yuwe; fd=arepas@1700,bandeja paisa@1900,ajiaco@1800,empanadas@1700; fs=Carnival of Barranquilla@1888,Independence Day@1810,Feria de las Flores@1957,Christmas lights@1900; sp=football@1900,cycling@1950,tejo@1500;
@@ -65,7 +65,7 @@ ci=Coro~1527~0~1527:1 1577:1|Caracas~1567~0~1567:1 1800:3 1900:4 1950:6 2000:8|M
 
 Land(`CHL|Chile|Chilean|am-cone
 pre=con:-500; nm=-500:the Mapuche, Diaguita and Chinchorro peoples:Tribal nations|1470:the Mapuche tribal lands and the Inca province of Collasuyu:Tribal nations|1541:the Captaincy General of Chile:Spanish colony|1818:the Republic of Chile:Republic;
-cap=1541:Santiago; cur=1470:barter goods:_:8|1541:reales:rs :12|1818:pesos:$:1.4|1895:pesos:$:0.5|1960:escudos:E°:1|1975:pesos:$:0.0|1999:pesos:$:0.0019|2029:pesos:$:0.0011;
+cap=1541:Santiago; cur=1470:barter goods:_:8|1541:reales:rs :12|1818:pesos:$:1.4|1895:pesos:$:0.5|1960:escudos:E°:1|1975:pesos:$:0.0|1999:pesos:$:0.0019|2000:pesos:$:0.0011;
 pop=1800:0.8,1900:3,1950:6,2000:15,2025:19.7; pm=0.8; nc=1470:quechua|1541:spanish|spanish; ga=southcone; mix=MEX:.45,ITA:.3,ENG:.1,DEU:.1,WAF:.05; eth=Mestizo and White:89:iber@1541,Mapuche:9:amer,Other Indigenous peoples:2:amer;
 rs=-9000>an:100|1541>an:10 ch:90|1850>ch:95 an:2 pr:3|1950>ch:89 pr:6 at:3 ot:2|2025>ch:49 pr:15 sc:25 ju:1 ot:10;
 cu=latam O15 G25 T10; lg=Spanish,Mapudungun,Rapa Nui; fd=empanadas de pino@1700,pastel de choclo@1700,completos@1950,pisco sour@1900; fs=Fiestas Patrias@1810,La Tirana@1800,Fiesta de San Pedro@1700,Day of the Dead@1900; sp=football@1895,rodeo@1500,cueca dance@1850;
@@ -77,7 +77,7 @@ ci=Santiago~1541~0~1541:1 1700:3 1800:4 1900:6 1950:7 2000:9|Valparaíso~1536~0~
 
 Land(`ARG|Argentina|Argentine|am-cone
 pre=con:-500; nm=-500:the Diaguita, Guaraní and Querandí peoples:Tribal nations|1536:the Río de la Plata tribal lands:Tribal nations|1580:the Governorate of Río de la Plata:Spanish colony|1776:the Viceroyalty of the Río de la Plata:Spanish viceroyalty|1816:the United Provinces of the Río de la Plata:Confederation|1853:the Argentine Confederation:Confederation|1880:the Argentine Republic:Republic;
-cap=1580:Buenos Aires; cur=1536:barter goods:_:8|1580:reales:rs :12|1816:pesos:$:1.4|1881:pesos:$:1|1945:pesos moneda nacional:$:0.25|1970:pesos ley:$:0.25|1992:pesos:$:1|1999:pesos:$:1|2002:pesos:$:0.3|2029:pesos:$:0.001;
+cap=1580:Buenos Aires; cur=1536:barter goods:_:8|1580:reales:rs :12|1816:pesos:$:1.4|1881:pesos:$:1|1945:pesos moneda nacional:$:0.25|1970:pesos ley:$:0.25|1992:pesos:$:1|1999:pesos:$:1|2002:pesos:$:0.001|2029:pesos:$:0.001;
 pop=1800:0.4,1900:4.7,1950:17,2000:37,2025:46; pm=0.3; nc=1536:guarani|1580:spanish|spanish; ga=southcone; mix=ITA:.55,MEX:.15,ENG:.05,DEU:.05,RUS:.05,WAF:.05; eth=European descent (Italian, Spanish and others):85:iber@1580,Mestizo:8:amer,Indigenous:3:amer,Arab, Jewish and Asian Argentines:4:world@1880;
 rs=-9000>an:100|1580>an:10 ch:90|1850>ch:95 ju:2 pr:3|1950>ch:93 ju:2 pr:2 ot:3|2025>ch:62 pr:15 sc:21 ju:1 ot:1;
 cu=latam O10 G30; lg=Spanish,Guaraní,Quechua,Welsh,Italian; fd=asado@1800,empanadas@1700,dulce de leche@1830,mate@1600; fs=Independence Day@1816,Carnaval@1800,Day of Tradition@1939,Immaculate Conception@1700; sp=football@1867,tango@1880,polo@1875,rugby@1873;
@@ -89,7 +89,7 @@ ci=Buenos Aires~1580~0~1580:1 1776:3 1850:4 1900:7 1950:9 2000:10|Córdoba~1573~
 
 Land(`URY|Uruguay|Uruguayan|am-cone
 pre=con:-500; nm=-500:the Charrúa hunters:Tribal nations|1516:the Banda Oriental:Charrúa tribal land and Spanish-Portuguese frontier|1680:the Banda Oriental under Spain and Portugal:Contested colony|1811:the Banda Oriental in revolt:Provinces|1821:the Cisplatine Province of Brazil:Province|1828:the Oriental Republic of Uruguay:Republic;
-cap=1726:Montevideo; cur=1516:barter goods:_:8|1680:reales:rs :12|1828:pesos:$:1|1896:pesos:$:1|1945:pesos:$:0.5|1975:new pesos:$:0.02|1999:pesos:$:0.08|2029:pesos:$:0.025;
+cap=1726:Montevideo; cur=1516:barter goods:_:8|1680:reales:rs :12|1828:pesos:$:1|1896:pesos:$:1|1945:pesos:$:0.5|1975:new pesos:$:0.02|1999:pesos:$:0.08|2000:pesos:$:0.025;
 pop=1700:0.01,1800:0.07,1900:0.94,1950:2.2,2000:3.3,2025:3.5; pm=0.5; nc=1516:guarani|1680:spanish|spanish; ga=southcone; mix=ITA:.5,MEX:.2,ENG:.1,WAF:.1,DEU:.1; eth=White (Italian, Spanish):88:iber@1700,Mestizo and Afro-Uruguayan:8:amer,Indigenous (Charrúa descent):2:amer,Other:2:world@1900;
 rs=-9000>an:100|1680>an:10 ch:90|1850>ch:85 ju:1 pr:14|1950>ch:70 at:25 pr:3 ot:2|2025>ch:42 at:41 pr:10 sc:5 ot:2;
 cu=latam O10 G35; lg=Spanish,Portuguese,Portuñol; fd=chivito@1950,asado@1800,dulce de leche@1830,mate@1600; fs=Carnival@1750,Tourism Week@1919,Independence Day@1825,Candombe Parade@1800; sp=football@1880,candombe drums@1800,rugby@1900;
@@ -101,7 +101,7 @@ ci=Colonia del Sacramento~1680~0~1680:1 1800:2 1900:2|Montevideo~1726~0~1726:1 1
 
 Land(`PRY|Paraguay|Paraguayan|am-cone
 pre=con:-500; nm=-500:the Guaraní and Chaco tribes:Tribal nations|1537:the Guaraní lands and Spanish Asunción:Tribal nations and a Spanish fort|1600:the Jesuit Reductions of Paraguay:Jesuit missions in Spanish colony|1811:the Republic of Paraguay:Republic|1870:the Republic of Paraguay:Republic;
-cap=1537:Asunción; cur=1537:barter goods:_:8|1600:reales:rs :12|1811:pesos:$:1.4|1870:pesos:$:0.3|1943:guaraníes:₲:0.3|1999:guaraníes:₲:0.0005|2029:guaraníes:₲:0.00013;
+cap=1537:Asunción; cur=1537:barter goods:_:8|1600:reales:rs :12|1811:pesos:$:1.4|1870:pesos:$:0.3|1943:guaraníes:₲:0.3|1999:guaraníes:₲:0.0005|2000:guaraníes:₲:0.00013;
 pop=1800:0.1,1900:0.5,1950:1.4,2000:5.3,2025:7.4; pm=0.6; nc=1537:guarani|1600:spanish|spanish; ga=southcone; mix=MEX:.7,ITA:.1,DEU:.1,ENG:.1; eth=Mestizo (Guaraní-Spanish):90:amer@1537,White:4:iber@1537,Indigenous:2:amer,Mennonites, Japanese and others:4:world@1920;
 rs=-9000>an:100|1537>an:20 ch:80|1900>ch:96 pr:2 ot:2|2025>ch:86 pr:9 ot:5;
 cu=latam T10 F10; lg=Spanish,Guaraní; fd=sopa paraguaya@1800,chipa@1700,tereré@1600,asado@1800; fs=Independence Day@1811,San Juan Night@1700,Caacupé Virgin Day@1603,Carnaval@1900; sp=football@1900,harp music@1700,tereré drinking@1600;
@@ -113,7 +113,7 @@ ci=Asunción~1537~0~1537:2 1700:3 1800:3 1900:4 1950:6 2000:8|Ciudad del Este~19
 
 Land(`BRA|Brazil|Brazilian|am-braz
 pre=ama:-1000; nm=-1000:the Amazonian and Tupi-Guaraní peoples:Tribal nations|1500:Colonial Brazil:Portuguese colony|1815:the United Kingdom of Portugal, Brazil and the Algarves:Kingdom|1822:the Empire of Brazil:Empire|1889:the Republic of Brazil:Republic;
-cap=1549:Salvador|1763:Rio de Janeiro|1960:Brasília; cur=1500:barter goods:_:8|1500:réis:rs :12|1822:réis:rs :1|1942:cruzeiros:Cr$:0.06|1986:cruzados:Cz$:0.7|1994:reais:R$:1|1999:reais:R$:0.55|2029:reais:R$:0.2;
+cap=1549:Salvador|1763:Rio de Janeiro|1960:Brasília; cur=1500:barter goods:_:8|1500:réis:rs :12|1822:réis:rs :1|1942:cruzeiros:Cr$:0.06|1986:cruzados:Cz$:0.7|1994:reais:R$:1|1999:reais:R$:0.55|2000:reais:R$:0.2;
 pop=1800:3.3,1900:17.4,1950:52,2000:175,2025:213; pm=0.6; nc=1500:guarani|1549:portuguese|portuguese; ga=latam; mix=ITA:.3,MEX:.3,WAF:.35,JPN:.05; eth=White (Portuguese, Italian, German):43:iber@1500,Pardo (mixed):45:waf@1500,Black Brazilians:10:waf@1530,Indigenous:0.6:amer,Asian Brazilians:1:han@1908;
 rs=-9000>an:100|1500>an:40 ch:60|1700>ch:92 an:3 ot:5|1950>ch:92 pr:4 ot:2 ot:2|2025>ch:50 pr:31 ot:2 sc:14 ot:3;
 cu=latam O15 G25; lg=Portuguese,Tupi-Guaraní,Spanish,Italian,German; fd=feijoada@1700,pão de queijo@1800,moqueca@1700,brigadeiro@1940,churrasco@1800; fs=Carnival@1830,Independence Day@1822,Festa Junina@1700,Círio de Nazaré@1793,Iemanjá Day@1900; sp=football@1894,capoeira@1500,samba@1917,volleyball@1920;
@@ -125,7 +125,7 @@ ci=Salvador~1549~0~1549:2 1700:4 1800:4 1900:5 1950:6|Rio de Janeiro~1565~0~1565
 
 Land(`GUY|Guyana|Guyanese|am-braz
 pre=ama:-1000; nm=-1000:the Arawak, Carib and Warao peoples:Tribal nations|1500:Guiana of the Arawak and Carib:Tribal nations|1616:Dutch Essequibo and Berbice:Dutch colony|1814:British Guiana:British colony|1966:Guyana:Parliamentary monarchy|1970:the Co-operative Republic of Guyana:Republic;
-cap=1616:Fort Kyk-Over-Al|1782:Stabroek|1812:Georgetown; cur=1616:guilders:ƒ:0.4|1814:pounds:£:4.85|1839:British Guiana dollars:G$:1|1966:Guyanese dollars:G$:2.4|1999:dollars:G$:0.0055|2029:dollars:G$:0.0048;
+cap=1616:Fort Kyk-Over-Al|1782:Stabroek|1812:Georgetown; cur=1616:guilders:ƒ:0.4|1814:pounds:£:4.85|1839:British Guiana dollars:G$:1|1966:Guyanese dollars:G$:2.4|1999:dollars:G$:0.0055|2000:dollars:G$:0.0048;
 pop=1800:0.1,1900:0.3,1950:0.5,2000:0.74,2025:0.82; pm=0.4; nc=1616:dutch|1814:colonial|caribbean; ga=carib; mix=IND:.4,NGA:.4,MEX:.1,ENG:.1; eth=Indo-Guyanese:39:indn@1838,Afro-Guyanese:29:waf@1620,Mixed:20:world@1700,Amerindian:11:amer,Other:1:world;
 rs=-1000>na:100|1616>ch:30 pr:40 na:30|1838>pr:40 hi:30 su:9 ch:10 ot:11|2025>pr:28 hi:23 su:7 ch:8 sc:5 ot:29;
 cu=creole O10 G15; lg=English,Guyanese Creole,Hindi,Arawakan,Cariban; fd=pepperpot@1700,cook-up rice@1800,roti@1900,metemgee@1800; fs=Mashramani@1970,Phagwah@1838,Diwali@1838,Emancipation Day@1834; sp=cricket@1895,calypso@1950,boat racing@1900;
@@ -137,7 +137,7 @@ ci=Georgetown~1781~0~1781:1 1812:3 1900:4 1950:5 2000:5|Linden~1960~0~1960:1 200
 
 Land(`SUR|Suriname|Surinamese|am-braz
 pre=ama:-1000; nm=-1000:the Arawak, Carib and Wayana peoples:Tribal nations|1500:Guiana of the Arawak and Carib:Tribal nations|1667:Dutch Surinam:Dutch colony|1954:Suriname within the Kingdom of the Netherlands:Autonomous territory|1975:the Republic of Suriname:Republic;
-cap=1651:Paramaribo; cur=1667:guilders:ƒ:0.4|1940:Surinamese guilders:ƒ:0.5|2004:Surinamese dollars:$:0.36|2029:dollars:$:0.03;
+cap=1651:Paramaribo; cur=1667:guilders:ƒ:0.4|1940:Surinamese guilders:ƒ:0.5|2004:Surinamese dollars:$:0.029|2029:dollars:$:0.03;
 pop=1800:0.05,1900:0.08,1950:0.21,2000:0.45,2025:0.62; pm=0.4; nc=1667:dutch|1954:dutch|dutch; ga=carib; mix=IND:.37,NGA:.36,CHN:.1,MEX:.1,IDN:.07; eth=Indo-Surinamese (Hindustani):27:indn@1873,Maroon:21:waf@1700,Creole:16:waf@1667,Javanese:14:seai@1890,Mixed:13:world@1850,Indigenous:4:amer,Chinese and others:5:han@1850;
 rs=-1000>na:100|1667>pr:70 na:30|1873>pr:45 hi:20 su:15 ch:10 ot:10|2025>pr:24 hi:22 su:14 ch:22 ot:18;
 cu=creole O15; lg=Dutch,Sranan Tongo,Sarnami,Javanese,Maroon creoles; fd=pom@1800,bami and nasi@1900,roti@1900,moksi alesi@1700; fs=Keti Koti@1863,Independence Day@1975,Phagwa@1873,Diwali@1873; sp=football@1920,kaseko music@1950,kawina@1700;

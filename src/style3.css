@@ -136,3 +136,7 @@ body.d-simple .agebar .in { max-width: 980px; }
   .ribbon { margin-bottom: 8px; }
 }
 .cardsheet .stats { margin-top: 12px; }
+
+.maptools { display: flex; gap: 8px; align-items: center; min-width: 0; }
+.maptools .chips { flex: 1 1 auto; min-width: 0; }
+.mapregion { flex: none; max-width: 150px; padding: 5px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; }

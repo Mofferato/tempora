@@ -99,7 +99,7 @@
     const head = `<div class="subtabs" role="tablist">${tabs.map(([id, n]) => `<button data-act="worldTab" data-v="${id}" aria-selected="${ui.worldTab === id}">${n}</button>`).join('')}</div>`;
     if (ui.worldTab === 'nations') return head + nationsView(p);
     if (ui.worldTab === 'orgs') return head + orgsView(p);
-    if (ui.worldTab === 'sandbox') return head + sandboxView(p);
+    if (ui.worldTab === 'sandbox') return head + sandboxView(p) + (ui.sandboxMore ? ui.sandboxMore(p) : '');
     const ex = extra.find(x => x.id === ui.worldTab); if (ex) return head + ex.view(p);
     const w = S.W, g = w.sandbox; w.sandbox = false;
     const html = eraView(p); w.sandbox = g;

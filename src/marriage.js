@@ -129,6 +129,28 @@ const Marriage = (() => {
     ] });
   }
 
+  /* ---------- dynastic matches: a marriage that makes an alliance ---------- */
+  function dynastic(p, kid) {
+    const e = S.era(), cc = p.cc;
+    const pool = Geo.near(cc).map(n => A.C(n)).filter(c => c && c.region !== 'space' && yr() >= c.from && !Geo.atWar(cc, c.id) && S.world.rel(cc, c.id) > -35).map(c => c.id);
+    const to = Geo.pickNear(cc, pool.length ? pool : S.world.countriesAt().filter(c => c.id !== cc && c.region !== 'space').map(c => c.id));
+    if (!to) return;
+    kid.flags.matchY = yr();
+    const sex = kid.orient === 'gay' && S.sameSexOK(e, kid.cc) ? kid.sex : kid.sex === 'M' ? 'F' : 'M';
+    const o = S.mkPerson({ cc: to, sex, born: U.add(yr(), -U.clamp(S.age(kid) + U.ri(-3, 3), S.law('marry', e, to), 45)) });
+    o.cls = 6; o.title = o.sex === 'M' ? 'Prince' : 'Princess'; o.money = S.toVal(e.cost) * U.rand(5, 40); o.nats = [to];
+    const ally = Geo.allied(cc, to), name = S.world.name(to), rel = Math.round(S.world.rel(cc, to));
+    S.prompt({ title: 'A royal match', text: `The court of ${name} proposes that ${kid.first} marry ${o.title} ${o.first} ${o.last}, to seal friendship between the two lands${ally ? ' and strengthen the alliance you already have' : ''}. Relations stand at ${rel > 0 ? '+' : ''}${rel}.`, choices: [
+      { l: 'Agree to the marriage', go: () => {
+        S.marry(kid, o, true); const home = kid.sex === 'F' && A.culture(cc, yr()).F >= 60 ? to : cc; kid.cc = home; o.cc = home;
+        S.world.addRel(cc, to, 25); if (!ally) Geo.ally(cc, to);
+        S.rel(p, kid).c = U.clamp(S.rel(p, kid).c + U.ri(-10, 6)); S.applyFx(p, { fm: 3, rep: 2 });
+        S.log(p, `${kid.first} married ${o.title} ${o.first} of ${name}, and the two lands made an alliance.`, 'family'); return `${kid.first} is married, and ${name} is your ally.`;
+      } },
+      { l: 'Politely decline', go: () => { S.world.addRel(cc, to, -8); S.applyFx(p, { rep: -1 }); return `${name} took the refusal coolly.`; } },
+    ] });
+  }
+
   /* ---------- the years ---------- */
   function weddings(p) {
     for (const [id, r] of Object.entries(p.rels)) {
@@ -149,6 +171,11 @@ const Marriage = (() => {
       const v = prevalence(p.cc, p);
       if (U.chance(v * (a < 30 ? 0.45 : 0.2) * (p.flags.matchWith ? 2.2 : 1))) offer(p);
     }
+    // a ruler's children are matches between states
+    if ((p.office?.lvl ?? 0) >= 5 || (p.cls ?? 2) >= 6) {
+      const kid = S.kids(p).find(k => S.alive(k) && k.sp == null && S.age(k) >= S.law('marry', e, k.cc) + 1 && S.age(k) <= 34 && k.flags.matchY !== yr() && !Object.values(k.rels).some(r => r.k === 'fiance'));
+      if (kid && U.chance(0.2)) { dynastic(p, kid); return; }
+    }
     // matches for your children
     for (const kid of S.kids(p)) {
       if (!S.alive(kid) || kid.sp != null || S.age(kid) < S.law('marry', e, kid.cc) + 1 || S.age(kid) > 34 || kid.flags.matchY === yr()) continue;
@@ -163,5 +190,5 @@ const Marriage = (() => {
   S.addHook('relDrift', (p, o, r) => (r.arr && p.sp === o.id && r.c < 80 ? 1.2 + (r.c < 50 ? 1 : 0) : 0), 'add');
   S.addHook('npcMul', (p, what) => (what === 'divorce' && p.sp != null && S.rel(p, S.P(p.sp)).arr ? 0.35 : 1), 'mul');
 
-  return { prevalence, label, dowType, price, strict, candidate, offer, forChild, pitch, compatScore };
+  return { dynastic, prevalence, label, dowType, price, strict, candidate, offer, forChild, pitch, compatScore };
 })();

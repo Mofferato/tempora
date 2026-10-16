@@ -12,7 +12,7 @@ const JS_ORDER = [
   'data-stats.js', 'data-countries.js', 'data-countries2.js', 'data-regions.js', 'data-extra.js', 'data-life.js',
   'data-map.js', 'data-atlas-arch.js', 'data-faiths.js', 'data-names2.js', 'data-atlas-europe1.js', 'data-atlas-europe2.js', 'data-atlas-europe3.js', 'data-atlas-asia1.js', 'data-atlas-asia2.js', 'data-atlas-asia3.js', 'data-atlas-africa1.js', 'data-atlas-africa2.js', 'data-atlas-africa3.js', 'data-atlas-americas1.js', 'data-atlas-americas2.js', 'data-atlas-oceania.js', 'atlas.js',
   'engine.js', 'engine-player.js', 'genetics.js', 'engine-world.js', 'identity.js', 'faith.js', 'marriage.js', 'net.js', 'personality.js', 'settlements.js', 'society.js', 'politics.js', 'geo.js', 'director.js',
-  'ui.js', 'ui2.js', 'ui3.js', 'ui4.js', 'identity-ui.js', 'faith-ui.js', 'net-ui.js', 'map-ui.js', 'director-ui.js', 'dash.js', 'delta.js', 'places.js', 'places2.js', 'household.js', 'auto.js', 'profile.js', 'introduce.js', 'lifedock.js', 'phone.js', 'sports.js',
+  'ui.js', 'ui2.js', 'ui3.js', 'ui4.js', 'identity-ui.js', 'faith-ui.js', 'net-ui.js', 'map-ui.js', 'director-ui.js', 'dash.js', 'sandbox-ui.js', 'delta.js', 'places.js', 'places2.js', 'household.js', 'auto.js', 'profile.js', 'introduce.js', 'lifedock.js', 'phone.js', 'sports.js',
   'legacy.js', 'ai.js', 'sound.js', 'fusion.js', 'platform.js', 'community.js', 'tree.js', 'late.js', 'main.js',
 ];
 

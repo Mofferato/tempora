@@ -13,7 +13,7 @@ ov=british:1607:1776|usa:1898:1946;`);
 
 Land(`CAN|Canada|Canadian|am-north
 pre=nna:-1000; nm=-1000:the Archaic hunters and Woodland peoples:Forager bands and chiefdoms|1000:the First Nations and Inuit homelands:Tribal nations|1534:New France and the First Nations:French colony and tribal nations|1763:British North America:British colonies|1867:the Dominion of Canada:Dominion|1982:Canada:Federal parliamentary democracy;
-cap=1608:Quebec|1763:Quebec|1841:Kingston|1866:Ottawa; cur=1534:livres:₶:1|1763:pounds:£:4.85|1858:dollars:$:0.9|1914:dollars:$:1|1945:dollars:C$:0.9|1999:dollars:C$:0.7|2029:dollars:C$:0.73;
+cap=1608:Quebec|1763:Quebec|1841:Kingston|1866:Ottawa; cur=1534:livres:₶:1|1763:pounds:£:4.85|1858:dollars:$:0.9|1914:dollars:$:1|1945:dollars:C$:0.9|1999:dollars:C$:0.7|2000:dollars:C$:0.73;
 pop=1800:0.4,1900:5.4,1950:13.7,2000:30.7,2025:41.5; pm=0.3; nc=1534:french|1763:colonial|1913:industrial|1945:wars|1999:modern|digital; ga=settler; mix=ENG:.45,FRA:.25,NGA:.03,CHN:.08,IND:.08,MEX:.04,RUS:.07; eth=British-descended Canadians:32:nweur@1763,French Canadians:14:weur@1608,Other Europeans:20:ceur@1850,Asian Canadians:20:han@1960,Indigenous peoples (First Nations, Inuit, Métis):5:amer,Other:9:world@1980;
 rs=-15000>na:100|1534>na:75 ch:25|1763>na:20 ch:50 pr:30|1900>ch:42 pr:55 ju:1 ot:2|1960>ch:46 pr:48 ju:1 ot:5|2025>ch:29 pr:20 sc:35 su:5 hi:3 sk:2 ot:6;
 cu=settler I-10 O10; lg=English,French,Cree,Inuktitut,Punjabi,Mandarin; fd=poutine@1950,maple syrup@1600,butter tarts@1900,Nanaimo bars@1950; fs=Canada Day@1867,Thanksgiving@1578,Remembrance Day@1919,National Indigenous Peoples Day@1996; sp=ice hockey@1875,lacrosse@1000,curling@1807;
@@ -69,7 +69,7 @@ ci=Cihuatán~600~1100~600:3|San Salvador~1525~0~1525:1 1800:3 1900:4 1950:6 2000
 
 Land(`HND|Honduras|Honduran|am-meso
 pre=mes_am:-400; nm=-400:the Maya and Lenca lands:City-states and chiefdoms|250:the Maya kingdom of Copán and the Lenca chiefdoms:Kingdoms and chiefdoms|900:the Lenca, Pech and Tawahka chiefdoms:Chiefdoms|1524:the Spanish province of Honduras:Spanish colony|1821:the Federal Republic of Central America:Federation|1838:the Republic of Honduras:Republic;
-cap=250:Copán|1524:Trujillo|1580:Comayagua|1880:Tegucigalpa; cur=-1500:barter goods:_:8|1500:cacao beans:_:0.2|1524:reales:rs :12|1800:pesos:$:1.4|1931:lempiras:L:0.5|1945:lempiras:L:0.5|1999:lempiras:L:0.07|2029:lempiras:L:0.04;
+cap=250:Copán|1524:Trujillo|1580:Comayagua|1880:Tegucigalpa; cur=-1500:barter goods:_:8|1500:cacao beans:_:0.2|1524:reales:rs :12|1800:pesos:$:1.4|1931:lempiras:L:0.5|1945:lempiras:L:0.5|1999:lempiras:L:0.07|2000:lempiras:L:0.04;
 pop=1800:0.13,1900:0.4,1950:1.4,2000:6.3,2025:10.8; pm=1; nc=900:nahuatl|spanish; ga=amer; eth=Mestizo:90:amer,Indigenous (Lenca, Miskito, Maya):7:amer,Afro-Honduran (Garifuna):2:waf@1797,White:1:iber;
 rs=-10000>an:100|-1500>ma:100|1524>ma:20 ch:80|1700>ch:98 ma:2|1950>ch:94 pr:4 sc:2|2025>ch:46 pe:41 pr:3 sc:9 ot:1;
 cu=latam; lg=Spanish,Miskito,Garifuna,Lenca; fd=baleadas@1900,sopa de caracol@1800,tamales@1000; fs=Feria Juniana@1900,Independence Day@1821,Garifuna Day@1797; sp=football@1920,punta dance@1800,baseball@1930;
@@ -81,7 +81,7 @@ ci=Copán~426~900~426:3 700:4 900:1|Comayagua~1537~0~1537:2 1700:3 1900:2|Teguci
 
 Land(`NIC|Nicaragua|Nicaraguan|am-meso
 pre=mes_am:-400; nm=-400:the Nahua, Chorotega and Misumalpan lands:Chiefdoms|900:the Chorotega, Nicarao and Miskito chiefdoms:Chiefdoms|1524:the Spanish province of Nicaragua:Spanish colony|1821:the Federal Republic of Central America:Federation|1838:the Republic of Nicaragua:Republic;
-cap=1524:León Viejo|1610:León|1858:Managua; cur=-1500:barter goods:_:8|1500:cacao beans:_:0.2|1524:reales:rs :12|1800:pesos:$:1.4|1912:córdobas:C$:1|1945:córdobas:C$:0.2|1999:córdobas:C$:0.08|2029:córdobas:C$:0.027;
+cap=1524:León Viejo|1610:León|1858:Managua; cur=-1500:barter goods:_:8|1500:cacao beans:_:0.2|1524:reales:rs :12|1800:pesos:$:1.4|1912:córdobas:C$:1|1945:córdobas:C$:0.2|1999:córdobas:C$:0.08|2000:córdobas:C$:0.027;
 pop=1800:0.2,1900:0.4,1950:1.1,2000:5.1,2025:7; pm=0.8; nc=900:nahuatl|spanish; ga=amer; eth=Mestizo:69:amer,White:17:iber@1524,Afro-Nicaraguan (Creole, Garifuna):9:waf@1630,Indigenous (Miskito, Sumo and others):5:amer;
 rs=-10000>an:100|-1500>ma:100|1524>ma:20 ch:80|1700>ch:98 ma:2|1950>ch:96 pr:3 sc:1|2025>ch:50 pe:28 pr:12 sc:8 ot:2;
 cu=latam; lg=Spanish,Miskito,Creole English; fd=gallo pinto@1800,nacatamal@1700,vigorón@1900; fs=La Purísima@1700,Independence Day@1821,Santo Domingo festivals@1885; sp=baseball@1880,boxing@1950,football@1950;
@@ -93,7 +93,7 @@ ci=León Viejo~1524~1610~1524:2|Granada~1524~0~1524:2 1700:3 1900:3 1950:4|León
 
 Land(`CRI|Costa Rica|Costa Rican|am-meso
 pre=mes_am:-400; nm=-400:the Chibchan and Chorotega lands:Chiefdoms|900:the Huetar, Boruca and Chorotega chiefdoms:Chiefdoms|1522:the Spanish province of Costa Rica:Spanish colony|1821:the Federal Republic of Central America:Federation|1838:the Republic of Costa Rica:Republic;
-cap=1563:Cartago|1823:San José; cur=-1500:barter goods:_:8|1500:cacao beans:_:0.2|1522:reales:rs :12|1800:pesos:$:1.4|1896:colones:₡:0.4|1945:colones:₡:0.18|1999:colones:₡:0.003|2029:colones:₡:0.002;
+cap=1563:Cartago|1823:San José; cur=-1500:barter goods:_:8|1500:cacao beans:_:0.2|1522:reales:rs :12|1800:pesos:$:1.4|1896:colones:₡:0.4|1945:colones:₡:0.18|1999:colones:₡:0.003|2000:colones:₡:0.002;
 pop=1800:0.06,1900:0.3,1950:0.9,2000:3.9,2025:5.2; pm=0.5; nc=900:nahuatl|spanish; ga=latam; eth=Mestizo and White:83:iber@1522,Mulatto and Afro-Costa Rican:7:waf@1850,Indigenous:2:amer,Asian Costa Rican:1:han@1870,Other:7:world@1980;
 rs=-10000>an:100|-1500>ma:100|1522>ma:20 ch:80|1700>ch:98 ma:2|1950>ch:94 pr:4 sc:2|2025>ch:52 pe:25 pr:9 sc:12 ot:2;
 cu=latam O10 G30; lg=Spanish,Mekatelyu,Bribri; fd=gallo pinto@1800,casado@1900,tamales@1000; fs=Independence Day@1821,Fiestas Palmares@1900,Oxcart Festival@1950; sp=football@1920,surfing@1960,oxcart painting@1900;
@@ -129,7 +129,7 @@ ci=Havana~1519~0~1519:2 1700:4 1800:5 1900:6 1950:7|Santiago de Cuba~1515~0~1515
 
 Land(`HTI|Haiti|Haitian|am-carib
 pre=car:-500; nm=-500:the Taíno chiefdoms of Ayiti:Chiefdoms|1492:Hispaniola:Chiefdoms and Spanish settlements|1625:Saint-Domingue:French colony|1804:Haiti:Republic|1915:Haiti under US occupation:Occupied|1934:the Republic of Haiti:Republic;
-cap=1625:Cap-Français|1804:Port-au-Prince; cur=1492:barter goods:_:8|1625:livres:₶:1|1804:gourdes:G:1.4|1914:gourdes:G:0.2|1945:gourdes:G:0.2|1999:gourdes:G:0.06|2029:gourdes:G:0.0075;
+cap=1625:Cap-Français|1804:Port-au-Prince; cur=1492:barter goods:_:8|1625:livres:₶:1|1804:gourdes:G:1.4|1914:gourdes:G:0.2|1945:gourdes:G:0.2|1999:gourdes:G:0.06|2000:gourdes:G:0.0075;
 pop=1700:0.03,1800:0.5,1900:1.5,1950:3.2,2000:8.5,2025:11.8; pm=0.5; nc=1625:haitian|haitian; ga=waf; eth=Haitians of African descent:95:waf@1500,Mixed (affranchi) Haitians:5:waf@1625;
 rs=1492>na:100|1500>na:40 ch:60|1700>ch:80 vo:20|1950>ch:65 vo:15 pr:20|2025>ch:55 pr:30 vo:2 ot:13;
 cu=creole O5 G15; lg=Haitian Creole,French; fd=griot@1800,joumou soup@1804,diri ak djon djon@1800; fs=Independence Day@1804,Carnival@1800,Fèt Gede@1800; sp=football@1900,konpa music@1950,cockfighting@1800;
@@ -141,7 +141,7 @@ ci=Cap-Français~1670~0~1670:2 1750:4 1800:3 1900:2|Port-au-Prince~1749~0~1749:1
 
 Land(`DOM|the Dominican Republic|Dominican|am-carib
 pre=car:-500; nm=-500:the Taíno chiefdoms of Quisqueya:Chiefdoms|1492:Spanish Santo Domingo:Spanish colony|1795:Santo Domingo under France:French rule|1821:Spanish Haiti:Occupied by Haiti|1844:the Dominican Republic:Republic|1916:the Dominican Republic under US occupation:Occupied|1924:the Dominican Republic:Republic;
-cap=1496:Santo Domingo; cur=1492:barter goods:_:8|1496:reales:rs :12|1800:pesos:$:1.4|1905:pesos:$:0.5|1947:pesos:RD$:1|1999:pesos:RD$:0.06|2029:pesos:RD$:0.017;
+cap=1496:Santo Domingo; cur=1492:barter goods:_:8|1496:reales:rs :12|1800:pesos:$:1.4|1905:pesos:$:0.5|1947:pesos:RD$:1|1999:pesos:RD$:0.06|2000:pesos:RD$:0.017;
 pop=1700:0.05,1800:0.1,1900:0.6,1950:2.4,2000:8.5,2025:11.3; pm=0.4; nc=1492:native_na|1496:spanish|spanish; ga=carib; mix=ITA:.4,NGA:.4,MEX:.2; eth=Mixed (mulatto):70:waf@1500,White Dominicans:16:iber@1496,Black Dominicans:11:waf@1500,Other:3:world;
 rs=1492>na:100|1496>na:20 ch:80|1800>ch:95 vo:4 ot:1|1950>ch:90 pr:5 vo:3 sc:2|2025>ch:57 pr:21 sc:19 vo:1 ot:2;
 cu=creole T5; lg=Spanish,Haitian Creole; fd=la bandera@1900,sancocho@1700,mangú@1800; fs=Carnival@1520,Independence Day@1844,Our Lady of Altagracia Day@1691; sp=baseball@1890,boxing@1930,merengue and bachata@1900;
@@ -153,7 +153,7 @@ ci=Santo Domingo~1496~0~1496:3 1600:3 1850:3 1900:4 1950:5 2000:7|Santiago~1495~
 
 Land(`JAM|Jamaica|Jamaican|am-carib
 pre=car:-500; nm=-500:the Taíno of Xaymaca:Chiefdoms|1494:Spanish Jamaica:Spanish colony|1655:British Jamaica:British colony|1962:Jamaica:Parliamentary monarchy;
-cap=1509:Santiago de la Vega|1692:Port Royal|1872:Kingston; cur=1494:barter goods:_:8|1509:reales:rs :12|1655:pounds:£:4.85|1913:pounds:£:4.85|1969:Jamaican dollars:J$:2|1999:dollars:J$:0.025|2029:dollars:J$:0.0064;
+cap=1509:Santiago de la Vega|1692:Port Royal|1872:Kingston; cur=1494:barter goods:_:8|1509:reales:rs :12|1655:pounds:£:4.85|1913:pounds:£:4.85|1969:Jamaican dollars:J$:2|1999:dollars:J$:0.025|2000:dollars:J$:0.0064;
 pop=1700:0.05,1800:0.4,1900:0.75,1950:1.4,2000:2.6,2025:2.8; pm=0.5; nc=1655:colonial|caribbean; ga=carib; mix=NGA:.8,ENG:.1,IND:.05,CHN:.05; eth=Afro-Jamaican:92:waf@1655,East Indian:1:indn@1845,Chinese and Syrian-Lebanese:1:han@1850,Mixed and others:6:world@1700;
 rs=1494>na:100|1509>ch:70 na:30|1655>pr:50 at:50|1950>pr:75 ch:8 at:8 sc:5 ot:4|2025>pr:64 ch:3 at:2 sc:21 ot:10;
 cu=creole O10 G25; lg=English,Jamaican Patois; fd=jerk chicken@1700,ackee and saltfish@1800,patties@1900; fs=Independence Day@1962,Emancipation Day@1838,Reggae Sumfest@1993; sp=sprinting@1948,cricket@1895,reggae and dancehall music@1960;
@@ -177,7 +177,7 @@ ci=Nassau~1670~0~1670:1 1800:2 1900:3 1950:4 2000:5|Freeport~1955~0~1955:1 2000:
 
 Land(`TTO|Trinidad and Tobago|Trinidadian|am-carib
 pre=car:-500; nm=-500:the Arawak and Carib islands:Chiefdoms|1498:Spanish Trinidad and Dutch Tobago:Spanish and Dutch outposts|1797:British Trinidad and Tobago:British colony|1962:Trinidad and Tobago:Parliamentary monarchy|1976:Trinidad and Tobago:Republic;
-cap=1592:San José de Oruña|1783:Port of Spain; cur=1498:barter goods:_:8|1592:reales:rs :12|1797:pounds:£:4.85|1935:Trinidad and Tobago dollars:TT$:0.5|1964:dollars:TT$:0.5|1999:dollars:TT$:0.16|2029:dollars:TT$:0.15;
+cap=1592:San José de Oruña|1783:Port of Spain; cur=1498:barter goods:_:8|1592:reales:rs :12|1797:pounds:£:4.85|1935:Trinidad and Tobago dollars:TT$:0.5|1964:dollars:TT$:0.5|1999:dollars:TT$:0.16|2000:dollars:TT$:0.15;
 pop=1800:0.04,1900:0.27,1950:0.64,2000:1.3,2025:1.5; pm=1; nc=1797:colonial|caribbean; ga=carib; mix=NGA:.45,IND:.4,ENG:.1,CHN:.05; eth=Indo-Trinidadian:35:indn@1845,Afro-Trinidadian:34:waf@1700,Mixed:23:world@1850,Other (Chinese, Syrian, White):8:world@1850;
 rs=-1000>na:100|1498>ch:70 na:30|1797>ch:50 pr:30 vo:20|1845>ch:35 hi:25 pr:25 su:6 ot:9|2025>pr:32 ch:22 hi:18 su:5 sc:9 ot:14;
 cu=creole O15 G25; lg=English,Trinidadian Creole,Hindi,Spanish; fd=doubles@1936,pelau@1800,roti@1900; fs=Carnival@1783,Diwali@1845,Eid al-Fitr@1845,Independence Day@1962; sp=cricket@1895,steelpan@1940,calypso@1900;

@@ -17,7 +17,7 @@ ci=Sydney~1788~0~1788:1 1850:4 1900:6 1950:8 2000:9|Melbourne~1835~0~1835:1 1860
 
 Land(`NZL|New Zealand|New Zealander|oc-aus
 pre=nz:1769; nm=1250:the Māori iwi of Aotearoa:Tribes|1769:the Māori iwi of Aotearoa:Tribes|1840:the colony of New Zealand:British colony|1907:the Dominion of New Zealand:Dominion|1947:New Zealand:Parliamentary democracy;
-cap=1250:a fortified pā|1840:Russell|1841:Auckland|1865:Wellington; cur=1769:greenstone and barter:_:8|1840:pounds:£:4.85|1933:New Zealand pounds:£NZ:3.6|1967:dollars:NZ$:1.4|1999:dollars:NZ$:0.52|2029:dollars:NZ$:0.6;
+cap=1250:a fortified pā|1840:Russell|1841:Auckland|1865:Wellington; cur=1769:greenstone and barter:_:8|1840:pounds:£:4.85|1933:New Zealand pounds:£NZ:3.6|1967:dollars:NZ$:1.4|1999:dollars:NZ$:0.52|2000:dollars:NZ$:0.6;
 pop=1840:0.1,1858:0.1,1900:0.77,1950:1.9,2000:3.9,2025:5.2; pm=0.8; nc=1840:colonial|1914:wars|1999:modern|digital; ga=settler; mix=ENG:.6,CHN:.15,IND:.15,ITA:.05,MEX:.05; eth=New Zealand European:64:nweur@1840,Māori:17:pol,Asian New Zealanders:17:han@1980,Pacific peoples:9:pol@1950,Other:3:world@1990;
 rs=1250>na:100|1840>na:25 pr:50 ch:25|1950>pr:65 ch:25 ot:10|2025>pr:25 ch:15 sc:48 hi:3 su:1 sk:1 ot:7;
 cu=settler I-10 O10; lg=English,Māori,New Zealand Sign Language,Samoan; fd=hāngī@1250,pavlova@1926,fish and chips@1900,hokey pokey ice cream@1950,kūmara@1250; fs=Waitangi Day@1840,ANZAC Day@1916,Matariki@1250,Guy Fawkes@1860; sp=rugby@1870,sailing@1900,haka@1250,cricket@1860;
@@ -29,7 +29,7 @@ ci=Auckland~1840~0~1840:1 1860:3 1900:5 1950:7 2000:8|Wellington~1840~0~1840:1 1
 
 Land(`PNG|Papua New Guinea|Papua New Guinean|oc-mel
 pre=mel:1500; nm=-1500:the Papuan hunters and gardeners:Foragers and gardeners|1500:the clans and chiefdoms of Papua:Clans|1884:German New Guinea and British Papua:Colonies|1920:the Territory of Papua and New Guinea:Australian-run mandate|1975:Papua New Guinea:Parliamentary monarchy;
-cap=1884:Port Moresby|1975:Port Moresby; cur=1800:shell money and pigs:_:3|1884:pounds:£:4.85|1910:Australian pounds:£A:3.9|1975:kina:K:1.5|1999:kina:K:0.28|2029:kina:K:0.25;
+cap=1884:Port Moresby|1975:Port Moresby; cur=1800:shell money and pigs:_:3|1884:pounds:£:4.85|1910:Australian pounds:£A:3.9|1975:kina:K:1.5|1999:kina:K:0.28|2000:kina:K:0.25;
 pop=1800:1.5,1900:1.9,1950:1.8,2000:5.4,2025:10.4; pm=2; nc=1884:colonial|melanesian; ga=mel; eth=Papuan and Melanesian peoples (800 languages):99:mel,Others:1:world@1900;
 rs=-40000>na:100|1884>na:80 pr:20|1950>pr:60 ch:25 na:15|2025>pr:60 ch:27 na:8 sc:3 ot:2;
 cu=melanesian I-10 O20; lg=Tok Pisin,English,Hiri Motu,840 other languages; fd=sago@1000,kaukau (sweet potato)@1500,mumu feast@-1000,saksak@1000; fs=Independence Day@1975,Sing-sing festivals@-1000,Goroka Show@1957; sp=rugby league@1960,spear fishing@-1000,traditional dance@-1000;
@@ -41,7 +41,7 @@ ci=Kuk~-7000~-1000~-7000:1|Port Moresby~1873~0~1873:1 1900:2 1950:3 2000:6|Lae~1
 
 Land(`FJI|Fiji|Fijian|oc-mel
 pre=mel:-1000; nm=-1500:the Lapita seafarers:Island villages|1500:the Fijian chiefdoms:Chiefdoms|1874:the Crown Colony of Fiji:British colony|1970:Fiji:Dominion|1987:the Republic of Fiji:Republic;
-cap=1500:Bau|1874:Levuka|1882:Suva; cur=1800:whale-tooth tabua and barter:_:3|1874:pounds:£:4.85|1969:Fijian dollars:F$:2.2|1999:dollars:F$:0.52|2029:dollars:F$:0.44;
+cap=1500:Bau|1874:Levuka|1882:Suva; cur=1800:whale-tooth tabua and barter:_:3|1874:pounds:£:4.85|1969:Fijian dollars:F$:2.2|1999:dollars:F$:0.52|2000:dollars:F$:0.44;
 pop=1800:0.1,1900:0.12,1950:0.3,2000:0.8,2025:0.93; pm=2; nc=1874:colonial|melanesian; ga=mel; mix=IND:.4,WAF:.3,CHN:.1,ENG:.1,MEX:.1; eth=iTaukei (indigenous Fijians):57:mel,Indo-Fijians:37:indn@1879,Rotuman, Chinese and others:6:world@1900;
 rs=-1000>na:100|1830>pr:80 na:20|1879>pr:60 hi:30 su:6 ot:4|2025>pr:64 hi:26 su:6 sc:2 ot:2;
 cu=melanesian I-10 O15; lg=English,Fijian,Fiji Hindi; fd=kokoda@1500,lovo earth-oven feasts@1000,roti@1879,palusami@1500; fs=Fiji Day@1970,Diwali@1879,Hibiscus Festival@1956,Bula Festival@1960; sp=rugby sevens@1920,rugby@1880,fire-walking@1000;
@@ -53,7 +53,7 @@ ci=Bau~1800~1874~1800:1|Levuka~1850~0~1850:1 1874:2 1900:2|Suva~1870~0~1870:1 18
 
 Land(`SLB|the Solomon Islands|Solomon Islander|oc-mel
 pre=mel:1500; nm=-1500:the Papuan and Lapita settlers:Island villages|1500:the island clans and chiefdoms:Clans|1893:the British Solomon Islands Protectorate:British protectorate|1978:the Solomon Islands:Parliamentary monarchy;
-cap=1893:Tulagi|1952:Honiara; cur=1800:shell money and pigs:_:3|1893:pounds:£:4.85|1966:Australian dollars:A$:1.1|1978:Solomon Islands dollars:SI$:1.2|1999:dollars:SI$:0.2|2029:dollars:SI$:0.12;
+cap=1893:Tulagi|1952:Honiara; cur=1800:shell money and pigs:_:3|1893:pounds:£:4.85|1966:Australian dollars:A$:1.1|1978:Solomon Islands dollars:SI$:1.2|1999:dollars:SI$:0.2|2000:dollars:SI$:0.12;
 pop=1800:0.09,1900:0.1,1950:0.09,2000:0.4,2025:0.8; pm=2; nc=1893:colonial|melanesian; ga=mel; eth=Melanesian:95:mel,Polynesian:3:pol,Micronesian and others:2:mic;
 rs=-1000>na:100|1900>pr:70 na:30|1950>pr:90 na:5 ot:5|2025>pr:93 ch:5 ot:2;
 cu=melanesian O20; lg=Solomon Islands Pijin,English,70 Melanesian languages; fd=taro@500,cassava pudding@1800,ngali nut@1000,fish@1000; fs=Independence Day@1978,Pacific festivals@1900,Christmas@1900; sp=football@1960,rugby@1960,panpipes@1000;
@@ -65,7 +65,7 @@ ci=Tulagi~1893~0~1893:1 1942:2|Honiara~1943~0~1943:1 1960:3 2000:4|Gizo~1900~0~1
 
 Land(`VUT|Vanuatu|Ni-Vanuatu|oc-mel
 pre=mel:1500; nm=-1500:the Lapita settlers of the New Hebrides:Island villages|1500:the island clans:Clans|1887:the Anglo-French Condominium of the New Hebrides:Condominium|1980:the Republic of Vanuatu:Republic;
-cap=1887:Vila|1980:Port Vila; cur=1800:pigs, tusks and mats:_:3|1887:francs and pounds:£:4.85|1980:vatu:Vt:1.0|1999:vatu:Vt:0.008|2029:vatu:Vt:0.0084;
+cap=1887:Vila|1980:Port Vila; cur=1800:pigs, tusks and mats:_:3|1887:francs and pounds:£:4.85|1980:vatu:Vt:1.0|1999:vatu:Vt:0.008|2000:vatu:Vt:0.0084;
 pop=1800:0.1,1900:0.1,1950:0.05,2000:0.2,2025:0.33; pm=2; nc=1887:colonial|melanesian; ga=mel; eth=Ni-Vanuatu (Melanesian):98:mel,Others:2:world@1900;
 rs=-1000>na:100|1900>pr:75 na:25|1950>pr:85 na:10 ot:5|2025>pr:80 ch:10 ot:10;
 cu=melanesian O20; lg=Bislama,English,French,113 local languages; fd=laplap@1000,kava@500,yam@-1000,coconut crab@1000; fs=Independence Day@1980,Yam harvest festivals@1000,Naghol land-diving@1000; sp=football@1960,land diving@1000,kastom dance@1000;
@@ -77,7 +77,7 @@ ci=Port Vila~1887~0~1887:1 1950:2 2000:4|Luganville~1942~0~1942:1 2000:3;`);
 
 Land(`WSM|Samoa|Samoan|oc-pol
 pre=pol:-900; nm=-900:the Lapita settlers of Sāmoa:Island villages|1000:the Samoan matai chiefdoms:Chiefdoms|1900:German Samoa:German colony|1914:New Zealand-run Western Samoa:Mandate|1962:Samoa:Parliamentary republic;
-cap=1000:Mulinu'u|1900:Apia; cur=1800:fine mats and barter:_:6|1900:marks:M:0.24|1914:pounds:£:4.85|1967:tala:WS$:1.4|1999:tala:WS$:0.34|2029:tala:WS$:0.37;
+cap=1000:Mulinu'u|1900:Apia; cur=1800:fine mats and barter:_:6|1900:marks:M:0.24|1914:pounds:£:4.85|1967:tala:WS$:1.4|1999:tala:WS$:0.34|2000:tala:WS$:0.37;
 pop=1800:0.04,1900:0.04,1950:0.07,2000:0.17,2025:0.22; pm=3; nc=1900:colonial|polynesian; ga=pol; eth=Samoan:93:pol,Euronesian (mixed):7:pol@1830;
 rs=-1000>na:100|1830>pr:95 na:5|1950>pr:80 ch:15 ot:5|2025>pr:55 ch:20 ot:25;
 cu=polynesian I-10 O20; lg=Samoan,English; fd=oka@500,palusami@500,taro@-1000,coconut cream@1000; fs=Independence Day@1962,White Sunday@1830,Teuila Festival@1960; sp=rugby@1920,kilikiti@1900,tattoo ceremonies@-500;
@@ -89,7 +89,7 @@ ci=Mulinu'u~1000~0~1000:1|Apia~1850~0~1850:1 1900:2 1950:3 2000:4;`);
 
 Land(`TON|Tonga|Tongan|oc-pol
 pre=pol:-900; nm=-900:the Lapita settlers of Tonga:Island villages|950:the Tongan Empire (Tuʻi Tonga):Island empire|1845:the Kingdom of Tonga:Kingdom|1900:the Tongan protectorate:British protectorate|1970:the Kingdom of Tonga:Constitutional monarchy;
-cap=950:Mu'a|1845:Nuku'alofa; cur=1800:fine mats and barter:_:6|1845:pa'anga:T$:1|1967:pa'anga:T$:1.1|1999:pa'anga:T$:0.5|2029:pa'anga:T$:0.42;
+cap=950:Mu'a|1845:Nuku'alofa; cur=1800:fine mats and barter:_:6|1845:pa'anga:T$:1|1967:pa'anga:T$:1.1|1999:pa'anga:T$:0.5|2000:pa'anga:T$:0.42;
 pop=1800:0.04,1900:0.02,1950:0.05,2000:0.1,2025:0.1; pm=3; nc=1845:colonial|polynesian; ga=pol; eth=Tongan:97:pol,Other:3:world@1900;
 rs=-900>na:100|1830>pr:95 na:5|1950>pr:80 ch:15 ot:5|2025>pr:64 ch:20 ot:16;
 cu=polynesian I-10 O20; lg=Tongan,English; fd=lu pulu@1000,ʻota ika@1000,taro@-900,roasted pig@1000; fs=Heilala Festival@1962,Constitution Day@1875,Kingdom birthday@1918; sp=rugby@1920,taekwondo@2000,lakalaka dance@1000;

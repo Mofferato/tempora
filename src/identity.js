@@ -20,7 +20,7 @@ const Identity = (() => {
   /* ---------- ancestry ---------- */
   const mixChance = (cc, y) => {
     const g = A.ethnic(cc, y), div = 1 - g.reduce((s, x) => s + x.s * x.s, 0);   // 0 = one people, ~1 = very mixed
-    return U.clamp((y < 1500 ? 0.015 : y < 1900 ? 0.03 : y < 1990 ? 0.06 : 0.12) + div * (y < 1500 ? 0.06 : 0.22), 0.01, 0.55);
+    return U.clamp(y < 1500 ? 0.008 + div * 0.03 : y < 1900 ? 0.015 + div * 0.05 : y < 1990 ? 0.04 + div * 0.12 : 0.07 + div * 0.17, 0.005, 0.4);
   };
   const clusterPool = k => (A.genCache && A.genCache['@' + k]) || null;
   function pickGroup(cc, y, notName) {
@@ -42,6 +42,18 @@ const Identity = (() => {
     return out.map(x => ({ ...x, s: +(x.s / t2).toFixed(3) }));
   }
   const merge = (fa, mo) => norm([...(eth(fa) || []).map(x => ({ ...x, s: x.s / 2 })), ...(eth(mo) || []).map(x => ({ ...x, s: x.s / 2 }))]);
+  // how often people marry within their own people: nearly always in the past, less where a society is open to outsiders
+  const endogamy = (cc, y) => {
+    const modern = U.clamp(1 - (A.culture(cc, y).O - 40) * 0.0025, 0.85, 0.99);
+    return y < 1800 ? 0.985 : y < 1950 ? Math.min(0.97, modern + 0.04) : modern;
+  };
+  // two people with no known parents who marry usually come from the same people (seeded families, spouses of strangers)
+  function align(a, b) {
+    if (a.fa != null || a.mo != null || b.fa != null || b.mo != null) return;
+    const ea = eth(a), eb = eth(b); if (!ea || !eb || (ea.length === 1 && eb.length === 1 && ea[0].n === eb[0].n)) return;
+    if (!U.chance(endogamy(b.cc || a.cc, yr()))) return;
+    b.eth = ea.map(x => ({ ...x })); b.g = genomeFor(b.eth, b.cc, b.born, b.sex);
+  }
   // a person's ancestry, made on demand for anyone who lacks it (old saves, strangers)
   function eth(p) {
     if (!p) return null;
@@ -221,6 +233,7 @@ const Identity = (() => {
   /* ---------- creation: ancestry and a family from elsewhere ---------- */
   // opt.anc / opt.anc2: ancestry group names (one: that people; two: a child of both); opt.origin + opt.originSide: parents who came from another country
   function applyCreation(pl, { fa, mo, opt }) {
+    delete S.W.famEth;
     if (!opt || (!opt.anc && !opt.origin)) return;
     const y = yr(), cc = pl.cc, W = S.W, all = Object.values(W.people);
     const grp = n => A.ethnic(cc, y).find(x => x.n === n) || { n, k: null, s: 1 };
@@ -263,9 +276,15 @@ const Identity = (() => {
     const fa = S.P(p.fa), mo = S.P(p.mo);
     if (fa && mo && fa.eth && mo.eth) p.eth = merge(fa, mo);
     else if (o.eth) p.eth = norm(o.eth);
+    else if (S.W.spawnCC && U.chance(endogamy(p.cc || 'ENG', p.born))) {
+      // a family being seeded around a newborn: its founders come from one district, so mostly from one people
+      const g = (S.W.famEth ||= rollEth(p.cc || 'ENG', p.born)); p.eth = g.map(x => ({ ...x })); p.g = genomeFor(p.eth, p.cc, p.born, p.sex);
+    }
+    else if (o.near && o.near.eth && U.chance(endogamy(p.cc || 'ENG', p.born))) { p.eth = o.near.eth.map(x => ({ ...x })); p.g = genomeFor(p.eth, p.cc, p.born, p.sex); }
     else { p.eth = rollEth(p.cc || 'ENG', p.born); p.g = genomeFor(p.eth, p.cc, p.born, p.sex); }
     p.nats = fa || mo ? natsForChild(p, fa, mo) : [p.cc];
   });
+  S.addHook('onWed', (a, b) => align(a, b));
   S.addHook('onBirth', (c, fa, mo) => { if (S.W.opts?.[NAME_OPT] !== 'auto') askName(c, fa, mo); });
   S.addHook('preYear', p => {
     if (!p.res || p.res.cc !== p.cc) p.res = { cc: p.cc, y: yr() };

@@ -256,6 +256,8 @@ test('God mode is now Sandbox mode, and old saves are carried over', () => {
   fresh({ year: 1900, cc: 'FRA' }); const w = S.W; w.mode = 'god'; w.godOn = true; w.god = false; w.v = 3;
   S.hooks.migrate(w); eq(w.mode, 'sandbox'); eq(w.sandboxOn, true); ok(!('godOn' in w)); ok(S.sandboxAllowed(), 'allowed');
   fresh({ year: 1900, cc: 'FRA', mode: 'sandbox' }); ok(S.sandboxAllowed()); ok(ui.views.world(S.me()).includes('Sandbox'), 'tab shown');
+  ui.worldTab = 'sandbox'; const h = ui.views.world(S.me()); ui.worldTab = 'era'; ok(h.includes('The world') && h.includes('Story director') && h.includes('Add a nationality'), 'sandbox tools for the new systems');
+  ok(T.Director.force(S.me(), 'dream') === true, 'force an event'); S.prompts.length = 0;
 });
 
 
@@ -265,6 +267,23 @@ test('Claude’s goals are bounded to the objectives the game knows', () => {
   const g = D.validGoal({ kind: 'friends', title: '<i>Befriend</i> many', why: 'ok', target: 9999, years: 99, reward: 'reputation' }, p);
   ok(g && g.obj.v === 12 && !/[<>]/.test(g.title) && U.span(S.W.year, g.by) <= 15, 'clamped'); ok(g.reward.rep > 0);
   const m = D.validGoal({ kind: 'money', title: 'Rich', target: 1e9 }, p); ok(m.obj.v < 1e8 * 0 + 1e12, 'money bounded');
+});
+
+
+test('a ruler’s child can marry to make an alliance', () => {
+  const { Geo: G } = T; fresh({ year: 1650, cc: 'FRA' }); const p = S.me(); p.born = 1600; p.office = { lvl: 5, cc: 'FRA', t: 'King' };
+  const kid = S.childOf(p, S.mkPerson({ cc: 'FRA', sex: p.sex === 'M' ? 'F' : 'M', born: 1602 }), 1630); kid.sp = null; kid.cc = 'FRA';
+  S.prompts.length = 0; M.dynastic(p, kid); const pr = S.prompts.find(x => x.title === 'A royal match'); ok(pr, 'offered');
+  pr.choices[0].go(); ok(kid.sp != null, 'married'); const o = S.P(kid.sp); eq(o.title === 'Prince' || o.title === 'Princess', true);
+  ok(G.alliesOf('FRA').length >= 1, 'allied');
+});
+
+
+test('families keep to their own people more often than not', () => {
+  let mixed = 0, n = 0;
+  for (let i = 0; i < 60; i++) { fresh({ year: 1700, cc: 'NGA' }); const p = S.me(); n++; if (I.eth(p).length > 1) mixed++; }
+  ok(mixed / n < 0.25, 'Nigeria 1700: mixed ' + mixed + '/' + n);
+  mixed = 0; for (let i = 0; i < 120; i++) { fresh({ year: 2005, cc: 'USA' }); if (I.eth(S.me()).length > 1) mixed++; } ok(mixed / 120 > 0.07 && mixed / 120 < 0.7, 'USA 2005 mixed ' + mixed + '/120');
 });
 
 runAll().then(() => { console.log(`\n${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0); });

@@ -35,6 +35,7 @@ The game is free and open source, with no ads and no accounts required. It is a 
 - **Feedback everywhere.** Every action, event and choice shows exactly how your stats changed. Buttons preview their effects before you commit.
 - **Play hands-off if you like.**
   - Repeat last year's actions, or pin actions to run every year.
+  - Skip ahead (the fast-forward button beside Age) until something needs a decision.
   - Autoplay toward a goal.
   - A built-in Guide that suggests your best moves.
 - **Optional Claude integration.** You can chat with any character, ask for advice, have Claude play a year for you, or read your life back as a story.
