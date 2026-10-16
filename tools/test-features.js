@@ -189,7 +189,7 @@ test('allies are drawn into wars', () => {
   let joined = false; for (let i = 0; i < 40 && !joined; i++) { delete war.geo; war.where = ['DEU', 'FRA']; G.tick(); joined = war.where.length > 2; } ok(joined, 'someone joined: ' + war.where.join());
 });
 test('diplomacy needs high office', () => {
-  const { Geo: G } = T; fresh({ year: 1950, cc: 'USA' }); const p = S.me(); p.office = null; ok(/high office/.test(G.diplomacy('CAN', 'alliance')));
+  const { Geo: G } = T; fresh({ year: 1950, cc: 'USA' }); const p = S.me(); p.office = null; p.cls = 1; p.job = null; p.orgs = []; ok(/high office/.test(G.diplomacy('CAN', 'alliance')));
   p.office = { lvl: 5, cc: 'USA' }; p.did = {}; const t = G.diplomacy('CAN', 'trade'); ok(/agreement|trade/i.test(t), t);
 });
 test('the atlas page renders', () => {

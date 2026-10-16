@@ -106,5 +106,14 @@ LATE.push(() => {
   ui.on.setDensity = el => { ui.open = null; $('#modal').innerHTML = ''; ui.setDensity(el.dataset.v); toast('Display changed.'); };
   ui.on.display = () => { ui.open = null; ui.displaySettings(); };
 
+  // the menu gains the display settings and, where the browser allows, installing the app
+  const menu = ui.on.menu;
+  ui.on.menu = () => {
+    menu();
+    const sh = $('#modal .sheet'); if (!sh) return;
+    sh.insertAdjacentHTML('beforeend', `<div class="eyebrow" style="margin-top:14px">This device</div><div class="btnrow" style="margin-top:8px"><button class="btn" data-act="display">Display…</button>${window.__installEvt ? '<button class="btn" data-act="install">Install the app</button>' : ''}</div>`);
+  };
+  ui.on.install = async () => { const e = window.__installEvt; if (!e) return; e.prompt(); try { await e.userChoice; } catch { /* dismissed */ } window.__installEvt = null; ui.open = null; $('#modal').innerHTML = ''; };
+
   applyDens();
 });

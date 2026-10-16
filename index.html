@@ -16,6 +16,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334469C' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 2.5h13M5.5 21.5h13'/%3E%3Cpath d='M7 2.5v2.2c0 3.1 5 4.6 5 7.3s-5 4.2-5 7.3v2.2M17 2.5v2.2c0 3.1-5 4.6-5 7.3s5 4.2 5 7.3v2.2'/%3E%3Cpath d='M9 19.6c.6-1.4 1.8-2.3 3-2.8 1.2.5 2.4 1.4 3 2.8z' fill='%2334469C' stroke='none'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#34469C">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tempora">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IM+Fell+English:ital@0;1&family=Public+Sans:wght@400;500;600;700&display=swap">
@@ -12665,6 +12671,15 @@ LATE.push(() => {
   ui.on.setDensity = el => { ui.open = null; $('#modal').innerHTML = ''; ui.setDensity(el.dataset.v); toast('Display changed.'); };
   ui.on.display = () => { ui.open = null; ui.displaySettings(); };
 
+  // the menu gains the display settings and, where the browser allows, installing the app
+  const menu = ui.on.menu;
+  ui.on.menu = () => {
+    menu();
+    const sh = $('#modal .sheet'); if (!sh) return;
+    sh.insertAdjacentHTML('beforeend', `<div class="eyebrow" style="margin-top:14px">This device</div><div class="btnrow" style="margin-top:8px"><button class="btn" data-act="display">Display…</button>${window.__installEvt ? '<button class="btn" data-act="install">Install the app</button>' : ''}</div>`);
+  };
+  ui.on.install = async () => { const e = window.__installEvt; if (!e) return; e.prompt(); try { await e.userChoice; } catch { /* dismissed */ } window.__installEvt = null; ui.open = null; $('#modal').innerHTML = ''; };
+
   applyDens();
 });
 
@@ -16093,6 +16108,14 @@ LATE.forEach(f => f());
   ui.render();
   Promise.resolve(typeof Platform !== 'undefined' ? Platform.init() : null).then(() => { if (typeof Community !== 'undefined') Community.init(); });
   if (ui.sound) ui.sound.init();
+})();
+
+/* ---------- installable, and playable offline ---------- */
+(() => {
+  if (typeof window === 'undefined' || window.TEMPORA_HOSTED || !('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__installEvt = e; });
+  window.addEventListener('appinstalled', () => { window.__installEvt = null; });
 })();
 
 </script>
