@@ -228,6 +228,7 @@ const Atlas = (() => {
       const nmS = tstart(f, 'nm', 2), capS = tstart(f, 'cap', 1);
       const names = [...(pre.n || []).filter(x => x[0] <= rec.cut && x[0] < nmS), ...nmA];
       const caps = [...(pre.cap || []).filter(x => x[0] <= rec.cut && x[0] < capS), ...capA];
+      if (capA.length && capS > rec.cut + 1 && capS < 1500) caps.splice(caps.findIndex(x => x[0] >= capS - 1 + 1) < 0 ? caps.length : caps.findIndex(x => x[0] >= capS), 0, [capS - 1, capS < 600 ? 'a chiefly seat' : 'a royal seat']);
       if (!caps.length || caps[caps.length - 1][0] < 99999) { const l = caps[caps.length - 1]; caps.push([99999, l ? l[1] : rec.short]); }
       if (!names.length || names[names.length - 1][0] < 99999) { const l = names[names.length - 1]; names.push([99999, l ? l[1] : rec.short, l ? l[2] : 'Republic']); }
       // pools: the early pool, then the country's own
