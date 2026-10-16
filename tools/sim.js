@@ -17,30 +17,7 @@ const YEARS = +(args[args.indexOf('--years') + 1] || 0) || 220;
 const QUIET = args.includes('--quiet');
 const TYPICAL = args.includes('--typical');   // an ordinary player: school, work, a few activities and people
 
-function makeContext() {
-  const store = {};
-  const el = () => ({ innerHTML: '', textContent: '', hidden: false, classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, getAttribute() { return null; }, addEventListener() {}, appendChild() {}, remove() {}, style: { setProperty() {} }, dataset: {}, querySelector: () => null, querySelectorAll: () => [], getBoundingClientRect: () => ({ top: 0, left: 0, width: 800, height: 600 }), focus() {}, scrollIntoView() {} });
-  const els = {};
-  const document = {
-    documentElement: { dataset: {}, style: { setProperty() {} } },
-    querySelector: s => (/^#(modal|toast|screen|card|tabs|view|ribbon|when|agebar|ageBtn|btnGod|layout|autoBtn|btnSound|btnAI|phoneBadge)$/.test(s) ? (els[s] ||= el()) : null),
-    querySelectorAll: () => [], addEventListener() {}, createElement: el, body: el(), getElementById: () => null, head: el(),
-    visibilityState: 'visible',
-  };
-  const ctx = {
-    console, Math, JSON, Date, setTimeout: () => 0, clearTimeout() {}, setInterval: () => 0, clearInterval() {},
-    localStorage: { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } },
-    matchMedia: () => ({ matches: false, addEventListener() {} }), navigator: {}, document, performance: { now: () => Date.now() },
-    fetch: () => Promise.reject(new Error('offline')), location: { protocol: 'file:', origin: 'null', href: 'file:///index.html' },
-    AudioContext: undefined, requestAnimationFrame: () => 0, Blob: function () {}, URL: { createObjectURL: () => '' }, FileReader: function () {},
-  };
-  ctx.window = ctx; ctx.globalThis = ctx; ctx.self = ctx;
-  vm.createContext(ctx);
-  const code = JS_ORDER.filter(f => f !== 'main.js' && fs.existsSync(path.join(__dirname, '..', 'src', f)))
-    .map(f => `/* ${f} */\n` + fs.readFileSync(path.join(__dirname, '..', 'src', f), 'utf8')).join('\n');
-  vm.runInContext(code + '\n;globalThis.__T = { Sim, UI, DATA, U, Gen, Auto: typeof Auto !== "undefined" ? Auto : null, Places: typeof Places !== "undefined" ? Places : null, extraActions: typeof SIM_EXTRA !== "undefined" ? SIM_EXTRA : [], Phone: typeof Phone !== "undefined" ? Phone : null, Sports: typeof Sports !== "undefined" ? Sports : null, Legacy: typeof Legacy !== "undefined" ? Legacy : null, AI: typeof AI !== "undefined" ? AI : null, Delta: typeof Delta !== "undefined" ? Delta : null, Intro: typeof Intro !== "undefined" ? Intro : null };', ctx, { filename: 'tempora-bundle.js' });
-  return ctx.__T;
-}
+const { makeContext } = require('./harness.js');
 
 const T = makeContext();
 const { Sim: S, UI: ui, DATA, U } = T;

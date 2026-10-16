@@ -56,13 +56,15 @@ const UI = (() => {
     const pr = S.prompts[0];
     if (!pr) return;
     sheet(`<div class="eyebrow">${esc(pr.title)}</div><div class="body${pr.chapter ? ' chapter' : ''}">${esc(pr.text)}</div>
-      <div class="acts">${pr.choices.map((c, i) => `<button class="btn choice ${i === 0 ? 'era' : ''}" data-act="choose" data-i="${i}" ${c.dis ? 'disabled title="You cannot afford this"' : ''}><span>${esc(c.l)}</span>${c.src && ui.dpreview ? ui.dpreview(c.src, S.me()) : ''}</button>`).join('')}</div>
+      ${pr.choices.some(c => c.input) ? `<div class="field" style="margin:6px 0 2px"><label for="pr-in">${esc(pr.choices.find(c => c.input).input.label || 'Your own')}</label><input id="pr-in" maxlength="${pr.choices.find(c => c.input).input.max || 40}" placeholder="${esc(pr.choices.find(c => c.input).input.ph || '')}" autocomplete="off"></div>` : ''}<div class="acts">${pr.choices.map((c, i) => `<button class="btn choice ${i === 0 ? 'era' : ''}" data-act="choose" data-i="${i}" ${c.dis ? 'disabled title="You cannot afford this"' : ''}><span>${esc(c.l)}</span>${c.src && ui.dpreview ? ui.dpreview(c.src, S.me()) : ''}</button>`).join('')}</div>
       ${ui.promptExtra ? ui.promptExtra(pr) : ''}`, { locked: true, label: 'A choice' });
   }
   ui.on.choose = el => {
     const pr = S.prompts.shift(); if (!pr) return closeSheet();
     const c = pr.choices[+el.dataset.i];
+    S.promptValue = $('#pr-in')?.value || '';
     const res = c.go();
+    S.promptValue = '';
     S.settle();
     ui.open = null; $('#modal').innerHTML = '';
     render(); toast(res);

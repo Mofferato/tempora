@@ -223,7 +223,7 @@ const Sim = (() => {
 
   function newWorld(opt) {
     const year = opt.year;
-    W = { v: 1, year, nid: 1, people: {}, playerId: null, news: [], started: year,
+    W = { v: 3, year, nid: 1, people: {}, playerId: null, news: [], started: year,
       dyn: { name: '', score: 0, lives: [], played: [], founder: null, houses: [] }, god: false, lastEra: eraOf(year).id,
       mode: opt.mode || 'narrative', godOn: !!opt.godOn, pets: {}, auto: {}, rel: {}, nat: {}, pops: {} };
     spawnFamily(opt);
@@ -238,7 +238,7 @@ const Sim = (() => {
     W.spawnCC = opt.cc || (hooks.defaultCC && hooks.defaultCC(year)) || null;
     const mA = law('marry', e, W.spawnCC);
     const cls = opt.cls ? CLASSES.find(c => c.id === opt.cls) : U.wpick(CLASSES, c => c.w);
-    const last = opt.last?.trim() || U.pick(pool(e, W.spawnCC).last);
+    const last = opt.last?.trim() || U.pick(pool(e, opt.surnameCC || W.spawnCC).last);
     const faAge = U.ri(mA + 6, 40), moAge = U.ri(mA + 3, Math.min(40, faAge + 2));
     const by = a => U.add(year, -a);
     // grandparents

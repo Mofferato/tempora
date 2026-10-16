@@ -19,13 +19,14 @@
     const m = S.W?.mode;
     const t = [['life', 'Life'], ['rel', 'Relationships'], ['act', 'Activities'], ['places', 'Places'], ['job', 'Occupation'], ['assets', 'Assets']];
     if (m === 'household' || m === 'god') t.push(['home', 'Household']);
+    for (const x of (ui.extraTabs || []).filter(x => !x.show || x.show(S.me()))) t.splice(Math.min(t.length, x.order ?? t.length), 0, [x.id, x.n]);
     t.push(['tree', 'Family Tree'], ['world', 'World'], ['community', 'Community']);
     return t;
   };
 
   /* ---------------- start screen ---------------- */
-  const pick = { era: 'medieval', year: START_YEAR.medieval, cc: '', mode: 'narrative', godOn: false };
-  const keepFields = () => ['f-first', 'f-last', 'f-sex', 'f-orient', 'f-cls'].map(id => [id, $('#' + id)?.value]);
+  const pick = { era: 'medieval', year: START_YEAR.medieval, cc: '', mode: 'narrative', godOn: false, anc: '', anc2: '', origin: '', oside: 'both', sugg: null };
+  const keepFields = () => ['f-first', 'f-last', 'f-sex', 'f-orient', 'f-cls', 'f-anc', 'f-anc2', 'f-origin', 'f-oside'].map(id => [id, $('#' + id)?.value]);
   const restoreFields = k => k.forEach(([id, v]) => { if ($('#' + id) && v != null) $('#' + id).value = v; });
   ui.start = () => {
     const e = pick.era === 'random' ? null : DATA.eras.find(x => x.id === pick.era);
@@ -50,13 +51,14 @@
         <input type="range" id="yr" min="${lo}" max="${hi}" step="1" value="${pick.year}" data-input="year"><span class="faint">${esc(e.blurb)}</span></div>
         <div class="field" style="grid-column:1/-1"><label for="f-cc">Land of birth</label><select id="f-cc" data-input="cc"><option value="">Random land</option>${lands.map(c => `<option value="${c.id}" ${pick.cc === c.id ? 'selected' : ''}>${esc(S_name(c.id, pick.year))} (${esc(c.short)})</option>`).join('')}</select></div></div></div>`
         : '<div class="panel"><p class="lede" style="margin:0">Fate will choose the era, the year and the land.</p></div>'}
+      ${ui.heritagePanel ? ui.heritagePanel(pick, lands) : ''}
       <div class="panel"><div class="form">
         <div class="field"><label for="f-first">First name</label><input id="f-first" placeholder="Random" maxlength="24" autocomplete="off"></div>
         <div class="field"><label for="f-last">Family name</label><input id="f-last" placeholder="Random" maxlength="24" autocomplete="off"></div>
         <div class="field"><label for="f-sex">Born as</label><select id="f-sex"><option value="">Random</option><option value="F">A girl</option><option value="M">A boy</option></select></div>
         <div class="field"><label for="f-orient">Attracted to</label><select id="f-orient"><option value="straight">The opposite sex</option><option value="gay">The same sex</option><option value="bi">Anyone</option></select></div>
         <div class="field"><label for="f-cls">Family fortune</label><select id="f-cls"><option value="">Random</option>${S.CLASSES.map(c => `<option value="${c.id}">${c.id[0].toUpperCase() + c.id.slice(1)}</option>`).join('')}</select></div>
-      </div><button class="btn era block" style="margin-top:14px;height:48px;font-size:16px" data-act="begin">Begin a life</button></div></div>`;
+      </div>${ui.nameChips ? ui.nameChips(pick) : ''}<button class="btn era block" style="margin-top:14px;height:48px;font-size:16px" data-act="begin">Begin a life</button></div></div>`;
   };
   // country names at an arbitrary year, before any world exists
   function S_name(cc, y) { const c = DATA.countries.find(x => x.id === cc); for (const x of c.names) if (y <= x[0]) return x[1]; return c.names[c.names.length - 1][1]; }
@@ -70,11 +72,12 @@
     if (sel.options.length - 1 !== lands.length) { const k = keepFields(); ui.start(); restoreFields(k); }
     else [...sel.options].slice(1).forEach(o => { o.textContent = `${S_name(o.value, pick.year)} (${DATA.countries.find(c => c.id === o.value).short})`; });
   };
-  ui.input.cc = el => { pick.cc = el.value; };
+  ui.input.cc = el => { pick.cc = el.value; pick.anc = pick.anc2 = ''; const k = keepFields(); ui.start(); restoreFields(k); };
+  ui.pick = pick; ui.keepFields = keepFields; ui.restoreFields = restoreFields;
   ui.on.begin = () => {
     let year = pick.year, cc = pick.cc || null;
     if (pick.era === 'random') { const e = U.pick(DATA.eras), [lo, hi] = rangeOf(e); year = U.ri(lo, hi) || 1; cc = null; }
-    S.newWorld({ year, cc, mode: pick.mode, godOn: pick.mode === 'god' || pick.godOn, first: $('#f-first').value, last: $('#f-last').value, sex: $('#f-sex').value || null, orient: $('#f-orient').value, cls: $('#f-cls').value || null });
+    S.newWorld({ year, cc, ...(ui.heritageOpts ? ui.heritageOpts(pick, cc) : {}), mode: pick.mode, godOn: pick.mode === 'god' || pick.godOn, first: $('#f-first').value, last: $('#f-last').value, sex: $('#f-sex').value || null, orient: $('#f-orient').value, cls: $('#f-cls').value || null });
     ui.tab = 'life'; $('#screen').innerHTML = ''; render(); ui.save();
   };
 

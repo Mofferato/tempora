@@ -183,9 +183,10 @@
 
   ui.on.adopt = () => {
     const p = S.me(), e = S.era();
-    sheet(`<h2>Adopt a pet</h2><div class="field" style="margin:10px 0"><label for="petname">Name (optional)</label><input id="petname" maxlength="20" placeholder="Random"></div>
+    sheet(`<h2>Adopt a pet</h2><div class="field" style="margin:10px 0"><label for="petname">Name (optional)</label><input id="petname" maxlength="20" placeholder="Random"><div class="chips">${(typeof Identity !== 'undefined' ? Identity.petNames('default', 8) : []).map(n => `<button class="chip" data-act="petNameUse" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div></div>
       <div class="list">${S.petsAvail(p).map(x => `<button class="row" data-act="adoptKind" data-k="${x.id}"><span class="av sm petav" aria-hidden="true">${esc(x.n[0])}</span><div class="main"><div class="t">${esc(x.n)}</div><div class="s">Lives ${x.life[0]}–${x.life[1]} years${x.cls ? ' · a status symbol' : ''}</div></div><div class="end mono">${S.money(S.toVal(e.cost * x.cost))}</div></button>`).join('')}</div>`, { label: 'Adopt a pet' });
   };
+  ui.on.petNameUse = el => { const f = $('#petname'); if (f) f.value = el.dataset.n; };
   ui.on.adoptKind = el => { const t = S.adoptPet(el.dataset.k, $('#petname')?.value); ui.open = null; $('#modal').innerHTML = ''; render(); toast(t); };
   function petSheet(id, res) {
     const pet = S.W.pets[id], sp = S.petSpec(pet.kind), acts = [...sp.acts, 'vet', 'rehome'];

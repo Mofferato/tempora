@@ -10,15 +10,15 @@ const JS_ORDER = [
   'data-core.js', 'data-prehistory.js', 'data-eras1.js', 'data-eras2.js', 'data-eras3.js', 'data-eras4.js', 'data-world.js',
   'data-stats.js', 'data-countries.js', 'data-countries2.js', 'data-regions.js', 'data-extra.js', 'data-life.js',
   'data-map.js', 'data-atlas-arch.js', 'data-faiths.js', 'data-names2.js', 'data-atlas-europe1.js', 'data-atlas-europe2.js', 'data-atlas-europe3.js', 'data-atlas-asia1.js', 'data-atlas-asia2.js', 'data-atlas-asia3.js', 'data-atlas-africa1.js', 'data-atlas-africa2.js', 'data-atlas-africa3.js', 'data-atlas-americas1.js', 'data-atlas-americas2.js', 'data-atlas-oceania.js', 'atlas.js',
-  'engine.js', 'engine-player.js', 'genetics.js', 'engine-world.js', 'personality.js', 'settlements.js', 'society.js', 'politics.js',
-  'ui.js', 'ui2.js', 'ui3.js', 'ui4.js', 'delta.js', 'places.js', 'places2.js', 'household.js', 'auto.js', 'profile.js', 'introduce.js', 'lifedock.js', 'phone.js', 'sports.js',
+  'engine.js', 'engine-player.js', 'genetics.js', 'engine-world.js', 'identity.js', 'personality.js', 'settlements.js', 'society.js', 'politics.js',
+  'ui.js', 'ui2.js', 'ui3.js', 'ui4.js', 'identity-ui.js', 'delta.js', 'places.js', 'places2.js', 'household.js', 'auto.js', 'profile.js', 'introduce.js', 'lifedock.js', 'phone.js', 'sports.js',
   'legacy.js', 'ai.js', 'sound.js', 'fusion.js', 'platform.js', 'community.js', 'tree.js', 'late.js', 'main.js',
 ];
 
 function bundle() { return JS_ORDER.filter(f => fs.existsSync(path.join(__dirname, 'src', f))).map(f => `/* ---- ${f} ---- */\n${src(f)}`).join('\n'); }
 
 function build() {
-  const css = src('style.css') + (fs.existsSync(path.join(__dirname, 'src', 'style2.css')) ? '\n' + src('style2.css') : '');
+  const css = ['style.css', 'style2.css', 'style3.css'].filter(f => fs.existsSync(path.join(__dirname, 'src', f))).map(src).join('\n');
   const js = bundle();
   const shell = src('shell.html').replace('/*CSS*/', () => css).replace('/*JS*/', () => js);
 

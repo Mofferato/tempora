@@ -1,0 +1,16 @@
+/* Additions: identity, faith, internet, atlas and the dashboard layout */
+.ethbar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--line, #ddd); margin: 6px 0; }
+.ethbar i { display: block; height: 100%; }
+.ethkey { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--ink-2); }
+.ethkey b { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+.chip { border: 1px solid var(--line, #ccc); background: var(--surface, #fff); color: var(--ink, #222); border-radius: 999px; padding: 4px 11px; font: inherit; font-size: 13px; cursor: pointer; }
+.chip:hover { border-color: var(--era, #888); }
+.chip[aria-pressed="true"] { background: var(--era, #888); color: #fff; border-color: var(--era, #888); }
+.chips .sep { color: var(--ink-3, #999); }
+.namekit { margin: 10px 2px 0; }
+.row-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.heritage > summary { cursor: pointer; list-style: none; }
+.heritage > summary::-webkit-details-marker { display: none; }
+.idgrid { display: grid; gap: 12px; }
+ul.plain { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; }
