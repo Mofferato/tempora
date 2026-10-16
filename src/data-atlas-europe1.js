@@ -31,8 +31,8 @@ arr=1; arrT=1740; wv=1918; dv=1857; sx=2014; tier=1; mil=8; pp=1; ww=12; dual=y;
 ov=roman:43:409|british:1650:1946; bl=nato:1949|commonw:1931;`);
 
 Land(`IRL|Ireland|Irish|eu-brit
-pre=euw:-500; nm=-500:the Bronze Age kingdoms of Ireland:Chiefdoms|432:Gaelic Ireland:Petty kingdoms|1169:the Gaelic kingdoms and the Norse towns:Petty kingdoms|1541:the Lordship of Ireland:Lordship|1800:the Kingdom of Ireland:Subject kingdom|1922:Ireland under the Union:Part of the United Kingdom|1949:the Irish Free State:Dominion|the Republic of Ireland:Parliamentary republic;
-cap=432:Tara|1169:Tara|1922:Dublin|Dublin; cur=1801:pounds:£:4.85|1914:pounds:£:4.85|1922:pounds:£:4.85|1945:Irish pounds:£:3|1999:Irish pounds:£:1.5|2029:euros:€:1.1|euros:€:1.1;
+pre=euw:-500; nmu=-500:the Bronze Age kingdoms of Ireland:Chiefdoms|432:Gaelic Ireland:Petty kingdoms|1169:the Gaelic kingdoms and the Norse towns:Petty kingdoms|1541:the Lordship of Ireland:Lordship|1800:the Kingdom of Ireland:Subject kingdom|1922:Ireland under the Union:Part of the United Kingdom|1949:the Irish Free State:Dominion|the Republic of Ireland:Parliamentary republic;
+capu=432:Tara|1169:Tara|1922:Dublin|Dublin; curu=1801:pounds:£:4.85|1914:pounds:£:4.85|1922:pounds:£:4.85|1945:Irish pounds:£:3|1999:Irish pounds:£:1.5|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:5.2,1850:6.6,1900:3.2,1950:2.96,2000:3.8,2025:5.3; pm=0.7; nc=1169:celt|1922:irish|irish; ga=nweur; mix=ENG:.8,FRA:.2;
 eth=Irish:82:nweur,Irish Traveller:1:nweur,Polish and Eastern European:3:slav@2004,British:4:nweur,Other:10:world@1990;
 rs=-10000>pa:100|-500>ce:100|432>ce:50 ch:50|700>ch:100|1920>ch:96 pr:3 ju:1|2000>ch:84 pr:5 sc:9 su:1 ot:1|2025>ch:69 pr:6 sc:14 su:2 or:3 ot:6;
@@ -44,8 +44,8 @@ ev=-3200 cult Newgrange is raised on the Boyne so that the midwinter sunrise flo
 ci=Tara~-1000~1000~-1000:2 400:3|Dublin~841~0~841:3 1100:4 1700:5 1900:6|Cork~600~0~600:2 1600:3 1850:4|Galway~1124~0~1124:2 1500:3;`);
 
 Land(`SWE|Sweden|Swedish|eu-nord
-pre=eun:-1700; nm=-500:the Nordic Bronze Age:Chiefdoms|800:the Svear and Götar tribes:Tribal kingdoms|1397:the Viking Age kingdoms of Sweden:Kingdom|1523:the Kalmar Union:Union of crowns|1721:the Swedish Empire:Absolute monarchy|1809:the Age of Liberty:Parliamentary monarchy|1974:Sweden:Constitutional monarchy|Sweden:Constitutional monarchy;
-cap=800:Uppsala|1252:Sigtuna|99999:Stockholm; cur=1873:riksdaler:rd:20|1913:kronor:kr:0.27|1945:kronor:kr:0.27|1999:kronor:kr:0.17|2029:kronor:kr:0.095|kronor:kr:0.095;
+pre=eun:-1700; nmu=-500:the Nordic Bronze Age:Chiefdoms|800:the Svear and Götar tribes:Tribal kingdoms|1050:the Viking Age kingdoms of Sweden:Kingdom|1397:the medieval Kingdom of Sweden:Kingdom|1523:the Kalmar Union:Union of crowns|1721:the Swedish Empire:Absolute monarchy|1809:the Age of Liberty:Parliamentary monarchy|Sweden:Constitutional monarchy;
+capu=800:Uppsala|1252:Sigtuna|99999:Stockholm; curu=1873:riksdaler:rd:20|1913:kronor:kr:0.27|1945:kronor:kr:0.27|1999:kronor:kr:0.17|2029:kronor:kr:0.095|kronor:kr:0.095;
 pop=1800:2.3,1900:5.1,1950:7,2000:8.9,2025:10.5; pm=0.6; nc=1000:norse|2029:nordic; ga=nord; eth=Swedes:80:nord,Finns and Sámi:3:nord,Middle Eastern and North African:8:arab@1960,Other European:5:weur@1990,Other:4:world@1990;
 rs=-10000>pa:100|500>no:100|1000>no:60 ch:40|1100>ch:100|1527>pr:100|1950>pr:85 sc:12 ot:3|2025>pr:55 sc:32 su:7 ch:2 or:2 ot:2;
 cu=nordic; lg=Swedish,Finnish,Sámi; fd=meatballs@1700,gravlax@1500,surströmming@1500; fs=Midsummer@1000,Lucia@1700,Walpurgis Night@1700; sp=ice hockey@1920,football@1890,cross-country skiing@1880;
@@ -56,8 +56,8 @@ ev=1397 pol The Kalmar Union joins Denmark, Norway and Sweden under one crown.|1
 ci=Uppsala~500~0~500:2 1100:3 1500:3|Sigtuna~980~0~980:3 1200:2|Stockholm~1252~0~1252:2 1500:3 1700:4 1850:5 1950:6|Gothenburg~1621~0~1621:2 1800:4 1900:5|Malmö~1275~0~1275:2 1800:4;`);
 
 Land(`NOR|Norway|Norwegian|eu-nord
-pre=eun:-1700; nm=-500:the Nordic Bronze Age:Chiefdoms|800:the petty kingdoms of Norway:Petty kingdoms|1050:the Viking kingdoms of Norway:Kingdom|1397:the Kingdom of Norway:Kingdom|1814:Denmark-Norway:Union of crowns|1905:Norway under Sweden:Union under the Swedish king|Norway:Constitutional monarchy;
-cap=1050:Trondheim|1300:Bergen|1814:Christiania|99999:Oslo; cur=1873:speciedaler:sp:20|1913:kroner:kr:0.27|1945:kroner:kr:0.22|1999:kroner:kr:0.15|2029:kroner:kr:0.095|kroner:kr:0.095;
+pre=eun:-1700; nmu=-500:the Nordic Bronze Age:Chiefdoms|800:the petty kingdoms of Norway:Petty kingdoms|1050:the Viking kingdoms of Norway:Kingdom|1397:the Kingdom of Norway:Kingdom|1814:Denmark-Norway:Union of crowns|1905:Norway under Sweden:Union under the Swedish king|Norway:Constitutional monarchy;
+capu=1050:Trondheim|1300:Bergen|1814:Christiania|99999:Oslo; curu=1873:speciedaler:sp:20|1913:kroner:kr:0.27|1945:kroner:kr:0.22|1999:kroner:kr:0.15|2029:kroner:kr:0.095|kroner:kr:0.095;
 pop=1800:0.88,1900:2.2,1950:3.3,2000:4.5,2025:5.6; pm=0.5; nc=1000:norse|2029:nordic; ga=nord; eth=Norwegians:84:nord,Sámi:1:nord,Other European:6:weur@1990,South Asian and Middle Eastern:5:arab@1970,Other:4:world@1990;
 rs=-10000>pa:100|500>no:100|1000>no:60 ch:40|1100>ch:100|1537>pr:100|1950>pr:90 sc:8 ot:2|2025>pr:60 sc:28 su:5 ch:3 ot:4;
 cu=nordic; lg=Norwegian,Sámi; fd=lutefisk@1500,brunost@1700,fårikål@1800; fs=Constitution Day@1814,Syttende Mai@1814,Midsummer@1000; sp=cross-country skiing@1870,football@1900,handball@1930;
@@ -68,8 +68,8 @@ ev=872 pol Harald Fairhair unites the petty kingdoms of Norway.|1349 plg The Bla
 ci=Trondheim~997~0~997:2 1100:3 1800:3|Bergen~1070~0~1070:3 1300:4 1900:4|Oslo~1048~0~1048:2 1300:3 1624:3 1850:4 1950:5|Stavanger~1125~0~1125:2 1900:3;`);
 
 Land(`DNK|Denmark|Danish|eu-nord
-pre=eun:-1700; nm=-500:the Nordic Bronze Age:Chiefdoms|700:the Jutish and Danish tribes:Tribal kingdoms|965:the Viking kingdom of Denmark:Kingdom|1397:the Kingdom of Denmark:Kingdom|1814:Denmark-Norway:Union of crowns|1849:the Danish realm:Absolute monarchy|Denmark:Constitutional monarchy;
-cap=965:Jelling|1167:Roskilde|99999:Copenhagen; cur=1873:rigsdaler:rd:25|1913:kroner:kr:0.27|1945:kroner:kr:0.2|1999:kroner:kr:0.15|2029:kroner:kr:0.14|kroner:kr:0.14;
+pre=eun:-1700; nmu=-500:the Nordic Bronze Age:Chiefdoms|700:the Jutish and Danish tribes:Tribal kingdoms|965:the Viking kingdom of Denmark:Kingdom|1397:the Kingdom of Denmark:Kingdom|1814:Denmark-Norway:Union of crowns|1849:the Danish realm:Absolute monarchy|Denmark:Constitutional monarchy;
+capu=965:Jelling|1167:Roskilde|99999:Copenhagen; curu=1873:rigsdaler:rd:25|1913:kroner:kr:0.27|1945:kroner:kr:0.2|1999:kroner:kr:0.15|2029:kroner:kr:0.14|kroner:kr:0.14;
 pop=1800:0.93,1900:2.5,1950:4.3,2000:5.3,2025:5.95; pm=1.1; nc=1000:norse|2029:nordic; ga=nord; eth=Danes:84:nord,Faroese and Greenlanders:1:nord,Turkish and Middle Eastern:5:arab@1965,Other European:5:weur@1990,Other:5:world@1990;
 rs=-10000>pa:100|500>no:100|965>no:50 ch:50|1100>ch:100|1536>pr:100|1950>pr:92 sc:6 ot:2|2025>pr:60 sc:30 su:5 ch:1 ot:4;
 cu=nordic; lg=Danish,Faroese,Greenlandic; fd=smørrebrød@1800,frikadeller@1700,Danish pastry@1850; fs=Constitution Day@1849,Sankt Hans Aften@1500,Christmas Julefrokost@1900; sp=handball@1930,football@1880,badminton@1930;
@@ -80,8 +80,8 @@ ev=1018 pol Cnut the Great rules England, Denmark and Norway together.|1397 pol 
 ci=Roskilde~900~0~900:2 1100:3 1500:2|Copenhagen~1043~0~1043:2 1167:3 1500:4 1700:5 1900:6|Aarhus~770~0~770:2 1500:3 1900:4|Odense~988~0~988:2 1500:3;`);
 
 Land(`FIN|Finland|Finnish|eu-nord
-pre=eun:-1700; from=-8500; nm=-500:the Comb Ceramic and Kiukainen hunters:Forager bands|1150:the Finnic tribes:Tribes|1809:Finland under Sweden:Province of Sweden|1917:the Grand Duchy of Finland:Grand duchy under the Tsar|Finland:Republic;
-cap=1150:Turku|1812:Turku|1819:Helsinki|99999:Helsinki; cur=1860:Swedish riksdaler:rd:20|1913:markka:mk:0.19|1945:markka:mk:0.17|1999:markka:mk:0.01|2029:euros:€:1.1|euros:€:1.1;
+pre=eun:-1700; from=-8500; nmu=-500:the Comb Ceramic and Kiukainen hunters:Forager bands|1150:the Finnic tribes:Tribes|1809:Finland under Sweden:Province of Sweden|1917:the Grand Duchy of Finland:Grand duchy under the Tsar|Finland:Republic;
+capu=1150:Turku|1812:Turku|1819:Helsinki|99999:Helsinki; curu=1860:Swedish riksdaler:rd:20|1913:markka:mk:0.19|1945:markka:mk:0.17|1999:markka:mk:0.01|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:0.83,1900:2.7,1950:4,2000:5.2,2025:5.6; pm=0.35; nc=1150:finnic|2029:finnic; ga=nord; mix=SCA:.3,RUS:.3,CHN:.05,ENG:.1; gx={'eb':0.6,'hd':0.35};
 eth=Finns:87:nord,Swedish-speaking Finns:5:nord,Sámi and Karelians:1:nord,Russians and Estonians:2:slav@1990,Other:5:world@1990;
 rs=-10000>an:100|-500>an:100|1150>ch:100|1527>pr:100|1950>pr:90 or:2 sc:7 ot:1|2025>pr:62 sc:30 or:1 su:2 ot:5;
@@ -93,8 +93,8 @@ ev=1155 pol The first Swedish crusade brings Finland into the Swedish realm.|180
 ci=Turku~1200~0~1200:2 1500:3 1800:3|Helsinki~1550~0~1550:1 1812:3 1900:4 1950:5|Tampere~1779~0~1779:2 1900:4|Oulu~1605~0~1605:2 1900:3;`);
 
 Land(`ISL|Iceland|Icelandic|eu-nord
-pre=eun:-1700; from=874; nm=874:the Norse settlement of Iceland:Free farmers' commonwealth|1262:the Icelandic Commonwealth:Commonwealth of chieftains|1944:Iceland under Norway and Denmark:Province of the Nordic crowns|Iceland:Republic;
-cap=99999:Reykjavik; cur=1873:Danish rigsdaler:rd:25|1913:krónur:kr:0.27|1945:krónur:kr:0.15|1999:krónur:kr:0.014|2029:krónur:kr:0.0073|krónur:kr:0.0073;
+pre=eun:-1700; from=874; nmu=874:the Norse settlement of Iceland:Free farmers' commonwealth|1262:the Icelandic Commonwealth:Commonwealth of chieftains|1944:Iceland under Norway and Denmark:Province of the Nordic crowns|Iceland:Republic;
+capu=99999:Reykjavik; curu=1873:Danish rigsdaler:rd:25|1913:krónur:kr:0.27|1945:krónur:kr:0.15|1999:krónur:kr:0.014|2029:krónur:kr:0.0073|krónur:kr:0.0073;
 pop=1800:0.047,1900:0.078,1950:0.143,2000:0.28,2025:0.39; pm=0.5; nc=1000:norse|2029:nordic; ga=nord;
 eth=Icelanders:85:nord,Poles and other Europeans:8:slav@1995,Other:7:world@1995;
 rs=874>no:80 ce:20|1000>no:50 ch:50|1100>ch:100|1550>pr:100|1950>pr:92 sc:6 ot:2|2025>pr:60 sc:30 ot:6 ch:4;
@@ -106,8 +106,8 @@ ev=930 law The Althing, one of the world's oldest parliaments, first meets at Þ
 ci=Reykjavik~874~0~874:1 1800:2 1900:3 1950:4;`);
 
 Land(`EST|Estonia|Estonian|eu-balt
-pre=eun:-1700; from=-9000; nm=-500:the Comb Ceramic hunters and Finnic farmers:Forager bands and villages|1200:the Estonian tribes:Tribes|1561:Livonia under the Teutonic knights:Crusader state|1721:Swedish Estonia:Province of Sweden|1918:Estonia under the Tsars:Province of Russia|1940:Estonia:Republic|1991:the Estonian SSR:Soviet republic|Estonia:Parliamentary republic;
-cap=1200:Tallinn|99999:Tallinn; cur=1913:rubles:₽:0.5|1945:kroons:kr:0.15|1991:rubles:₽:0.02|2010:kroons:kr:0.08|euros:€:1.1;
+pre=eun:-1700; from=-9000; nmu=-500:the Comb Ceramic hunters and Finnic farmers:Forager bands and villages|1200:the Estonian tribes:Tribes|1561:Livonia under the Teutonic knights:Crusader state|1721:Swedish Estonia:Province of Sweden|1918:Estonia under the Tsars:Province of Russia|1940:Estonia:Republic|1991:the Estonian SSR:Soviet republic|Estonia:Parliamentary republic;
+capu=1200:Tallinn|99999:Tallinn; curu=1913:rubles:₽:0.5|1945:kroons:kr:0.15|1991:rubles:₽:0.02|2010:kroons:kr:0.08|euros:€:1.1;
 pop=1800:0.3,1900:0.9,1950:1.1,2000:1.4,2025:1.37; pm=0.25; nc=1200:finnic|finnic; ga=baltic; eth=Estonians:69:nord,Russians:24:slav@1710,Ukrainians and Belarusians:4:slav@1945,Other:3:world@1990;
 rs=-10000>an:100|1200>ch:100|1525>pr:100|1950>pr:60 or:30 sc:10|2025>sc:58 pr:18 or:17 ot:7;
 cu=baltic O10 R-10 G10; lg=Estonian,Russian; fd=black bread@1200,sült@1800,kama@1900; fs=Midsummer Jaaniõhtu@1000,Song Festival@1869,Independence Day@1918; sp=basketball@1920,cross-country skiing@1900,wrestling@1900;
@@ -118,8 +118,8 @@ ev=1219 war The Danish crusade: Danes and German crusaders conquer northern Esto
 ci=Tallinn~1219~0~1219:2 1300:3 1700:3 1900:4|Tartu~1030~0~1030:2 1600:3|Pärnu~1251~0~1251:2 1800:3;`);
 
 Land(`LVA|Latvia|Latvian|eu-balt
-pre=eun:-1700; from=-9000; nm=-500:the Baltic tribes:Tribes|1200:the Latgalian and Semigallian tribes:Tribal kingdoms|1561:Livonia under the Teutonic knights:Crusader state|1721:Polish-Swedish Livonia:Province of Sweden|1918:Latvia under the Tsars:Province of Russia|1940:Latvia:Republic|1991:the Latvian SSR:Soviet republic|Latvia:Parliamentary republic;
-cap=1200:Riga|99999:Riga; cur=1913:rubles:₽:0.5|1945:lats:Ls:0.5|1991:rubles:₽:0.02|2014:lats:Ls:1.6|euros:€:1.1;
+pre=eun:-1700; from=-9000; nmu=-500:the Baltic tribes:Tribes|1200:the Latgalian and Semigallian tribes:Tribal kingdoms|1561:Livonia under the Teutonic knights:Crusader state|1721:Polish-Swedish Livonia:Province of Sweden|1918:Latvia under the Tsars:Province of Russia|1940:Latvia:Republic|1991:the Latvian SSR:Soviet republic|Latvia:Parliamentary republic;
+capu=1200:Riga|99999:Riga; curu=1913:rubles:₽:0.5|1945:lats:Ls:0.5|1991:rubles:₽:0.02|2014:lats:Ls:1.6|euros:€:1.1;
 pop=1800:0.6,1900:2,1950:1.9,2000:2.4,2025:1.87; pm=0.3; nc=1200:baltic|baltic; ga=baltic; eth=Latvians:62:nord,Russians:24:slav@1945,Belarusians and Ukrainians:7:slav@1945,Other:7:world@1990;
 rs=-10000>an:100|1200>ch:100|1522>pr:80 ch:20|1950>pr:30 ch:25 or:25 sc:20|2025>sc:35 pr:20 ch:20 or:20 ot:5;
 cu=baltic; lg=Latvian,Russian,Latgalian; fd=grey peas with bacon@1700,rupjmaize@1200,Riga balsam@1752; fs=Jāņi Midsummer@1000,Song and Dance Festival@1873,Lāčplēsis Day@1919; sp=ice hockey@1930,basketball@1920,bobsled@1930;
@@ -130,8 +130,8 @@ ev=1201 pol Riga is founded by the crusading Bishop Albert.|1282 pol Riga joins 
 ci=Riga~1201~0~1201:3 1300:4 1700:4 1900:5 1950:5|Daugavpils~1275~0~1275:2 1800:3|Liepāja~1625~0~1625:2 1900:3;`);
 
 Land(`LTU|Lithuania|Lithuanian|eu-balt
-pre=eun:-1700; from=-9000; nm=-500:the Baltic tribes:Tribes|1236:the Lithuanian tribes:Tribal confederation|1385:the Grand Duchy of Lithuania:Grand duchy|1569:the Polish–Lithuanian Commonwealth:Elective monarchy|1795:Lithuania under the Tsars:Province of Russia|1918:Lithuania:Republic|1990:the Lithuanian SSR:Soviet republic|Lithuania:Parliamentary republic;
-cap=1236:Kernavė|1323:Vilnius|1795:Vilnius|1920:Kaunas|99999:Vilnius; cur=1795:Polish groschen:gr:0.8|1913:rubles:₽:0.5|1945:litai:Lt:0.1|1991:rubles:₽:0.02|2014:litai:Lt:0.38|euros:€:1.1;
+pre=eun:-1700; from=-9000; nmu=-500:the Baltic tribes:Tribes|1236:the Lithuanian tribes:Tribal confederation|1569:the Grand Duchy of Lithuania:Grand duchy|1795:the Polish–Lithuanian Commonwealth:Elective monarchy|1917:Lithuania under the Tsars:Province of Russia|1939:Lithuania:Republic|1989:the Lithuanian SSR:Soviet republic|Lithuania:Parliamentary republic;
+capu=1236:Kernavė|1323:Vilnius|1795:Vilnius|1920:Kaunas|99999:Vilnius; curu=1795:Polish groschen:gr:0.8|1913:rubles:₽:0.5|1945:litai:Lt:0.1|1991:rubles:₽:0.02|2014:litai:Lt:0.38|euros:€:1.1;
 pop=1800:0.9,1900:2.7,1950:2.6,2000:3.5,2025:2.86; pm=0.3; nc=1236:baltic|baltic; ga=baltic; eth=Lithuanians:84:nord,Poles:6:slav@1385,Russians:5:slav@1945,Other:5:world@1990;
 rs=-10000>an:100|1236>sl:70 pa:30|1387>ch:100|1950>ch:80 or:10 pr:5 sc:5|2025>ch:74 or:4 sc:14 pr:2 ot:6;
 cu=baltic R10; lg=Lithuanian,Polish,Russian; fd=cepelinai@1800,šaltibarščiai@1800,kugelis@1800; fs=Midsummer Joninės@1000,Kūčios Christmas Eve@1500,Independence Day@1918; sp=basketball@1920,football@1920,sports of the Žalgiris@1944;
@@ -142,8 +142,8 @@ ev=1236 war Battle of Saule: Lithuanians defeat the Livonian knights #d=.1,m=.05
 ci=Vilnius~1323~0~1323:3 1500:4 1900:4 1950:5|Kaunas~1030~0~1030:2 1500:3 1920:4|Klaipėda~1252~0~1252:2 1800:3;`);
 
 Land(`NLD|the Netherlands|Dutch|eu-west
-pre=euw:-500; nm=-500:the Low Country marshes:Chiefdoms|50:the Frisian and Batavian lands:Tribal federations|482:Roman Germania Inferior:Roman province|800:the Frankish Low Countries:Frankish kingdom|1581:the Dutch lands under the Holy Roman Empire:County and duchy|1795:the Dutch Republic:Federal republic|1815:the Batavian Republic:Revolutionary republic|Netherlands:Constitutional monarchy;
-cap=482:Tolbiac|800:Aachen|1581:Utrecht|1795:Amsterdam|99999:Amsterdam; cur=1815:guilders:ƒ:0.4|1913:guilders:ƒ:0.4|1945:guilders:ƒ:0.38|1999:guilders:ƒ:0.5|2029:euros:€:1.1|euros:€:1.1;
+pre=euw:-500; nmu=-500:the Low Country marshes:Chiefdoms|50:the Frisian and Batavian lands:Tribal federations|482:Roman Germania Inferior:Roman province|800:the Frankish Low Countries:Frankish kingdom|1581:the Dutch lands under the Holy Roman Empire:County and duchy|1795:the Dutch Republic:Federal republic|1815:the Batavian Republic:Revolutionary republic|Netherlands:Constitutional monarchy;
+capu=482:Tolbiac|800:Aachen|1581:Utrecht|1795:Amsterdam|99999:Amsterdam; curu=1815:guilders:ƒ:0.4|1913:guilders:ƒ:0.4|1945:guilders:ƒ:0.38|1999:guilders:ƒ:0.5|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:2.1,1900:5.1,1950:10,2000:15.9,2025:17.9; pm=1.2; nc=1795:dutch|dutch; ga=weur; mix=FRA:.4,ENG:.3,SCA:.3;
 eth=Dutch:75:nweur,Frisians:3:nweur,Indo-Dutch and Indonesian:3:seai@1950,Turkish and Moroccan:5:arab@1960,Surinamese and Caribbean:3:waf@1975,Other:11:world@1980;
 rs=-10000>pa:100|-500>ce:40 pa:60|50>ag:30 ce:30 pa:40|700>ch:100|1580>ch:50 pr:50|1700>pr:60 ch:38 ju:2|1950>pr:42 ch:38 sc:18 ju:1 ot:1|2025>sc:55 ch:19 pr:14 su:5 ot:7;
@@ -156,8 +156,8 @@ ev=1566-1648 war The Eighty Years' War: the Dutch rebel against Spain. #d=.08,m=
 ci=Utrecht~47~0~47:2 700:3 1300:4 1600:4|Amsterdam~1275~0~1275:2 1400:3 1600:5 1700:5 1900:6|Rotterdam~1270~0~1270:2 1700:4 1900:5|The Hague~1248~0~1248:2 1500:3 1900:5;`);
 
 Land(`BEL|Belgium|Belgian|eu-west
-pre=euw:-500; nm=-500:the Gaulish and Belgic tribes:Tribes|50:the Belgae of Gaul:Tribes|482:Roman Gallia Belgica:Roman province|800:the Frankish Low Countries:Frankish kingdom|1581:the Southern Netherlands:Spanish and Austrian provinces|1795:Belgium under France:French departments|1830:the United Kingdom of the Netherlands:Dutch rule|Belgium:Constitutional monarchy;
-cap=482:Tournai|800:Aachen|1581:Brussels|1795:Brussels|99999:Brussels; cur=1830:Belgian francs:Fr:0.19|1913:francs:Fr:0.19|1945:francs:Fr:0.02|1999:francs:Fr:0.026|2029:euros:€:1.1|euros:€:1.1;
+pre=euw:-500; nmu=-500:the Gaulish and Belgic tribes:Tribes|50:the Belgae of Gaul:Tribes|482:Roman Gallia Belgica:Roman province|800:the Frankish Low Countries:Frankish kingdom|1384:the counties and duchies of the Low Countries:Counties and duchies|1581:the Burgundian and Spanish Netherlands:Habsburg provinces|1794:the Austrian Netherlands:Habsburg provinces|1814:Belgium under France:French departments|1830:the United Kingdom of the Netherlands:Dutch rule|Belgium:Constitutional monarchy;
+capu=482:Tournai|800:Aachen|1581:Brussels|1795:Brussels|99999:Brussels; curu=1830:Belgian francs:Fr:0.19|1913:francs:Fr:0.19|1945:francs:Fr:0.02|1999:francs:Fr:0.026|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:3,1900:6.7,1950:8.6,2000:10.2,2025:11.8; pm=1.3; nc=1795:french|french; ga=weur; eth=Flemish:55:nweur,Walloons:32:weur,Moroccan and Turkish:4:arab@1960,Italian and other European:4:seur@1950,Other:5:world@1980;
 rs=-10000>pa:100|-500>ce:60 pa:40|50>ag:30 ce:30 pa:40|700>ch:100|1960>ch:75 sc:20 ot:5|2025>ch:52 sc:34 su:6 pr:2 ot:6;
 cu=latin O5; lg=Dutch,French,German; fd=moules-frites@1800,Belgian chocolate@1860,waffles@1500; fs=National Day@1831,Carnival of Binche@1500,Ommegang@1549; sp=cycling@1890,football@1895,tennis@1980;
@@ -169,8 +169,8 @@ ev=1302 war Battle of the Golden Spurs: Flemish townsmen beat French knights #d=
 ci=Bruges~800~0~800:2 1200:4 1400:5 1700:3|Ghent~630~0~630:2 1200:4 1400:5 1800:4|Brussels~979~0~979:2 1300:4 1600:4 1850:5 1950:6|Antwerp~600~0~600:2 1400:4 1560:5 1900:5;`);
 
 Land(`LUX|Luxembourg|Luxembourgish|eu-west
-pre=euw:-500; nm=-500:the Treveri and Gallic tribes:Tribes|482:Roman Belgica Prima:Roman province|963:the Frankish heartland:Frankish kingdom|1354:the County of Luxembourg:County|1815:the Duchy of Luxembourg:Duchy|1890:the Grand Duchy under the Dutch crown:Grand duchy|Luxembourg:Constitutional monarchy;
-cap=99999:Luxembourg; cur=1913:francs:Fr:0.19|1945:francs:Fr:0.02|1999:francs:Fr:0.026|2029:euros:€:1.1|euros:€:1.1;
+pre=euw:-500; nmu=-500:the Treveri and Gallic tribes:Tribes|482:Roman Belgica Prima:Roman province|963:the Frankish heartland:Frankish kingdom|1354:the County of Luxembourg:County|1815:the Duchy of Luxembourg:Duchy|1890:the Grand Duchy under the Dutch crown:Grand duchy|Luxembourg:Constitutional monarchy;
+capu=99999:Luxembourg; curu=1913:francs:Fr:0.19|1945:francs:Fr:0.02|1999:francs:Fr:0.026|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:0.17,1900:0.24,1950:0.3,2000:0.44,2025:0.67; pm=1; nc=1000:french|german; ga=weur; eth=Luxembourgers:48:nweur,Portuguese:15:iber@1960,French and Belgian:10:weur@1990,Italian and other European:12:seur@1990,Other:15:world@1990;
 rs=-10000>pa:100|700>ch:100|1960>ch:90 pr:3 sc:6 ot:1|2025>ch:55 sc:30 pr:3 su:4 ot:8;
 cu=germanic O10; lg=Luxembourgish,French,German; fd=judd mat gaardebounen@1700,quetsch tart@1800,bouneschlupp@1800; fs=National Day@1961,Schueberfouer@1340,Emaischen@1500; sp=cycling@1890,football@1920,running@1960;
@@ -190,8 +190,8 @@ arr=2; arrT=1700; wv=1944; dv=1884; sx=2013; tier=1; mil=8; pp=1; ww=12; dual=y;
 ov=roman:-51:476|frank:481:843|french:1604:1962; bl=nato:1949|eu:1958|francophonie:1970;`);
 
 Land(`DEU|Germany|German|eu-cent
-pre=euc:-500; nm=-500:the Germanic tribes:Tribes|476:Germania beyond the Rhine:Tribal confederations|800:the Frankish Empire:Frankish kingdom|962:the Holy Roman Empire:Empire of princes|1806:the German Confederation:Confederation of states|1871:the German Confederation and Prussia:Kingdom and confederation|1918:the German Empire:Empire|1933:the Weimar Republic:Republic|1945:Nazi Germany:One-party dictatorship|1990:divided Germany:Occupied zones, then two states|Germany:Federal republic;
-cap=476:Trier|800:Aachen|1806:Vienna|1871:Berlin|1945:Berlin|1990:Bonn|99999:Berlin; cur=-300:salt and bronze rings:_:3|800:denarii:d:20|1300:pfennigs:pf:2|1500:groschen:gr:12|1800:thalers:th:100|1873:thalers:th:0.7|1913:marks:M:0.24|1923:Reichsmarks:RM:0.24|1945:Reichsmarks:RM:0.24|1948:Deutschmarks:DM:0.3|1999:Deutschmarks:DM:0.55|2029:euros:€:1.1|euros:€:1.1;
+pre=euc:-500; nmu=-500:the Germanic tribes:Tribes|476:Germania beyond the Rhine:Tribal confederations|843:the Frankish Empire:Frankish kingdom|1806:the Holy Roman Empire:Empire of princes|1866:the German Confederation:Confederation of states|1918:the German Empire:Empire|1932:the Weimar Republic:Republic|1944:Nazi Germany:One-party dictatorship|1989:divided Germany:Occupied zones, then two states|Germany:Federal republic;
+capu=476:Trier|800:Aachen|1806:Vienna|1871:Berlin|1945:Berlin|1990:Bonn|99999:Berlin; curu=-300:salt and bronze rings:_:3|800:denarii:d:20|1300:pfennigs:pf:2|1500:groschen:gr:12|1800:thalers:th:100|1873:thalers:th:0.7|1913:marks:M:0.24|1923:Reichsmarks:RM:0.24|1945:Reichsmarks:RM:0.24|1948:Deutschmarks:DM:0.3|1999:Deutschmarks:DM:0.55|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:24,1900:56,1950:68,2000:82,2025:84; pm=1; nc=500:german|german; ga=ceur; eth=Germans:77:weur,Turkish Germans:5:turk@1961,Poles and Eastern Europeans:6:slav@1990,Italian and Southern European:3:seur@1955,Middle Eastern and Afghan:4:arab@2015,Other:5:world@1980;
 rs=-10000>pa:100|-500>pa:100|500>pa:85 ch:15|800>ch:100|1520>ch:50 pr:50|1700>pr:55 ch:42 ju:1 ot:2|1900>pr:62 ch:36 ju:1 sc:1|1950>pr:50 ch:45 sc:5|2000>pr:30 ch:30 sc:30 su:5 ot:5|2025>sc:42 pr:22 ch:24 su:7 or:2 ot:3;
 cu=germanic; lg=German,Low German,Sorbian,Danish; fd=bratwurst@1500,sauerkraut@1500,pretzels@1500; fs=Oktoberfest@1810,Christmas markets@1400,German Unity Day@1990; sp=football@1890,handball@1900,Formula One and motor racing@1950;
@@ -202,8 +202,8 @@ ev=9 war Battle of the Teutoburg Forest: Arminius destroys three Roman legions #
 ci=Trier~-16~0~-16:3 100:4 300:5 450:3 1000:3|Cologne~-38~0~-38:3 100:4 1300:5 1600:4 1900:5|Aachen~100~0~100:2 800:4 1200:3|Hamburg~810~0~810:2 1300:4 1600:5 1900:6|Berlin~1237~0~1237:2 1500:3 1700:5 1871:6|Munich~1158~0~1158:2 1500:4 1900:5|Frankfurt~794~0~794:2 1300:4 1900:5|Dresden~1206~0~1206:2 1700:4 1900:5;`);
 
 Land(`AUT|Austria|Austrian|eu-cent
-pre=euc:-500; nm=-500:the Hallstatt and Celtic Noricum:Tribal kingdom|15:the Roman province of Noricum:Roman province|800:the Bavarian and Carolingian marches:March of the Empire|976:the Duchy of Austria:Duchy|1526:the Habsburg domains:Hereditary monarchy|1804:the Austrian Empire:Empire|1867:Austria-Hungary:Dual monarchy|1918:the Republic of German-Austria:Republic|1938:Austria annexed to Germany:Annexed|1955:Allied-occupied Austria:Occupied zones|Austria:Federal republic;
-cap=15:Virunum|976:Melk|1155:Vienna|99999:Vienna; cur=1800:gulden:fl:60|1867:gulden:fl:0.5|1913:kronen:K:0.2|1925:schillings:S:0.14|1945:schillings:S:0.14|1999:schillings:S:0.075|2029:euros:€:1.1|euros:€:1.1;
+pre=euc:-500; nmu=-500:the Hallstatt and Celtic Noricum:Celtic tribes|15:the Celtic kingdom of Noricum:Tribal kingdom|487:the Roman province of Noricum:Roman province|976:the Bavarian and Carolingian marches:March of the Empire|1526:the Duchy of Austria:Duchy|1804:the Habsburg domains:Hereditary monarchy|1866:the Austrian Empire:Empire|1918:Austria-Hungary:Dual monarchy|1937:the First Austrian Republic:Republic|1944:Austria annexed to Germany:Annexed|1955:Allied-occupied Austria:Occupied zones|Austria:Federal republic;
+capu=15:Virunum|976:Melk|1155:Vienna|99999:Vienna; curu=1800:gulden:fl:60|1867:gulden:fl:0.5|1913:kronen:K:0.2|1925:schillings:S:0.14|1945:schillings:S:0.14|1999:schillings:S:0.075|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:3,1900:6,1950:6.9,2000:8,2025:9.2; pm=0.8; nc=800:german|german; ga=ceur; eth=Austrians:75:weur,Germans:3:weur,Serbs and Bosnians:5:balk@1970,Turks:3:turk@1964,Other Europeans:7:slav@1990,Other:7:world@1990;
 rs=-10000>pa:100|-500>ce:70 pa:30|500>pa:80 ch:20|800>ch:100|1550>ch:70 pr:30|1650>ch:98 pr:2|1950>ch:88 pr:5 sc:5 ju:1|2025>ch:55 sc:24 su:8 or:7 pr:3 ot:3;
 cu=germanic T10 H5 G-3; lg=German,Slovene,Hungarian,Croatian; fd=Wiener schnitzel@1830,Sachertorte@1832,apfelstrudel@1700; fs=Fasching@1400,Christmas markets@1400,National Day@1955; sp=alpine skiing@1930,football@1920,ski jumping@1920;
@@ -214,8 +214,8 @@ ev=1273 pol Rudolf of Habsburg is elected king and his house begins to rule Aust
 ci=Virunum~15~500~15:3 150:4|Salzburg~15~0~15:3 700:3 1500:3 1900:3|Vienna~15~0~15:3 1155:3 1500:4 1700:6 1900:7|Graz~1128~0~1128:2 1800:4|Innsbruck~1180~0~1180:2 1800:3;`);
 
 Land(`CHE|Switzerland|Swiss|eu-cent
-pre=euc:-500; nm=-500:the Helvetii and Rhaetian tribes:Tribes|15:the Roman provinces of the Alps:Roman provinces|600:the Burgundian and Alemannic lands:Kingdoms|1291:the Alpine cantons of the Empire:Imperial cantons|1798:the Old Swiss Confederacy:Confederation of cantons|1803:the Helvetic Republic:French client republic|1848:the Swiss cantons:Confederation|Switzerland:Federal republic;
-cap=15:Aventicum|1291:Bern|99999:Bern; cur=1798:Swiss francs:Fr:0.2|1913:francs:Fr:0.2|1945:francs:Fr:0.23|1999:francs:Fr:0.6|2029:francs:Fr:1.15|francs:Fr:1.15;
+pre=euc:-500; nmu=-500:the Helvetii and Rhaetian tribes:Tribes|476:the Roman provinces of the Alps:Roman provinces|1291:the Burgundian and Alemannic lands:Kingdoms and duchies|1797:the Old Swiss Confederacy:Confederation of cantons|1802:the Helvetic Republic:French client republic|1847:the Swiss cantons:Confederation|Switzerland:Federal republic;
+capu=15:Aventicum|1291:Bern|99999:Bern; curu=1798:Swiss francs:Fr:0.2|1913:francs:Fr:0.2|1945:francs:Fr:0.23|1999:francs:Fr:0.6|2029:francs:Fr:1.15|francs:Fr:1.15;
 pop=1800:1.7,1900:3.3,1950:4.7,2000:7.2,2025:9; pm=0.8; nc=800:german|german; ga=ceur; eth=German-speaking Swiss:58:weur,French-speaking Swiss:22:weur,Italian-speaking Swiss:8:seur,Balkan and Turkish:6:balk@1970,Other:6:world@1980;
 rs=-10000>pa:100|-500>ce:60 pa:40|500>ch:100|1530>ch:55 pr:45|1950>pr:55 ch:42 sc:3|2025>ch:34 pr:23 sc:30 su:6 or:3 ot:4;
 cu=germanic T5 O0; lg=German,French,Italian,Romansh; fd=cheese fondue@1700,raclette@1291,chocolate@1875; fs=Swiss National Day@1891,Fasnacht@1400,Yodel festivals@1805; sp=skiing@1900,tennis@1980,hornussen@1500;
@@ -226,8 +226,8 @@ ev=1291 pol Three cantons swear the Oath of the Rütli and found the Confederacy
 ci=Geneva~-120~0~-120:2 1200:3 1550:4 1900:4|Zurich~-50~0~-50:2 1200:3 1600:4 1900:5|Basel~-44~0~-44:2 1100:3 1500:4 1900:5|Bern~1191~0~1191:2 1500:3 1900:4;`);
 
 Land(`LIE|Liechtenstein|Liechtensteiner|eu-cent
-pre=euc:-500; nm=-500:the Rhaetian Alps:Tribes|15:Roman Raetia:Roman province|700:the Alemannic lands:Frankish duchy|1712:the Lordships of Schellenberg and Vaduz:Imperial lordships|1806:the Principality of Liechtenstein:Principality|Liechtenstein:Constitutional principality;
-cap=99999:Vaduz; cur=1913:Austrian crowns:K:0.2|1921:Swiss francs:Fr:0.2|1945:Swiss francs:Fr:0.23|1999:Swiss francs:Fr:0.6|2029:francs:Fr:1.15|francs:Fr:1.15;
+pre=euc:-500; nmu=-500:the Rhaetian Alps:Tribes|476:Roman Raetia:Roman province|1711:the Alemannic lands:Frankish duchy|1805:the Lordships of Schellenberg and Vaduz:Imperial lordships|Liechtenstein:Constitutional principality;
+capu=99999:Vaduz; curu=1913:Austrian crowns:K:0.2|1921:Swiss francs:Fr:0.2|1945:Swiss francs:Fr:0.23|1999:Swiss francs:Fr:0.6|2029:francs:Fr:1.15|francs:Fr:1.15;
 pop=1800:0.006,1900:0.009,1950:0.014,2000:0.033,2025:0.04; pm=0.5; nc=800:german|german; ga=ceur;
 eth=Liechtensteiners:66:weur,Swiss and Austrians:20:weur,Other:14:world@1990;
 rs=-10000>pa:100|500>ch:100|1950>ch:90 pr:8 sc:2|2025>ch:67 pr:8 su:5 sc:15 ot:5;
@@ -239,8 +239,8 @@ ev=1719 pol Emperor Charles VI unites Vaduz and Schellenberg as the Principality
 ci=Vaduz~1322~0~1322:1 1700:2 1950:3;`);
 
 Land(`MCO|Monaco|Monégasque|eu-west
-pre=euw:-500; nm=-500:the Ligurian coast:Tribes|15:Roman Alpes Maritimae:Roman province|1297:the Ligurian coast of Genoa:Genoese port|1814:the Lordship of Monaco:Lordship of the Grimaldi|Monaco:Principality;
-cap=99999:Monaco; cur=1913:French francs:F:0.19|1945:francs:F:0.01|1999:francs:F:0.15|2029:euros:€:1.1|euros:€:1.1;
+pre=euw:-500; nmu=-500:the Ligurian coast:Tribes|476:Roman Alpes Maritimae:Roman province|1296:the Ligurian coast of Genoa:Genoese port|1813:the Lordship of Monaco:Lordship of the Grimaldi|Monaco:Principality;
+capu=99999:Monaco; curu=1913:French francs:F:0.19|1945:francs:F:0.01|1999:francs:F:0.15|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:0.006,1900:0.016,1950:0.02,2000:0.032,2025:0.039; pm=0.5; nc=1000:italian|french; ga=weur;
 eth=Monégasques:22:seur,French:28:weur,Italians:19:seur,British and others:31:world@1990;
 rs=-10000>pa:100|500>ch:100|1950>ch:90 pr:5 ju:1 sc:4|2025>ch:80 pr:5 ju:1 sc:10 ot:4;

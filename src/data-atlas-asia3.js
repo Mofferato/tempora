@@ -19,7 +19,7 @@ arr=5; arrT=1935; wv=1945; dv=1898; sx=; tier=1; mil=6; pp=1; ww=12; dual=l; cit
 ov=jpn:1895:1945;`);
 
 Land(`KOR|South Korea|Korean|as-easia
-pre=kor:-300; nm=-300:Gojoseon and the Mumun farmers:Early kingdoms|-57:the Three Kingdoms of Korea:Kingdoms|668:Unified Silla:Kingdom|935:Goryeo:Kingdom|1392:Joseon Korea:Kingdom|1897:the Korean Empire:Empire|1910:Japanese Korea:Japanese colony|1948:South Korea (military administration):Occupied|South Korea:Presidential republic;
+pre=kor:-300; nm=-300:Gojoseon and the Mumun farmers:Early kingdoms|-57:the Three Kingdoms of Korea:Kingdoms|668:Unified Silla:Kingdom|935:Goryeo:Kingdom|1392:Joseon Korea:Kingdom|1897:the Korean Empire:Empire|1910:Japanese Korea:Japanese colony|1945:the American zone of Korea:Occupied|1948:South Korea:Presidential republic;
 cap=-300:Wanggeom|-57:Gyeongju|935:Gaeseong|1392:Hanyang|99999:Seoul; cur=-300:bronze knives:kn :2|618:wuzhu coins:zhu :0.4|1423:cash coins:mun:0.15|1800:nyang:nyang:2|1910:yen:¥:0.5|1945:won:₩:0.001|1962:won:₩:0.0004|1999:won:₩:0.00084|2029:won:₩:0.00075|won:₩:0.00075;
 pop=1800:7,1900:12,1950:20,2000:47,2025:51.7; pm=1; nc=-57:korean|korean; fo=1; ga=korean; eth=Koreans:97:korean,Chinese and Vietnamese migrants:2:han@1990,Other:1:world@1990;
 rs=-10000>an:100|-300>an:90 sn:10|372>bm:50 an:40 ct:10|668>bm:60 an:25 ct:15|1392>ct:55 bm:25 an:20|1900>ct:35 an:25 bm:25 ch:8 pr:6 ot:1|1960>sc:30 bm:30 pr:15 ch:5 ct:15 ot:5|2025>sc:56 pr:19 bm:15 ch:8 ot:2;
@@ -31,7 +31,7 @@ ev=-57 pol Silla, Goguryeo and Baekje found the Three Kingdoms.|668 pol Silla un
 ci=Gyeongju~-57~0~-57:3 668:5 935:2 1900:2|Gaeseong~919~0~919:3 935:5 1392:3 1900:2|Seoul~-18~0~-18:1 1392:5 1700:5 1900:5 1950:6 1990:7|Busan~1000~0~1000:1 1876:3 1950:5 2000:6|Daegu~500~0~500:2 1900:3 1950:5;`);
 
 Land(`PRK|North Korea|North Korean|as-easia
-pre=kor:-300; nm=-300:Gojoseon and the Mumun farmers:Early kingdoms|-37:Goguryeo:Kingdom|668:Balhae and Unified Silla:Kingdoms|935:Goryeo:Kingdom|1392:Joseon Korea:Kingdom|1897:the Korean Empire:Empire|1910:Japanese Korea:Japanese colony|1948:the Soviet zone of Korea:Occupied|North Korea:One-party state;
+pre=kor:-300; nm=-300:Gojoseon and the Mumun farmers:Early kingdoms|-37:Goguryeo:Kingdom|668:Balhae and Unified Silla:Kingdoms|935:Goryeo:Kingdom|1392:Joseon Korea:Kingdom|1897:the Korean Empire:Empire|1910:Japanese Korea:Japanese colony|1945:the Soviet zone of Korea:Occupied|1948:North Korea:One-party state;
 cap=-300:Wanggeom|-37:Pyongyang|935:Gaeseong|1392:Hanyang|1948:Pyongyang|99999:Pyongyang; cur=-300:bronze knives:kn :2|618:wuzhu coins:zhu :0.4|1423:cash coins:mun:0.15|1800:nyang:nyang:2|1910:yen:¥:0.5|1945:won:₩:0.4|1999:won:₩:0.008|2029:won:₩:0.0011|won:₩:0.0011;
 pop=1800:7,1900:11,1950:9.6,2000:23,2025:26; pm=0.5; nc=-37:korean|korean; fo=1; ga=korean; eth=Koreans:100:korean;
 rs=-10000>an:100|-300>an:90 sn:10|372>bm:50 an:40 ct:10|668>bm:60 an:25 ct:15|1392>ct:55 bm:25 an:20|1948>sc:100|2025>sc:99 cf:0.5 bm:0.5;
@@ -43,7 +43,7 @@ ev=-37 pol Goguryeo is founded in the north.|668 war Silla and Tang defeat Gogur
 ci=Pyongyang~-1122~0~-1122:2 -37:4 427:5 1000:3 1900:3 1950:6|Gaeseong~919~0~919:3 935:5 1392:3|Hamhung~1000~0~1000:2 1930:4 1950:5|Wonsan~1500~0~1500:1 1880:3 1950:4;`);
 
 Land(`MNG|Mongolia|Mongolian|as-easia
-pre=mon:-300; nm=-300:the Xiongnu confederation:Nomad confederation|-209:the Xiongnu Empire:Nomad empire|552:the Turkic and Uyghur Khaganates:Khaganates|924:the Khitan and Naiman steppe:Khanates|1206:the Mongol Empire:Mongol empire|1368:the Northern Yuan:Khanates|1691:Qing Outer Mongolia:Qing protectorate|1911:the Bogd Khanate:Theocratic monarchy|1924:the Mongolian People's Republic:One-party state|Mongolia:Parliamentary republic;
+pre=mon:-300; nm=-300:the Xiongnu confederation:Nomad confederation|-209:the Xiongnu Empire:Nomad empire|552:the Turkic and Uyghur Khaganates:Khaganates|924:the Khitan and Naiman steppe:Khanates|1206:the Mongol Empire:Mongol empire|1368:the Northern Yuan:Khanates|1691:Qing Outer Mongolia:Qing protectorate|1911:the Bogd Khanate:Theocratic monarchy|1924:the Mongolian People's Republic:One-party state|1992:Mongolia:Parliamentary republic;
 cap=-209:Longcheng|552:Ötüken|744:Ordu-Baliq|1220:Karakorum|1271:Khanbaliq|1368:Karakorum|1691:Urga|99999:Ulaanbaatar; cur=-300:horses and felt:_:6|1206:silver sükhe:su:30|1800:tögrög:₮:0.4|1925:tögrög:₮:0.4|1945:tögrög:₮:0.2|1999:tögrög:₮:0.0009|2029:tögrög:₮:0.0003|tögrög:₮:0.0003;
 pop=1800:1.4,1900:0.6,1950:0.8,2000:2.4,2025:3.5; pm=0.3; nc=-300:steppe_pre|552:mongol|mongol; ga=mongol; eth=Khalkha Mongols:82:mongol,Kazakhs:4:turkic,Other Mongolic peoples:12:mongol,Other:2:han;
 rs=-10000>an:100|-300>tn:100|552>tn:80 bm:10 an:10|1578>bv:70 tn:20 an:10|1950>bv:70 sc:25 su:5|1990>sc:25 bv:60 su:5 ch:5 ot:5|2025>bv:50 sc:30 su:3 ch:3 ot:14;
@@ -55,7 +55,7 @@ ev=-209 pol Modu Chanyu founds the Xiongnu Empire.|552 pol The Turkic Khaganate 
 ci=Karakorum~1220~0~1220:4 1260:6 1368:3 1900:1|Ulaanbaatar~1639~0~1639:1 1778:2 1924:3 1950:5 2000:6|Erdenet~1974~0~1974:3 2000:4;`);
 
 Land(`TWN|Taiwan|Taiwanese|as-easia
-pre=seai:-300; from=-8000; nm=-300:the Austronesian villages of Formosa:Village chiefdoms|1624:Formosa's indigenous nations:Chiefdoms|1662:Dutch and Spanish Formosa:Colonial outposts|1683:Koxinga's Kingdom of Tungning:Kingdom|1895:Qing Taiwan:Qing prefecture|1945:Japanese Taiwan:Japanese colony|1949:the Republic of China:Single-party republic|1987:Taiwan under the KMT:Authoritarian republic|Taiwan:Presidential republic;
+pre=seai:-300; from=-8000; nm=-300:the Austronesian villages of Formosa:Village chiefdoms|1624:Dutch and Spanish Formosa:Colonial outposts|1662:Koxinga's Kingdom of Tungning:Kingdom|1683:Qing Taiwan:Qing prefecture|1895:Japanese Taiwan:Japanese colony|1945:Taiwan (Republic of China):Single-party republic|1987:Taiwan:Presidential republic;
 cap=1662:Fort Zeelandia|1683:Tainan|1887:Taipei|99999:Taipei; cur=-300:shell money and barter:_:3|1683:Spanish dollars:$:1.4|1895:yen:¥:0.5|1945:old Taiwan dollars:NT$:0.15|1949:new Taiwan dollars:NT$:0.1|1999:dollars:NT$:0.03|2029:dollars:NT$:0.031|dollars:NT$:0.031;
 pop=1800:2,1900:3,1950:7.6,2000:22,2025:23.4; pm=1; nc=1683:chinese|chinese; fo=1; ga=han; eth=Han Taiwanese (Hoklo and Hakka):84:han,Mainlanders:13:han@1949,Indigenous Taiwanese:2:seai,Other:1:world@1995;
 rs=-10000>an:100|1683>cf:80 bm:10 an:10|1895>cf:60 bm:20 sn:10 an:10|1950>cf:50 bm:25 ch:5 pr:5 an:15|2025>cf:45 bm:35 pr:5 ch:2 ot:13;
@@ -79,7 +79,7 @@ ev=40 rev The Trưng Sisters rebel against Chinese rule. #s=.1|938 war The Battl
 ci=Cổ Loa~-300~0~-300:3 -200:3 1000:1|Thăng Long (Hanoi)~1010~0~1010:3 1100:5 1700:5 1900:5 1950:6 2000:7|Huế~1600~0~1600:2 1802:4 1900:3|Saigon (Ho Chi Minh City)~1698~0~1698:1 1800:3 1900:5 1950:6 2000:7|Da Nang~1000~0~1000:1 1900:3 2000:5|Hội An~1500~0~1500:3 1700:4 1900:2;`);
 
 Land(`THA|Thailand|Thai|as-seasia
-pre=seam:-300; nm=-300:the Dvaravati and Ban Chiang villages:Chiefdoms|600:the Mon and Khmer kingdoms:Kingdoms|1238:the Sukhothai kingdom:Kingdom|1351:Ayutthaya:Kingdom|1767:Thonburi:Kingdom|1782:Rattanakosin Siam:Absolute monarchy|1932:the Kingdom of Siam:Absolute monarchy|1949:Siam under the People's Party:Constitutional monarchy|Thailand:Constitutional monarchy;
+pre=seam:-300; nm=-300:the Dvaravati and Ban Chiang villages:Chiefdoms|600:the Mon and Khmer kingdoms:Kingdoms|1238:the Sukhothai kingdom:Kingdom|1351:Ayutthaya:Kingdom|1767:Thonburi:Kingdom|1782:Rattanakosin Siam:Absolute monarchy|1932:the Kingdom of Siam:Constitutional monarchy|1939:Thailand:Constitutional monarchy;
 cap=600:Nakhon Pathom|1238:Sukhothai|1351:Ayutthaya|1767:Thonburi|1782:Bangkok|99999:Bangkok; cur=-300:cowrie shells:_:0.4|1238:silver bullets:bt:12|1800:ticals:tl:0.6|1932:baht:฿:0.4|1945:baht:฿:0.05|1999:baht:฿:0.025|2029:baht:฿:0.028|baht:฿:0.028;
 pop=1800:4.7,1900:7.3,1950:20,2000:63,2025:71; pm=1; nc=600:thai|thai; ga=seam; eth=Central Thai:34:seam,Isan (Lao):30:seam,Northern and Southern Thai:25:seam,Chinese-Thai:7:han,Other:4:seam;
 rs=-10000>an:100|-300>an:80 hi:10 bt:10|600>bt:50 hi:15 an:35|1238>bt:75 hi:10 an:15|1782>bt:90 su:4 an:5 ch:1|1950>bt:94 su:4 an:1 ch:1|2025>bt:93 su:5 ch:1 cf:1;
@@ -91,7 +91,7 @@ ev=1238 pol Sukhothai is founded and the Thai kingdom begins.|1351 pol Ayutthaya
 ci=Sukhothai~1238~0~1238:3 1300:4 1450:3 1900:1|Ayutthaya~1350~0~1350:4 1500:5 1700:6 1767:2 1900:2|Bangkok~1400~0~1400:1 1782:4 1850:5 1900:5 1950:6 2000:7|Chiang Mai~1296~0~1296:3 1500:4 1900:3 1950:4|Phuket~1500~0~1500:1 1950:3|Nakhon Ratchasima~1500~0~1500:1 1950:4;`);
 
 Land(`KHM|Cambodia|Cambodian|as-seasia
-pre=seam:-300; nm=-300:the Funan and Chenla chiefdoms:Chiefdoms|68:Funan:Kingdom|550:Chenla:Kingdoms|802:the Khmer Empire:Empire|1431:post-Angkor Cambodia:Kingdom|1863:the French protectorate of Cambodia:French protectorate|1953:the Kingdom of Cambodia:Kingdom|1970:the Khmer Republic:Republic|1975:Democratic Kampuchea:Communist dictatorship|1993:the People's Republic of Kampuchea:One-party state|Cambodia:Constitutional monarchy;
+pre=seam:-300; nm=-300:the Funan and Chenla chiefdoms:Chiefdoms|68:Funan:Kingdom|550:Chenla:Kingdoms|802:the Khmer Empire:Empire|1431:post-Angkor Cambodia:Kingdom|1863:the French protectorate of Cambodia:French protectorate|1953:the Kingdom of Cambodia:Kingdom|1970:the Khmer Republic:Republic|1975:Democratic Kampuchea:Communist dictatorship|1979:the People's Republic of Kampuchea:One-party state|1993:Cambodia:Constitutional monarchy;
 cap=68:Vyadhapura|802:Angkor|1431:Phnom Penh|1863:Phnom Penh|99999:Phnom Penh; cur=-300:cowrie shells:_:0.4|802:silver bars:bar:12|1431:ticals:tl:0.6|1863:piastres:$:0.5|1953:riels:៛:0.02|1999:riels:៛:0.00026|2029:riels:៛:0.00025|riels:៛:0.00025;
 pop=1800:1,1900:1.1,1950:4.2,2000:12.2,2025:17.4; pm=1; nc=802:khmer|khmer; ga=seam; eth=Khmer:97:seam,Vietnamese and Chinese:2:han,Cham and others:1:seam;
 rs=-10000>an:100|68>hi:40 an:50 bm:10|550>hi:70 bm:20 an:10|802>hi:60 bm:30 an:10|1200>bt:50 hi:30 an:20|1431>bt:90 an:10|1950>bt:95 su:2 an:2 ch:1|2025>bt:97 su:2 ch:1;
@@ -115,7 +115,7 @@ ev=1353 pol Fa Ngum founds Lan Xang, the Kingdom of a Million Elephants.|1778 wa
 ci=Luang Prabang~700~0~700:2 1353:4 1500:4 1900:3 1950:3 2000:4|Vientiane~1300~0~1300:2 1560:4 1827:1 1900:3 1950:4 2000:5|Pakse~1905~0~1905:1 1950:3;`);
 
 Land(`MMR|Myanmar|Burmese|as-seasia
-pre=seam:-300; nm=-300:the Pyu city-states:City-states|100:the Pyu and Mon kingdoms:Kingdoms|849:the Pagan Kingdom:Kingdom|1287:the Shan and Mon kingdoms:Kingdoms|1531:the Toungoo Empire:Empire|1752:the Konbaung dynasty:Kingdom|1886:British Burma:British colony|1948:the Union of Burma:Parliamentary republic|1962:the Burmese military state:Military junta|1988:the State Peace and Development Council:Military junta|2011:Myanmar:Parliamentary republic|Myanmar:Military-dominated republic;
+pre=seam:-300; nm=-300:the Pyu city-states:City-states|100:the Pyu and Mon kingdoms:Kingdoms|849:the Pagan Kingdom:Kingdom|1287:the Shan and Mon kingdoms:Kingdoms|1531:the Toungoo Empire:Empire|1752:the Konbaung dynasty:Kingdom|1886:British Burma:British colony|1948:the Union of Burma:Parliamentary republic|1962:the Burmese military state:Military junta|1989:Myanmar under military rule:Military junta|2011:Myanmar:Parliamentary republic;
 cap=-300:Beikthano|100:Sri Ksetra|849:Pagan|1287:Pinya|1531:Toungoo|1752:Ava|1857:Mandalay|1886:Rangoon|2006:Naypyidaw|99999:Naypyidaw; cur=-300:cowrie shells:_:0.4|849:silver ticals:tl:12|1800:kyats:K:0.6|1886:rupees:Rs:0.3|1945:rupees:Rs:0.2|1952:kyats:K:0.2|1999:kyats:K:0.0007|2029:kyats:K:0.0005|kyats:K:0.0005;
 pop=1800:4.5,1900:11,1950:19,2000:47,2025:54; pm=1; nc=849:burmese|burmese; ga=seam; eth=Bamar:68:seam,Shan:9:seam,Karen:7:seam,Rakhine and Mon:7:seam,Other (Kachin, Chin, Rohingya):9:seam;
 rs=-10000>an:100|100>hi:20 bm:20 an:60|849>bt:50 an:50|1057>bt:80 an:20|1950>bt:85 ch:6 su:4 an:3 hi:1 ot:1|2025>bt:88 ch:6 su:4 hi:1 ot:1;
@@ -127,7 +127,7 @@ ev=849 pol Pagan rises to power on the Irrawaddy.|1044 pol Anawrahta unites Burm
 ci=Beikthano~-300~0~-300:3 100:2|Pagan~849~1300~849:3 1057:5 1200:6 1287:2|Ava~1364~0~1364:3 1550:4 1752:4 1900:2|Mandalay~1857~0~1857:3 1900:4 1950:5|Yangon~1050~0~1050:1 1755:3 1886:5 1950:6 2000:7|Naypyidaw~2005~0~2005:3 2020:5;`);
 
 Land(`MYS|Malaysia|Malaysian|as-seasia
-pre=seai:-300; nm=-300:the Orang Asli and Malay chiefdoms:Chiefdoms|100:the Malay and Srivijaya trading ports:Port kingdoms|700:the Srivijaya empire:Thalassocracy|1400:the Sultanate of Malacca:Sultanate|1511:Portuguese Malacca:Portuguese colony|1641:Dutch Malacca:Dutch colony|1786:the British Straits Settlements:British colony|1941:British Malaya:British colony|1963:the Federation of Malaya:Federation of sultanates|Malaysia:Federal constitutional monarchy;
+pre=seai:-300; nm=-300:the Orang Asli and Malay chiefdoms:Chiefdoms|100:the Malay and Srivijaya trading ports:Port kingdoms|700:the Srivijaya empire:Thalassocracy|1400:the Sultanate of Malacca:Sultanate|1511:Portuguese Malacca:Portuguese colony|1641:Dutch Malacca:Dutch colony|1786:the British Straits Settlements:British colony|1941:British Malaya:British colony|1957:the Federation of Malaya:Federation of sultanates|1963:Malaysia:Federal constitutional monarchy;
 cap=700:Palembang|1400:Malacca|1511:Goa|1786:Penang|1896:Kuala Lumpur|1999:Putrajaya|99999:Kuala Lumpur; cur=-300:cowrie shells:_:0.4|700:tin ingots:ing :12|1400:gold dinars:din :400|1800:Spanish dollars:$:1.4|1906:Straits dollars:$:0.5|1945:Malayan dollars:$:0.5|1967:ringgit:RM:0.33|1999:ringgit:RM:0.26|2029:ringgit:RM:0.22|ringgit:RM:0.22;
 pop=1800:0.5,1900:2.2,1950:6.1,2000:23,2025:34; pm=0.7; nc=1400:malay|malay; ga=seai; eth=Malays and Bumiputera:70:seai,Chinese Malaysians:23:han@1850,Indian Malaysians:7:inds@1850,Indigenous Borneo peoples:1:seai;
 rs=-10000>an:100|100>hi:30 bt:30 an:40|700>bt:50 hi:20 an:30|1400>su:60 bt:20 hi:10 an:10|1900>su:50 cf:20 hi:9 bt:10 ch:4 an:3 ot:4|2025>su:64 bm:19 ch:9 hi:6 cf:1 ot:1;
@@ -139,7 +139,7 @@ ev=1400 pol Parameswara founds the Sultanate of Malacca.|1511 war The Portuguese
 ci=Malacca~1400~0~1400:3 1500:5 1641:3 1900:2|Kuala Lumpur~1857~0~1857:1 1900:4 1950:5 2000:7|George Town~1786~0~1786:2 1850:4 1950:5|Johor Bahru~1855~0~1855:1 1950:4 2000:6|Kuching~1841~0~1841:1 1950:3 2000:5;`);
 
 Land(`SGP|Singapore|Singaporean|as-seasia
-pre=seai:-300; from=1200; nm=1299:Temasek, a trading outpost:Port town|1400:Singapura under Malacca and Johor:Port kingdom|1819:the British trading post of Singapore:British colony|1963:the Crown Colony of Singapore:British colony|1965:Singapore in Malaysia:State of the Federation|Singapore:Parliamentary republic;
+pre=seai:-300; from=1200; nm=1299:Temasek, a trading outpost:Port town|1400:Singapura under Malacca and Johor:Port kingdom|1819:the British trading post of Singapore:British colony|1963:Singapore in Malaysia:State of the Federation|1965:Singapore:Parliamentary republic;
 cap=99999:Singapore; cur=1819:Spanish dollars:$:1.4|1906:Straits dollars:$:0.5|1946:Malayan dollars:$:0.5|1967:dollars:S$:0.33|1999:dollars:S$:0.6|2029:dollars:S$:0.75|dollars:S$:0.75;
 pop=1800:0.0001,1900:0.23,1950:1,2000:4,2025:6; pm=1; nc=1400:malay|chinese; ga=han; eth=Chinese Singaporeans:75:han@1819,Malay Singaporeans:14:seai,Indian Singaporeans:9:inds@1819,Other:2:world@1990;
 rs=1200>cf:10 bt:20 su:30 an:40|1819>cf:30 su:25 hi:10 bm:15 ch:5 an:15|1950>cf:30 bm:20 su:16 ch:10 hi:6 an:18|2025>sc:20 bm:31 ch:19 su:16 hi:5 cf:5 ot:4;
@@ -151,7 +151,7 @@ ev=1299 pol Sang Nila Utama, a prince of Palembang, founds Singapura after seein
 ci=Singapore~1299~0~1299:2 1400:3 1819:3 1900:5 1950:6 2000:7;`);
 
 Land(`IDN|Indonesia|Indonesian|as-seasia
-pre=seai:-300; nm=-300:the Austronesian island chiefdoms:Chiefdoms|400:the early Hindu and Buddhist kingdoms:Kingdoms|671:the Srivijaya empire:Thalassocracy|1293:the Majapahit empire:Empire|1527:the Sultanates of Demak, Mataram and Aceh:Sultanates|1602:the Dutch East Indies:Dutch company then colony|1945:the Japanese-occupied East Indies:Occupied|1949:the Republic of Indonesia:Presidential republic|1998:Indonesia (Reformasi):Presidential republic|Indonesia:Presidential republic;
+pre=seai:-300; nm=-300:the Austronesian island chiefdoms:Chiefdoms|400:the early Hindu and Buddhist kingdoms:Kingdoms|671:the Srivijaya empire:Thalassocracy|1293:the Majapahit empire:Empire|1527:the Sultanates of Demak, Mataram and Aceh:Sultanates|1602:the Dutch East Indies:Dutch company then colony|1942:the Japanese-occupied East Indies:Occupied|1945:the Republic of Indonesia:Presidential republic|1998:Indonesia (Reformasi):Presidential republic;
 cap=400:Tarumanagara|671:Palembang|1293:Trowulan|1527:Demak|1619:Batavia|1945:Yogyakarta|1949:Jakarta|99999:Jakarta; cur=-300:cowrie shells:_:0.4|671:silver ingots:ing :12|1293:gold and copper cash:pi:0.4|1800:guilders:ƒ:0.4|1914:guilders:ƒ:0.4|1946:rupiah:Rp:0.1|1999:rupiah:Rp:0.00014|2029:rupiah:Rp:0.000062|rupiah:Rp:0.000062;
 pop=1800:28,1900:42,1950:77,2000:210,2025:283; pm=1.3; nc=1293:javanese|javanese; ga=seai; eth=Javanese:40:seai,Sundanese:15:seai,Malay and Batak:11:seai,Madurese and Minangkabau:10:seai,Chinese-Indonesians:3:han@1500,Papuans and others:21:mel;
 rs=-10000>an:100|400>hi:30 bt:30 an:40|671>bt:40 hi:30 an:30|1293>hi:50 bt:20 an:20 su:10|1527>su:60 hi:20 an:10 bt:5 ch:5|1950>su:80 pr:6 ch:3 hi:2 bm:1 an:8|2025>su:87 pr:7 ch:3 hi:2 bm:1;
@@ -187,7 +187,7 @@ ev=1368 pol Sultan Muhammad Shah founds the Bruneian Sultanate.|1521 pol Magella
 ci=Kota Batu~1400~0~1400:2 1521:4 1700:3 1900:2|Bandar Seri Begawan~1906~0~1906:1 1950:3 2000:4;`);
 
 Land(`TLS|Timor-Leste|Timorese|as-seasia
-pre=seai:-300; nm=-300:the Austronesian and Papuan Timor:Chiefdoms|1300:the sandalwood liurai kingdoms:Chiefdoms|1702:Portuguese Timor:Portuguese colony|1942:Japanese-occupied Timor:Occupied|1975:Portuguese Timor:Portuguese colony|1976:Indonesian East Timor:Indonesian province|1999:Timor-Leste under the United Nations:UN administration|Timor-Leste:Semi-presidential republic;
+pre=seai:-300; nm=-300:the Austronesian and Papuan Timor:Chiefdoms|1300:the sandalwood liurai kingdoms:Chiefdoms|1702:Portuguese Timor:Portuguese colony|1942:Japanese-occupied Timor:Occupied|1945:Portuguese Timor:Portuguese colony|1976:Indonesian East Timor:Indonesian province|1999:Timor-Leste under the United Nations:UN administration|2002:Timor-Leste:Semi-presidential republic;
 cap=1702:Lifau|1769:Dili|99999:Dili; cur=-300:barter goods:_:8|1702:Portuguese escudos:$:0.5|1975:Indonesian rupiah:Rp:0.0005|2000:US dollars:$:1|US dollars:$:1;
 pop=1800:0.1,1900:0.3,1950:0.43,2000:0.85,2025:1.4; pm=1; nc=1300:portuguese|portuguese; ga=mel; eth=Tetum and Mambai:55:mel,Other Timorese peoples:42:mel,Chinese and mixed Portuguese-Timorese:3:han;
 rs=-10000>an:100|1702>ch:30 an:70|1975>ch:90 an:10|2025>ch:97 su:2 pr:1;

@@ -61,6 +61,16 @@ const Atlas = (() => {
     }
     return out;
   }
+  // Records are written start-style: "1804:Name" means the name begins in 1804. The engine reads until-style
+  // ("applies up to"), so the lists are converted: each entry ends the year before the next one starts.
+  function startToUntil(arr) {
+    const a = arr.map(x => x.slice());
+    let prev = -1e9;
+    for (const x of a) { if (x[0] === 99999) x[0] = Math.max(prev + 1, 2000); prev = x[0]; }
+    return a.map((x, i) => [i + 1 < a.length ? a[i + 1][0] - 1 : 99999, ...x.slice(1)]);
+  }
+  const tlist = (f, key, shape) => (f[key + 'u'] ? timeline(f[key + 'u'], shape) : f[key] ? startToUntil(timeline(f[key], shape)) : []);
+  const tstart = (f, key, shape) => (f[key + 'u'] ? (timeline(f[key + 'u'], shape)[0] || [99999])[0] : f[key] ? (timeline(f[key], shape)[0] || [99999])[0] - 1 : 99999);
   // "year>code:pct code:pct|year>..." -> [[year, [[code, pct]]]]
   function snaps(s) {
     return list(s).map(e => { const [y, mix] = e.split('>'); return [+y, mix.trim().split(/\s+/).map(x => { const [c, p] = x.split(':'); return [c, +p || 1]; })]; });
@@ -78,9 +88,9 @@ const Atlas = (() => {
   /* ---------- building one land ---------- */
   function currency(rec, pre, arch) {
     const f = rec.f, cut = rec.cut, out = [];
-    const auth = timeline(f.cur, 3);
-    for (const x of pre.cur || []) if (x[0] <= cut && (!auth.length || x[0] < auth[0][0])) out.push(x.slice());
-    const first = auth.length ? auth[0][0] : 99999;
+    const auth = tlist(f, 'cur', 3), aStart = tstart(f, 'cur', 3);
+    for (const x of pre.cur || []) if (x[0] <= cut && x[0] < aStart) out.push(x.slice());
+    const first = aStart;
     const ca = AT.curA[f.ca || CUR_BY_SUB(rec.sub, rec.id)] || [];
     for (const x of ca) if (x[0] > cut && x[0] < first) out.push(x.slice());
     let prev = out.length ? out[out.length - 1][0] : cut;
@@ -214,9 +224,10 @@ const Atlas = (() => {
         lg: list(f.lg, ','), fd: list(f.fd, ','), fs: list(f.fs, ','), cs: list(f.cs, '|'), sp: list(f.sp, ','), tr: list(f.tr, '|'),
         ov: list(f.ov).map(e => { const [p, a, b] = e.split(':'); return [p, +a, +b]; }), bl: list(f.bl).map(e => { const [b, y, t] = e.split(':'); return [b, +y || 0, t ? +t : 99999]; }),
         iso: id, ww: f.ww || '', hd: f.hd || '' };
-      const nmA = timeline(f.nm, 2), capA = timeline(f.cap, 1);
-      const names = [...(pre.n || []).filter(x => x[0] <= rec.cut && (!nmA.length || x[0] < nmA[0][0])), ...nmA];
-      const caps = [...(pre.cap || []).filter(x => x[0] <= rec.cut && (!capA.length || x[0] < capA[0][0])), ...capA];
+      const nmA = tlist(f, 'nm', 2), capA = tlist(f, 'cap', 1);
+      const nmS = tstart(f, 'nm', 2), capS = tstart(f, 'cap', 1);
+      const names = [...(pre.n || []).filter(x => x[0] <= rec.cut && x[0] < nmS), ...nmA];
+      const caps = [...(pre.cap || []).filter(x => x[0] <= rec.cut && x[0] < capS), ...capA];
       if (!caps.length || caps[caps.length - 1][0] < 99999) { const l = caps[caps.length - 1]; caps.push([99999, l ? l[1] : rec.short]); }
       if (!names.length || names[names.length - 1][0] < 99999) { const l = names[names.length - 1]; names.push([99999, l ? l[1] : rec.short, l ? l[2] : 'Republic']); }
       // pools: the early pool, then the country's own
