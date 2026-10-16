@@ -66,3 +66,11 @@
   Promise.resolve(typeof Platform !== 'undefined' ? Platform.init() : null).then(() => { if (typeof Community !== 'undefined') Community.init(); });
   if (ui.sound) ui.sound.init();
 })();
+
+/* ---------- installable, and playable offline ---------- */
+(() => {
+  if (typeof window === 'undefined' || window.TEMPORA_HOSTED || !('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__installEvt = e; });
+  window.addEventListener('appinstalled', () => { window.__installEvt = null; });
+})();

@@ -15,7 +15,7 @@ const Gen = (() => {
 
   // Frequencies of rarer single-gene traits, the same everywhere
   const UNI = { myo: 0.2, ast: 0.15, lon: 0.05, twn: 0.12, lh: 0.3, dim: 0.3, hem: 0.0003, hun: 0.0002 };
-  const WORLD = 'ENG FRA ITA GRC EGY CHN JPN IND WAF MEX IRN RUS LEV MSP ANA MAG SCA AND'.split(' ');
+  const WORLD = 'ENG FRA ITA GRC EGY CHN JPN IND NGA MEX IRN RUS SYR IRQ TUR DZA SWE PER'.split(' ');
   const KEYS = ['sk', 'hd', 'rd', 'eb', 'eg', 'cu', 'lac', 'sc', 'cf', 'cb'];
 
   /* ---------- population frequencies (with microevolution) ---------- */
@@ -65,7 +65,7 @@ const Gen = (() => {
         const goal = target || world;
         for (const k of KEYS) P[k] += (goal[k] - P[k]) * rate * step;
       }
-      if (c.id === 'MEX' && year > 1521) for (const k of KEYS) P[k] += (blend({ MEX: 0.6, ITA: 0.3, WAF: 0.1 })[k] - P[k]) * 0.003 * step;
+      if (c.id === 'MEX' && year > 1521) for (const k of KEYS) P[k] += (blend({ MEX: 0.6, ITA: 0.3, NGA: 0.1 })[k] - P[k]) * 0.003 * step;
       if (year % 50 < step) P.hist.push([year, Object.fromEntries(KEYS.map(k => [k, +P[k].toFixed(3)]))]);
       if (P.hist.length > 120) P.hist.splice(0, P.hist.length - 120);
     }

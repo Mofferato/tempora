@@ -136,13 +136,13 @@ const Towns = (() => {
       if (h.from && h.mix) for (const to of h.where) mixPop(to, h.from, h.mix);
       // a few people you know join the movement
       if (h.from) for (const o of S.known(p)) if (S.alive(o) && h.from.includes(o.cc) && S.age(o) >= 16 && S.age(o) <= 45 && U.chance(0.015)) {
-        const dest = U.pick(h.where); o.cc = dest; o.home = pickHome(dest, y, 0.2);
+        const dest = Geo.pickNear(o.cc, h.where); o.cc = dest; o.home = pickHome(dest, y, 0.2);
         S.log(p, `Your ${S.relLabel(p, o).toLowerCase()} ${o.first} left for ${S.world.name(dest)}.`, 'world');
       }
       // and you might too
       const key = 'mig_' + h.key;
       if (h.from && h.from.includes(p.cc) && !p.flags[key] && S.age(p) >= 16 && S.age(p) <= 50 && U.chance(0.25)) {
-        p.flags[key] = 1; const dest = U.pick(h.where);
+        p.flags[key] = 1; const dest = Geo.pickNear(p.cc, h.where);
         S.prompt({ title: 'A time of leaving', text: `${h.t}\n\nNeighbours are packing up for ${S.world.name(dest)}. Will you go with them?`, choices: [
           { l: `Go to ${S.world.name(dest)}`, go: () => { const t = emigrateCheap(p, dest); return t; } },
           { l: 'Stay', go: () => { S.log(p, 'Many left, but you stayed.', 'life'); return 'You watched them go.'; } }] });
@@ -160,7 +160,7 @@ const Towns = (() => {
       if (!p.flags[key]) {
         const safe = S.world.countriesAt().filter(c => c.id !== p.cc && c.region !== 'space' && !S.activeWars().some(w => w.where && w.where.includes(c.id)));
         if (safe.length) {
-          p.flags[key] = 1; const dest = U.pick(safe).id;
+          p.flags[key] = 1; const dest = Geo.pickNear(p.cc, safe.map(c => c.id));
           S.prompt({ title: 'The war comes closer', text: `The ${h.n} has reached your district. Families are fleeing toward ${S.world.name(dest)}.`, choices: [
             { l: `Flee to ${S.world.name(dest)}`, go: () => emigrateCheap(p, dest, 'fled') },
             { l: 'Stay and endure', go: () => { S.applyFx(p, { mh: -4, wp: 2 }); return 'You bolted the door and stayed.'; } }] });

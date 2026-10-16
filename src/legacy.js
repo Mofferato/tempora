@@ -15,7 +15,7 @@
 
 const Legacy = (() => {
   const S = Sim, W = () => S.W, yr = () => S.W.year;
-  const ISL = ['EGY', 'IRN', 'MAG', 'MSP', 'LEV', 'ANA'];
+  const ISL = { includes: cc => Atlas.islamic(cc, Sim.W.year) };
   const HL = {
     prehistory: ['a carved bone amulet', 'an amber necklace', 'a polished jade axe'], ancient: ['a gold signet ring', 'a bronze mirror', 'a painted clay figure'],
     medieval: ['a sword with a named blade', 'an illuminated psalter', 'a silver chalice'], renaissance: ['a family portrait in oils', 'a jewelled rapier', 'a brass astrolabe'],
@@ -75,7 +75,7 @@ const Legacy = (() => {
   /* ---------- the law of inheritance ---------- */
   function lawOf(cc, y = yr()) {
     if (ISL.includes(cc) && y >= 640 && y < 1990) return 'islamic';
-    if (['ENG', 'FRA', 'SCA'].includes(cc) && y >= 1066 && y < 1925) return 'primogeniture';
+    if (['ENG', 'FRA', 'SCA'].includes(Atlas.old(cc)) && y >= 1066 && y < 1925) return 'primogeniture';
     if (cc === 'JPN' && y >= 1600 && y < 1947) return 'primogeniture';
     if (S.era().id === 'prehistory') return 'custom';
     return 'equal';

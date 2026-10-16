@@ -143,10 +143,20 @@ function serveGame(res) {
   });
 }
 
+const TYPES = { '.webmanifest': 'application/manifest+json', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png' };
+function serveFile(res, rel) {
+  fs.readFile(path.join(ROOT, rel), (e, buf) => {
+    if (e) return fail(res, 404, 'Not found.');
+    res.writeHead(200, { 'Content-Type': TYPES[path.extname(rel)] || 'application/octet-stream', 'Cache-Control': rel === 'sw.js' ? 'no-cache' : 'public, max-age=3600', ...SEC });
+    res.end(buf);
+  });
+}
+
 /* ---------------- routes ---------------- */
 async function route(req, res) {
   const url = new URL(req.url, 'http://x'), p = url.pathname, m = req.method;
   if (m === 'GET' && (p === '/' || p === '/index.html')) return serveGame(res);
+  if (m === 'GET' && (p === '/manifest.webmanifest' || p === '/sw.js' || /^\/assets\/[a-z0-9-]+\.png$/.test(p))) return serveFile(res, p.slice(1));
   if (p === '/favicon.ico') { res.writeHead(204); return res.end(); }
   if (!p.startsWith('/api/')) return fail(res, 404, 'Not found.');
   if (m !== 'GET' && !sameOrigin(req)) return fail(res, 403, 'Cross-origin request refused.');

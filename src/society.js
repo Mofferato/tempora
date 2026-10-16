@@ -8,7 +8,7 @@
 
 const Society = (() => {
   const S = Sim, W = () => S.W, yr = () => S.W.year;
-  const ISLAMIC = ['EGY', 'IRN', 'MAG', 'MSP', 'LEV', 'ANA'];
+  const ISLAMIC = { includes: cc => Atlas.islamic(cc, Sim.W.year) };
   const CRIMES = {
     theft: 'theft', pickpocket: 'picking pockets', assault: 'assault', fraud: 'fraud', smuggling: 'smuggling', heresy: 'heresy',
     sedition: 'sedition', draft: 'dodging the draft', desertion: 'desertion', murder: 'murder', escape: 'escaping custody', bribery: 'bribery', corruption: 'corruption',
@@ -18,7 +18,7 @@ const Society = (() => {
     if (e.id === 'prehistory') return 'the council of elders';
     if (e.id === 'ancient') return cc === 'EGY' ? "the vizier's court" : cc === 'CHN' ? "the magistrate's yamen" : 'the magistrates';
     if (ISLAMIC.includes(cc) && y >= 640 && y < 1900) return "the qadi's court";
-    if (e.id === 'medieval') return ['ENG', 'FRA', 'SCA'].includes(cc) ? 'the manor court' : cc === 'CHN' ? "the magistrate's yamen" : 'the local court';
+    if (e.id === 'medieval') return ['ENG', 'FRA', 'SCA'].includes(Atlas.old(cc)) ? 'the manor court' : cc === 'CHN' ? "the magistrate's yamen" : 'the local court';
     if (e.id === 'renaissance') return 'the city tribunal';
     if (e.id === 'colonial') return cc === 'ENG' || cc === 'USA' ? 'the assizes' : 'the royal court';
     if (e.id === 'near') return 'the AI-assisted court';
@@ -50,7 +50,7 @@ const Society = (() => {
   }
   function exile(p) {
     const opts = S.world.countriesAt().filter(c => c.id !== p.cc && c.region !== 'space' && c.region === S.world.C(p.cc)?.region);
-    const dest = (opts.length ? U.pick(opts) : U.pick(S.world.countriesAt().filter(c => c.id !== p.cc && c.region !== 'space'))).id;
+    const dest = Geo.pickNear(p.cc, (opts.length ? opts : S.world.countriesAt().filter(c => c.id !== p.cc && c.region !== 'space')).map(c => c.id));
     if (Sim.towns) Sim.towns.emigrateCheap(p, dest, 'exiled');
     else p.cc = dest;
     p.flags.exiled = yr();

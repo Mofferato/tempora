@@ -223,9 +223,9 @@ const Sim = (() => {
 
   function newWorld(opt) {
     const year = opt.year;
-    W = { v: 1, year, nid: 1, people: {}, playerId: null, news: [], started: year,
-      dyn: { name: '', score: 0, lives: [], played: [], founder: null, houses: [] }, god: false, lastEra: eraOf(year).id,
-      mode: opt.mode || 'narrative', godOn: !!opt.godOn, pets: {}, auto: {}, rel: {}, nat: {}, pops: {} };
+    W = { v: 3, year, nid: 1, people: {}, playerId: null, news: [], started: year,
+      dyn: { name: '', score: 0, lives: [], played: [], founder: null, houses: [] }, sandbox: false, lastEra: eraOf(year).id,
+      mode: opt.mode || 'narrative', sandboxOn: !!opt.sandboxOn, pets: {}, auto: {}, rel: {}, nat: {}, pops: {} };
     spawnFamily(opt);
     return W;
   }
@@ -238,7 +238,7 @@ const Sim = (() => {
     W.spawnCC = opt.cc || (hooks.defaultCC && hooks.defaultCC(year)) || null;
     const mA = law('marry', e, W.spawnCC);
     const cls = opt.cls ? CLASSES.find(c => c.id === opt.cls) : U.wpick(CLASSES, c => c.w);
-    const last = opt.last?.trim() || U.pick(pool(e, W.spawnCC).last);
+    const last = opt.last?.trim() || U.pick(pool(e, opt.surnameCC || W.spawnCC).last);
     const faAge = U.ri(mA + 6, 40), moAge = U.ri(mA + 3, Math.min(40, faAge + 2));
     const by = a => U.add(year, -a);
     // grandparents
@@ -304,6 +304,7 @@ const Sim = (() => {
     delete a.rels[b.id]; delete b.rels[a.id];
     a.rels[b.id] = { k: 'fam', c: U.ri(65, 95) }; b.rels[a.id] = { k: 'fam', c: U.ri(65, 95) };
     if (!silent) { log(a, `Married ${b.first} ${b.last}.`, 'love'); log(b, `Married ${a.first} ${a.last}.`, 'love'); }
+    if (hooks.onWed) hooks.onWed(a, b, silent);
   }
   function unmarry(a, b) {
     if (a.sp === b.id) a.sp = null; if (b.sp === a.id) b.sp = null;
@@ -560,14 +561,14 @@ const Sim = (() => {
           const a = age(p);
           if (p.flags.war === h.key) {
             if (a > 50 || W.year === end) { delete p.flags.war; p.flags.vet = 1; if (p === pl) log(p, `You came home from the ${h.n}.`, 'good'); continue; }
-            if (U.chance(h.mort)) kill(p, `wounds in the ${h.n}`);
+            if (U.chance(h.mort)) kill(p, `wounds in the ${h.n.replace(/^The /, '')}`);
             else if (p === pl && U.chance(0.3)) { p.h = U.clamp(p.h - U.ri(5, 20)); log(p, `You were wounded at the front.`, 'bad'); }
             continue;
           }
           if (p.sex === 'M' && a >= 18 && a <= 45 && !p.prison && !law('noDraft', era(), p.cc) && U.chance(h.draft * hmul('draftMul', p))) {
             if (p === pl) draftPrompt(p, h);
             else if (conn.has(p.id)) { p.flags.war = h.key; if (known(pl).includes(p)) log(pl, `Your ${relLabel(pl, p).toLowerCase()} ${p.first} was called up for the ${h.n}.`, 'world'); }
-          } else if (h.civ && U.chance(h.civ)) kill(p, `the ${h.n}`);
+          } else if (h.civ && U.chance(h.civ)) kill(p, `the ${h.n.replace(/^The /, "")}`);
         }
       } else if (h.type === 'famine') {
         for (const p of living) {

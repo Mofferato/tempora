@@ -1,6 +1,6 @@
 /* =====================================================================
    ENGINE, part 2 — the player's year, choices, careers, school,
-   relationships, assets, death & inheritance, dynasty, god mode, saves.
+   relationships, assets, death & inheritance, dynasty, sandbox mode, saves.
    ===================================================================== */
 
 Object.assign(Sim, (() => {
@@ -518,7 +518,7 @@ Object.assign(Sim, (() => {
     if (ev.ch) {
       if (npc) { const ok = ev.ch.filter(c => afford(p, c.fx)); const c = S.hooks.npcChoose ? S.hooks.npcChoose(p, ok.length ? ok : ev.ch) : U.pick(ok.length ? ok : ev.ch); resolve(p, c, text, true); return; }
       S.prompt({
-        title: `${U.fmtYearAD(W().year)} · Age ${S.age(p)}`, text, ev: ev.id,
+        title: ev.title ? `${ev.title} · ${U.fmtYearAD(W().year)}` : `${U.fmtYearAD(W().year)} · Age ${S.age(p)}`, text, ev: ev.id,
         choices: ev.ch.map(c => ({ l: c.l, dis: !afford(p, c.fx), src: c, go: () => resolve(p, c, text) })),
       });
       return;
@@ -638,7 +638,7 @@ Object.assign(Sim, (() => {
     }
   }
 
-  /* ---------------- god mode ---------------- */
+  /* ---------------- sandbox mode ---------------- */
   function autoResolve() { while (S.prompts.length) { const pr = S.prompts.shift(); const ok = pr.choices.filter(c => !c.dis); (ok[ok.length - 1] || pr.choices[0]).go(); } }
   function jump(n) {
     for (let i = 0; i < n; i++) { ageUp(); autoResolve(); if (W().dead) break; }

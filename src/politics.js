@@ -30,7 +30,7 @@ const Pol = (() => {
     if (/corporate|charter|authority/.test(g)) return 'charter';
     return 'monarchy';
   }
-  const ISLAMIC = ['EGY', 'IRN', 'MAG', 'MSP', 'LEV', 'ANA'];
+  const ISLAMIC = { includes: cc => Atlas.islamic(cc, Sim.W.year) };
   function headTitle(cc, sex) {
     const g = (S.world.gov(cc) || '').toLowerCase(), n = (S.world.name(cc) || '').toLowerCase(), F = sex === 'F', y = yr();
     if (cc === 'EGY' && y < -30) return 'Pharaoh';
@@ -49,14 +49,14 @@ const Pol = (() => {
     const y = yr();
     if (cc === 'ITA' && y >= -509 && y <= -27) return 'Consul';
     if (cc === 'GRC' && y < -146) return 'Archon';
-    if (cc === 'MAG' && y < -146) return 'Suffete';
+    if (Atlas.old(cc) === 'MAG' && y < -146) return 'Suffete';
     if (/prime minister/i.test(S.world.gov(cc))) return 'Prime Minister';
     return 'President';
   }
   function legisTitle(cc) {
     const y = yr();
     if (cc === 'ITA' && y < 476) return 'Senator'; if (cc === 'GRC' && y < -146) return 'Member of the Boule';
-    if (cc === 'USA') return 'Senator'; if (cc === 'FRA') return 'Deputy'; if (cc === 'SCA' && y < 1300) return 'Speaker at the Thing';
+    if (cc === 'USA') return 'Senator'; if (cc === 'FRA') return 'Deputy'; if (Atlas.old(cc) === 'SCA' && y < 1300) return 'Speaker at the Thing';
     return 'Member of Parliament';
   }
   const LADDERS = {
@@ -204,7 +204,7 @@ const Pol = (() => {
 
   /* ---------- wars ---------- */
   const warsNow = () => (W().wars || []).filter(h => yr() >= h.y && yr() <= h.end);
-  const atWar = (a, b) => S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b);
+  const atWar = (a, b) => (typeof Geo !== 'undefined' ? Geo.atWar(a, b) : S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b));
   function strength(cc) {
     const pop = S.world.popAt(cc) || 0.01, r = reg(cc);
     const pl = S.me(), lead = pl && pl.cc === cc && pl.office?.lvl >= 4 ? (pl.sm + (pl.wp ?? 50)) / 60 + (S.pers?.has(pl, 'brave') ? 0.5 : 0) : 0;
@@ -499,7 +499,7 @@ LATE.push(() => {
         <div class="stat"><span class="k">Approval</span>${bar(o.appr)}<span class="v">${Math.round(o.appr)}</span></div>
         <p class="lede" style="margin-top:8px">${o.yrs} year${o.yrs === 1 ? '' : 's'} in office${o.term ? ` · term of ${o.term} years` : ''}. Each year brings decisions; low approval can cost you the post.</p>
         <div class="btnrow"><button class="btn sm danger" data-act="polLeave">Step down</button></div></div>` : ''}
-      ${ruling ? `<div class="panel god"><div class="eyebrow">${o.lvl === 5 ? 'Rule' : 'Govern'}</div>
+      ${ruling ? `<div class="panel sandbox"><div class="eyebrow">${o.lvl === 5 ? 'Rule' : 'Govern'}</div>
         <div class="btnrow" style="margin-top:8px">${[['taxdown', 'Cut taxes'], ['taxup', 'Raise taxes'], ['works', 'Commission great works'], ['armyup', 'Expand the army'], ['armydown', 'Shrink the army'], ['free', 'Grant freedoms'], ['crack', 'Crack down']].map(([a, l]) => `<button class="btn sm" data-act="polRule" data-a="${a}" data-label="${esc(l)}">${esc(l)}</button>${ui.pinBtn ? ui.pinBtn('polRule', { a }, l) : ''}`).join('')}</div>
         <div class="eyebrow" style="margin-top:14px">Foreign affairs</div>
         <div class="list" style="margin-top:6px">${others.map(c => { const rel = Math.round(S.world.rel(cc, c.id)), war = Po.atWar(cc, c.id); return `<div class="row"><div class="main"><div class="t">${esc(S.world.name(c.id))}</div><div class="s">${war ? '<span class="why">at war</span>' : `relations ${rel}`}</div></div>

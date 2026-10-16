@@ -254,12 +254,12 @@ button.row:disabled { cursor: default; }
 .chron .c.era .t { font-family: var(--f-display); color: var(--era); font-size: 16px; }
 .proj { font-size: 11px; color: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 4px; }
 
-/* god mode */
-.god { border-color: var(--era-line); background: var(--era-soft); }
-.god .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 16px; margin-top: 10px; }
-.god label { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
-.god input[type="range"] { width: 100%; accent-color: var(--era); }
-.god select, .god input[type="number"], .field input, .field select, textarea {
+/* sandbox mode */
+.sandbox { border-color: var(--era-line); background: var(--era-soft); }
+.sandbox .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 16px; margin-top: 10px; }
+.sandbox label { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.sandbox input[type="range"] { width: 100%; accent-color: var(--era); }
+.sandbox select, .sandbox input[type="number"], .field input, .field select, textarea {
   padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); width: 100%; min-width: 0;
 }
 
@@ -455,4 +455,4 @@ button.row:disabled { cursor: default; }
 .cform input { flex: 1; min-width: 0; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); }
 .board { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
 .board li { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
-.field select, .field input, .god select, .god input { max-width: 100%; }
+.field select, .field input, .sandbox select, .sandbox input { max-width: 100%; }

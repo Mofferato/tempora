@@ -56,13 +56,15 @@ const UI = (() => {
     const pr = S.prompts[0];
     if (!pr) return;
     sheet(`<div class="eyebrow">${esc(pr.title)}</div><div class="body${pr.chapter ? ' chapter' : ''}">${esc(pr.text)}</div>
-      <div class="acts">${pr.choices.map((c, i) => `<button class="btn choice ${i === 0 ? 'era' : ''}" data-act="choose" data-i="${i}" ${c.dis ? 'disabled title="You cannot afford this"' : ''}><span>${esc(c.l)}</span>${c.src && ui.dpreview ? ui.dpreview(c.src, S.me()) : ''}</button>`).join('')}</div>
+      ${pr.choices.some(c => c.input) ? `<div class="field" style="margin:6px 0 2px"><label for="pr-in">${esc(pr.choices.find(c => c.input).input.label || 'Your own')}</label><input id="pr-in" maxlength="${pr.choices.find(c => c.input).input.max || 40}" placeholder="${esc(pr.choices.find(c => c.input).input.ph || '')}" autocomplete="off"></div>` : ''}<div class="acts">${pr.choices.map((c, i) => `<button class="btn choice ${i === 0 ? 'era' : ''}" data-act="choose" data-i="${i}" ${c.dis ? 'disabled title="You cannot afford this"' : ''}><span>${esc(c.l)}</span>${c.src && ui.dpreview ? ui.dpreview(c.src, S.me()) : ''}</button>`).join('')}</div>
       ${ui.promptExtra ? ui.promptExtra(pr) : ''}`, { locked: true, label: 'A choice' });
   }
   ui.on.choose = el => {
     const pr = S.prompts.shift(); if (!pr) return closeSheet();
     const c = pr.choices[+el.dataset.i];
+    S.promptValue = $('#pr-in')?.value || '';
     const res = c.go();
+    S.promptValue = '';
     S.settle();
     ui.open = null; $('#modal').innerHTML = '';
     render(); toast(res);
@@ -89,15 +91,17 @@ const UI = (() => {
     const e = S.era(), p = S.me();
     setEraTheme(e);
     $('#when').innerHTML = `<div class="yr">${U.fmtYearAD(w.year)}</div><div class="er">${esc(e.short || e.name)}</div>`;
-    $('#btnGod').setAttribute('aria-pressed', ui.tab === 'world' && ui.worldTab === 'god' ? 'true' : 'false');
-    $('#btnGod').hidden = !(S.godAllowed && S.godAllowed());
+    $('#btnSandbox').setAttribute('aria-pressed', ui.tab === 'world' && ui.worldTab === 'sandbox' ? 'true' : 'false');
+    $('#btnSandbox').hidden = !(S.sandboxAllowed && S.sandboxAllowed());
     if (!$('#layout')) {
-      $('#screen').innerHTML = `<div class="layout" id="layout"><aside class="side"><div class="card" id="card"></div></aside>
+      $('#screen').innerHTML = ui.shell ? ui.shell() : `<div class="layout" id="layout"><aside class="side"><div class="card" id="card"></div></aside>
         <section><nav class="tabs" role="tablist" id="tabs" aria-label="Parts of your life"></nav><div id="view"></div></section></div>`;
       $('#tabs').addEventListener('scroll', () => edges($('#tabs')), { passive: true });
     }
     $('#card').innerHTML = ui.cardHTML(p);
-    $('#tabs').innerHTML = ui.tabList().map(([id, n]) => `<button class="tab" role="tab" data-act="tab" data-tab="${id}" aria-selected="${ui.tab === id}" tabindex="${ui.tab === id ? 0 : -1}">${n}</button>`).join('');
+    if (ui.drawNav) ui.drawNav(p);
+    else $('#tabs').innerHTML = ui.tabList().map(([id, n]) => `<button class="tab" role="tab" data-act="tab" data-tab="${id}" aria-selected="${ui.tab === id}" tabindex="${ui.tab === id ? 0 : -1}">${n}</button>`).join('');
+    if (ui.drawRail) ui.drawRail(p);
     const head = document.querySelector('.top'); if (head) document.documentElement.style.setProperty('--toph', head.offsetHeight + 'px');
     fitTabs();
     renderView();
@@ -110,6 +114,7 @@ const UI = (() => {
   }
   function renderView() {
     const v = ui.views[ui.tab], st = ui.tabStrips && ui.autoStrip && ui.tabStrips[ui.tab];
+    $('#view').dataset.tab = ui.tab;
     $('#view').innerHTML = (st ? ui.autoStrip(...st) : '') + (v ? v(S.me()) : '');
     if (ui.tab === 'tree' && ui.afterTree) ui.afterTree();
   }

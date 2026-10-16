@@ -111,45 +111,45 @@
         ${lives.map(l => { const q = S.P(l.id); return `<button class="row" data-act="person" data-id="${l.id}" ${q ? '' : 'disabled'}>${q ? ui.av(q, 'sm') : ''}<div class="main"><div class="t">${esc(l.name)}</div><div class="s">${U.fmtYear(l.born)}–${U.fmtYear(l.died)} · ${esc(l.era)} · ${esc(l.cause)} · ${esc(l.netTxt)}</div></div><div class="end mono">${U.fmtNum(l.score)}</div></button>`; }).join('')}</div>
         ${w.dyn.houses.length > 1 ? `<p class="faint" style="font-size:13px;margin:10px 0 0">Houses: ${w.dyn.houses.map(h => `${esc(h.name)} (${U.fmtYear(h.y)})`).join(' → ')}</p>` : ''}</div>
 
-      ${w.god ? godPanel(p) : ''}
+      ${w.sandbox ? sandboxPanel(p) : ''}
 
       <div class="panel"><div class="eyebrow">Chronicle of the world</div>
         <div class="chron" style="margin-top:6px">${chron.map(n => `<div class="c ${n.type === 'era' ? 'era' : ''}"><span class="y">${U.fmtYearAD(n.y)}</span><span class="t">${esc(n.t)}${n.y > 2026 && n.type !== 'era' ? '<span class="proj">projected</span>' : ''}</span></div>`).join('') || '<p class="muted">History has not yet happened to you.</p>'}</div></div>`;
   };
 
-  /* ---------------- sandbox / god mode ---------------- */
-  function godPanel(p) {
+  /* ---------------- sandbox mode ---------------- */
+  function sandboxPanel(p) {
     const e = S.era();
     const hist = DATA.history.map((h, i) => `<option value="${i}">${U.fmtYear(h.y)} · ${esc(h.t.slice(0, 70))}</option>`).join('');
     const evs = S.eventPool().map(ev => `<option value="${ev.id}">${esc((Array.isArray(ev.t) ? ev.t[0] : ev.t).slice(0, 70))}</option>`).join('');
     const st = [['h', 'Health'], ['hp', 'Happiness'], ['sm', 'Smarts'], ['lk', 'Looks'], ['rep', 'Reputation']];
-    return `<div class="panel god"><div class="eyebrow">Sandbox</div><h3>God mode</h3>
-      <div class="grid">${st.map(([k, n]) => `<label for="god-${k}">${n} <span class="mono" id="godv-${k}">${Math.round(p[k])}</span><input id="god-${k}" type="range" min="0" max="100" value="${Math.round(p[k])}" data-input="godStat" data-k="${k}"></label>`).join('')}
-        <label for="god-money">Money (${esc(e.cur.n)})<span style="display:flex;gap:6px"><input id="god-money" type="number" value="${Math.round(S.cash(p))}"><button class="btn sm" data-act="godMoney">Set</button></span></label></div>
+    return `<div class="panel sandbox"><div class="eyebrow">Sandbox</div><h3>Sandbox mode</h3>
+      <div class="grid">${st.map(([k, n]) => `<label for="sb-${k}">${n} <span class="mono" id="sbv-${k}">${Math.round(p[k])}</span><input id="sb-${k}" type="range" min="0" max="100" value="${Math.round(p[k])}" data-input="sandboxStat" data-k="${k}"></label>`).join('')}
+        <label for="sb-money">Money (${esc(e.cur.n)})<span style="display:flex;gap:6px"><input id="sb-money" type="number" value="${Math.round(S.cash(p))}"><button class="btn sm" data-act="sandboxMoney">Set</button></span></label></div>
       <div class="eyebrow" style="margin-top:14px">Jump ahead</div>
-      <div class="btnrow" style="margin-top:6px">${[5, 10, 25, 50, 100].map(n => `<button class="btn sm" data-act="godJump" data-n="${n}">+${n} years</button>`).join('')}</div>
+      <div class="btnrow" style="margin-top:6px">${[5, 10, 25, 50, 100].map(n => `<button class="btn sm" data-act="sandboxJump" data-n="${n}">+${n} years</button>`).join('')}</div>
       <div class="grid">
-        <label for="god-hist">Historical event<select id="god-hist">${hist}</select><button class="btn sm" data-act="godHist">Unleash it now</button></label>
-        <label for="god-ev">Life event<select id="god-ev">${evs}</select><button class="btn sm" data-act="godEv">Make it happen</button></label></div>
-      <div class="btnrow" style="margin-top:12px"><button class="btn sm" data-act="godHeal">Heal completely</button><button class="btn sm" data-act="godFree">Release from prison</button><button class="btn sm" data-act="godEdu">Grant full education</button></div></div>`;
+        <label for="sb-hist">Historical event<select id="sb-hist">${hist}</select><button class="btn sm" data-act="sandboxHist">Unleash it now</button></label>
+        <label for="sb-ev">Life event<select id="sb-ev">${evs}</select><button class="btn sm" data-act="sandboxEv">Make it happen</button></label></div>
+      <div class="btnrow" style="margin-top:12px"><button class="btn sm" data-act="sandboxHeal">Heal completely</button><button class="btn sm" data-act="sandboxFree">Release from prison</button><button class="btn sm" data-act="sandboxEdu">Grant full education</button></div></div>`;
   }
   ui.input = ui.input || {};
-  ui.input.godStat = el => { const p = S.me(); p[el.dataset.k] = +el.value; $(`#godv-${el.dataset.k}`).textContent = el.value; $('#card').innerHTML = ui.cardHTML(p); };
-  ui.on.godMoney = () => { const p = S.me(); p.money = S.toVal(+$('#god-money').value || 0); render(); toast('Money set.'); };
-  ui.on.godJump = el => { const n = +el.dataset.n; S.jump(n); render(); ui.save(); toast(S.W.dead ? 'The years ran out before the jump did.' : `${n} years pass in a blink.`); };
-  ui.on.godHist = () => { S.forceHistory(+$('#god-hist').value); render(); toast('History bends to your will.'); };
-  ui.on.godEv = () => { S.forceEvent($('#god-ev').value); ui.tab = 'life'; render(); };
-  ui.on.godHeal = () => { const p = S.me(); p.h = 100; p.sick = []; render(); toast('Fully healed.'); };
-  ui.on.godFree = () => { S.me().prison = 0; render(); toast('The cell door swings open.'); };
-  ui.on.godEdu = () => { const p = S.me(); p.edu = 4; p.school = null; render(); toast('A lifetime of learning, instantly.'); };
-  ui.on.god = () => { if (!S.W) return; S.W.god = !S.W.god; if (S.W.god) ui.tab = 'world'; render(); toast(S.W.god ? 'God mode on. Look in the World tab.' : 'God mode off.'); };
+  ui.input.sandboxStat = el => { const p = S.me(); p[el.dataset.k] = +el.value; $(`#sbv-${el.dataset.k}`).textContent = el.value; $('#card').innerHTML = ui.cardHTML(p); };
+  ui.on.sandboxMoney = () => { const p = S.me(); p.money = S.toVal(+$('#sb-money').value || 0); render(); toast('Money set.'); };
+  ui.on.sandboxJump = el => { const n = +el.dataset.n; S.jump(n); render(); ui.save(); toast(S.W.dead ? 'The years ran out before the jump did.' : `${n} years pass in a blink.`); };
+  ui.on.sandboxHist = () => { S.forceHistory(+$('#sb-hist').value); render(); toast('History bends to your will.'); };
+  ui.on.sandboxEv = () => { S.forceEvent($('#sb-ev').value); ui.tab = 'life'; render(); };
+  ui.on.sandboxHeal = () => { const p = S.me(); p.h = 100; p.sick = []; render(); toast('Fully healed.'); };
+  ui.on.sandboxFree = () => { S.me().prison = 0; render(); toast('The cell door swings open.'); };
+  ui.on.sandboxEdu = () => { const p = S.me(); p.edu = 4; p.school = null; render(); toast('A lifetime of learning, instantly.'); };
+  ui.on.sandbox = () => { if (!S.W) return; S.W.sandbox = !S.W.sandbox; if (S.W.sandbox) ui.tab = 'world'; render(); toast(S.W.sandbox ? 'Sandbox mode on. Look in the World tab.' : 'Sandbox mode off.'); };
 
   /* ---------------- start screen ---------------- */
   const pick = { era: 'medieval', year: START_YEAR.medieval };
   ui.start = () => {
     const e = pick.era === 'random' ? null : DATA.eras.find(x => x.id === pick.era);
     ui.setEraTheme(e || DATA.eras[2]);
-    $('#when').innerHTML = ''; $('#agebar').hidden = true; $('#btnGod').hidden = true;
+    $('#when').innerHTML = ''; $('#agebar').hidden = true; $('#btnSandbox').hidden = true;
     const auto = store.get(KEY);
     const [lo, hi] = e ? rangeOf(e) : [0, 0];
     $('#screen').innerHTML = `<div class="start">

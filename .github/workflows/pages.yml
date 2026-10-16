@@ -33,6 +33,12 @@ jobs:
             exit 1
           fi
 
+      - name: Check the country atlas
+        run: node tools/check-atlas.js
+
+      - name: Feature tests
+        run: node tools/test-features.js
+
       - name: Simulate lives, pressing every button
         run: node tools/sim.js 12 all --years 150 --quiet
 
@@ -49,7 +55,7 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
           mkdir -p _site/assets
-          cp index.html _site/
+          cp index.html manifest.webmanifest sw.js _site/
           cp assets/*.png _site/assets/
 
       - uses: actions/upload-pages-artifact@v5

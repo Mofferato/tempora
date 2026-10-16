@@ -17,30 +17,7 @@ const YEARS = +(args[args.indexOf('--years') + 1] || 0) || 220;
 const QUIET = args.includes('--quiet');
 const TYPICAL = args.includes('--typical');   // an ordinary player: school, work, a few activities and people
 
-function makeContext() {
-  const store = {};
-  const el = () => ({ innerHTML: '', textContent: '', hidden: false, classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, getAttribute() { return null; }, addEventListener() {}, appendChild() {}, remove() {}, style: { setProperty() {} }, dataset: {}, querySelector: () => null, querySelectorAll: () => [], getBoundingClientRect: () => ({ top: 0, left: 0, width: 800, height: 600 }), focus() {}, scrollIntoView() {} });
-  const els = {};
-  const document = {
-    documentElement: { dataset: {}, style: { setProperty() {} } },
-    querySelector: s => (/^#(modal|toast|screen|card|tabs|view|ribbon|when|agebar|ageBtn|btnGod|layout|autoBtn|btnSound|btnAI|phoneBadge)$/.test(s) ? (els[s] ||= el()) : null),
-    querySelectorAll: () => [], addEventListener() {}, createElement: el, body: el(), getElementById: () => null, head: el(),
-    visibilityState: 'visible',
-  };
-  const ctx = {
-    console, Math, JSON, Date, setTimeout: () => 0, clearTimeout() {}, setInterval: () => 0, clearInterval() {},
-    localStorage: { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } },
-    matchMedia: () => ({ matches: false, addEventListener() {} }), navigator: {}, document, performance: { now: () => Date.now() },
-    fetch: () => Promise.reject(new Error('offline')), location: { protocol: 'file:', origin: 'null', href: 'file:///index.html' },
-    AudioContext: undefined, requestAnimationFrame: () => 0, Blob: function () {}, URL: { createObjectURL: () => '' }, FileReader: function () {},
-  };
-  ctx.window = ctx; ctx.globalThis = ctx; ctx.self = ctx;
-  vm.createContext(ctx);
-  const code = JS_ORDER.filter(f => f !== 'main.js' && fs.existsSync(path.join(__dirname, '..', 'src', f)))
-    .map(f => `/* ${f} */\n` + fs.readFileSync(path.join(__dirname, '..', 'src', f), 'utf8')).join('\n');
-  vm.runInContext(code + '\n;globalThis.__T = { Sim, UI, DATA, U, Gen, Auto: typeof Auto !== "undefined" ? Auto : null, Places: typeof Places !== "undefined" ? Places : null, extraActions: typeof SIM_EXTRA !== "undefined" ? SIM_EXTRA : [], Phone: typeof Phone !== "undefined" ? Phone : null, Sports: typeof Sports !== "undefined" ? Sports : null, Legacy: typeof Legacy !== "undefined" ? Legacy : null, AI: typeof AI !== "undefined" ? AI : null, Delta: typeof Delta !== "undefined" ? Delta : null, Intro: typeof Intro !== "undefined" ? Intro : null };', ctx, { filename: 'tempora-bundle.js' });
-  return ctx.__T;
-}
+const { makeContext } = require('./harness.js');
 
 const T = makeContext();
 const { Sim: S, UI: ui, DATA, U } = T;
@@ -57,7 +34,7 @@ function renderAll() {
   for (const tab of Object.keys(ui.views)) {
     try { ui.views[tab](p); } catch (e) { err('view ' + tab, e); }
   }
-  for (const sub of ['era', 'nations', 'orgs', 'god', 'politics']) { ui.worldTab = sub; try { ui.views.world(p); } catch (e) { err('world/' + sub, e); } }
+  for (const sub of ['era', 'nations', 'orgs', 'sandbox', 'politics']) { ui.worldTab = sub; try { ui.views.world(p); } catch (e) { err('world/' + sub, e); } }
   ui.worldTab = 'era';
   try { ui.cardHTML(p); } catch (e) { err('card', e); }
   for (const o of [p, ...S.known(p).slice(0, 4)]) { try { ui.person(o.id); } catch (e) { err('person sheet', e); } }
@@ -94,6 +71,13 @@ function playYear(p) {
     }
   }
   if (S.hooks.playerExtras) tryIt('extras', () => S.hooks.playerExtras(p));
+  // the newer systems: the internet, faith, citizenship, the map, the director
+  if (T.Net && S.age(p) >= 8) for (const id of U.shuffle(Object.keys(T.Net.ACTS)).slice(0, 2)) tryIt('net ' + id, () => T.Net.act(id));
+  if (T.Faith && S.age(p) >= 14 && U.chance(0.04)) { const o = T.Faith.options(p); if (o.length) tryIt('convert', () => T.Faith.convert(p, U.pick(o))); }
+  if (T.Identity && S.age(p) >= 18 && U.chance(0.1)) { const c = T.Identity.descentClaims(p)[0] || p.cc; tryIt('citizenship', () => T.Identity.apply(c)); }
+  if (T.Geo && U.chance(0.1)) { const to = U.pick(S.world.countriesAt()); tryIt('diplomacy', () => T.Geo.diplomacy(to.id, U.pick(['alliance', 'trade', 'aid', 'sanction', 'peace', 'break']))); }
+  if (T.Director && U.chance(0.1)) { tryIt('goal', () => T.Director.propose(p)); const o = people[0]; if (o) tryIt('talk', () => T.Director.reply(p, o, U.pick(T.Director.TOPICS)[0])); }
+  if (U.chance(0.15)) { const cc = U.pick(S.world.countriesAt()).id; tryIt('map panel', () => { ui.mapState.sel = cc; ui.views.map(p); ui.mapState.sel = null; }); }
   if (S.pol && S.age(p) >= 18 && U.chance(0.25)) {
     const lvl = Math.min(5, (p.office?.lvl || 0) + 1);
     tryIt('pol.seek', () => S.pol.seek(lvl));
@@ -165,7 +149,7 @@ for (let d = 0; d < N; d++) {
   if (!e) { console.error('Unknown era', eraId); process.exit(1); }
   const hi = e.to > 9000 ? 2400 : e.to;
   const year = U.ri(e.from, Math.max(e.from, hi - 60)) || 1;
-  try { S.newWorld({ year, mode: U.pick(['narrative', 'household', 'god']) }); } catch (e2) { err('newWorld ' + eraId, e2); continue; }
+  try { S.newWorld({ year, mode: U.pick(['narrative', 'household', 'sandbox']) }); } catch (e2) { err('newWorld ' + eraId, e2); continue; }
   let years = 0, lastId = S.me().id, fameMax = 0;
   const born = S.me().born;
   while (years < YEARS) {
