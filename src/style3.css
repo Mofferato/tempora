@@ -46,3 +46,6 @@ ul.plain { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 
 .mapcard:not([hidden]) { display: block; }
 @media (min-width: 900px) { .mapcard { display: none !important; } }
 @media (max-width: 899px) { .mapsel .cpanel { display: none; } }
+.goal { margin: 10px 0 2px; }
+.goal .gt { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.chatlog p { margin: 4px 0; padding: 8px 12px; border-radius: 12px; max-width: 88%; }

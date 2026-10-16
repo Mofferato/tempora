@@ -4,9 +4,14 @@ const T = makeContext();
 const { Sim: S, UI: ui, DATA, U, Atlas: A, Identity: I, Faith: Fa, Marriage: M } = T;
 let pass = 0, fail = 0;
 const only = process.argv[2];
-function test(name, f) {
-  if (only && !name.includes(only)) return;
-  try { f(); pass++; console.log('  ok   ' + name); } catch (e) { fail++; console.log('  FAIL ' + name + '\n       ' + (e.stack || e).toString().split('\n').slice(0, 4).join('\n       ')); }
+const queue = [];
+const group = n => queue.push([n, null]);
+function test(name, f) { if (only && !name.includes(only)) return; queue.push([name, f]); }
+async function runAll() {
+  for (const [name, f] of queue) {
+    if (!f) { if (!only) console.log(name); continue; }
+    try { await f(); pass++; console.log('  ok   ' + name); } catch (e) { fail++; console.log('  FAIL ' + name + '\n       ' + (e.stack || e).toString().split('\n').slice(0, 4).join('\n       ')); }
+  }
 }
 const eq = (a, b, m) => { if (a !== b) throw new Error(`${m || 'expected'} ${JSON.stringify(b)}, got ${JSON.stringify(a)}`); };
 const ok = (c, m) => { if (!c) throw new Error(m || 'assertion failed'); };
@@ -14,7 +19,7 @@ const near = (a, b, tol, m) => { if (Math.abs(a - b) > tol) throw new Error(`${m
 const fresh = o => { S.prompts.length = 0; return S.newWorld({ mode: 'narrative', ...o }); };
 const settle = () => { while (S.prompts.length) { const pr = S.prompts.shift(); pr.choices[0].go(); } };
 
-console.log('atlas');
+group('atlas');
 test('every map shape has a country', () => {
   for (const id of Object.keys(DATA.map.shapes)) ok(DATA.countries.some(c => c.id === id), 'no country ' + id);
 });
@@ -26,7 +31,7 @@ test('countries have names, capitals and currencies for every era', () => {
   }
 });
 
-console.log('identity');
+group('identity');
 test('mixed parents make mixed children', () => {
   fresh({ year: 2005, cc: 'USA', anc: 'Black Americans', anc2: 'Asian Americans' });
   const p = S.me(); const e = I.eth(p);
@@ -92,7 +97,7 @@ test('old saves with combined regions move to real countries', () => {
 });
 
 
-console.log('faith');
+group('faith');
 const share = (cc, year, id, n = 400) => { fresh({ year, cc }); let k = 0; for (let i = 0; i < n; i++) { const q = S.mkPerson({ cc, born: U.add(year, -30), sex: 'M' }); if (Fa.get(q) === id) k++; } return k / n; };
 test('people follow their country’s majority faith', () => {
   ok(share('IRN', 2020, 'sh') > 0.8, 'Iran is Shia'); ok(share('ENG', 1500, 'ch') > 0.8, 'England was Catholic'); ok(share('THA', 2020, 'bt') > 0.8, 'Thailand is Theravada');
@@ -119,7 +124,7 @@ test('faith events do not break the engine', () => {
   for (let i = 0; i < 30; i++) { const ev = Fa.f && S.hooks.events(p); ok(Array.isArray(ev)); }
 });
 
-console.log('marriage');
+group('marriage');
 test('arranged marriage is the norm in 1950 India and rare in 2020 America', () => {
   ok(A.arranged('IND', 1950) > 0.7, 'India ' + A.arranged('IND', 1950)); ok(A.arranged('USA', 2020) < 0.15, 'USA ' + A.arranged('USA', 2020));
   ok(A.arranged('ENG', 1500) > 0.5, 'Europe in 1500 ' + A.arranged('ENG', 1500));
@@ -145,7 +150,7 @@ test('parents are asked about their children’s marriages', () => {
 });
 
 
-console.log('net');
+group('net');
 test('nobody is online before 1991 and the web spreads unevenly', () => {
   const { Net: N } = T; fresh({ year: 1985, cc: 'USA' }); eq(N.access(S.me()), 0, 'offline in 1985');
   ok(A.net('USA', 2000) > A.net('ETH', 2000) * 3, 'digital divide'); ok(A.net('KOR', 2005) > 0.5, 'Korea early');
@@ -163,7 +168,7 @@ test('censorship events appear only where the state censors', () => {
 });
 
 
-console.log('geo');
+group('geo');
 test('map shapes decode to rings in the right place', () => {
   const { Geo: G } = T; const s = G.shape('FRA'); ok(s.rings.length >= 1); const [lon, lat] = s.c; near(lon, 2.5, 3, 'France lon'); near(lat, 46.5, 3, 'France lat');
   let pts = 0; for (const id of G.ids()) pts += G.shape(id).rings.reduce((a, r) => a + r.length / 2, 0); ok(pts > 15000, 'points ' + pts);
@@ -193,5 +198,56 @@ test('the atlas page renders', () => {
   ui.mapState.year = -500; ok(ui.views.map(p).includes('Viewing')); ui.mapState.year = null; ui.mapState.sel = null;
 });
 
-console.log(`\n${pass} passed, ${fail} failed`);
-process.exit(fail ? 1 : 0);
+
+group('director');
+test('improvised events exist for every era and resolve without error', () => {
+  const { Director: D } = T; let made = 0;
+  for (const [year, cc] of [[-8000, 'FRA'], [-400, 'GRC'], [1000, 'ENG'], [1500, 'IND'], [1800, 'USA'], [1930, 'DEU'], [2005, 'KOR'], [2030, 'NGA'], [2100, 'BRA']]) {
+    fresh({ year, cc }); const p = S.me(); p.born = year - 30; p.job = null;
+    for (let i = 0; i < 25; i++) { const ev = D.improvise(p); if (!ev) continue; made++; ok(ev.t && ev.ch.length >= 2, 'shape'); S.prompts.length = 0; S.runEvent(p, ev); settle(); }
+  }
+  ok(made > 120, 'events made: ' + made);
+});
+test('story threads continue across years and remember choices', () => {
+  const { Director: D } = T; fresh({ year: 1850, cc: 'FRA' }); const p = S.me(); p.born = 1820; p.money = 1e5;
+  const cx = D.ctx(p); let stage = -1;
+  for (let i = 0; i < 12; i++) { p.flags.arcs = p.flags.arcs || {}; const ev = D.eventsFor(p); S.W.year = U.add(S.W.year, 1); }
+  p.flags.arcs = {}; p.flags.arcs.rival = { stage: 0, next: S.W.year, v: { who: 'Marta' }, done: 0 };
+  const e1 = D.eventsFor(p); ok(true); const ev = D.ARCS.rival.stages[0]({ ...cx, arc: p.flags.arcs.rival.v });
+  ok(ev.ch.length === 3); D.state().quiet = 9; let found = null; for (let i = 0; i < 40 && !found; i++) { const l = D.eventsFor(p); found = l.find(x => /^arc-rival/.test(x.id)); }
+  ok(found, 'the rival thread continued'); S.prompts.length = 0; S.runEvent(p, found); S.prompts[0].choices[0].go(); ok(p.flags.arcs.rival.stage >= 1, 'stage advanced');
+});
+test('goals are offered, tracked, and rewarded', () => {
+  const { Director: D } = T; fresh({ year: 2000, cc: 'USA' }); const p = S.me(); p.born = 1975; p.job = null; p.sp = null;
+  const q = D.offerQuests(p); ok(q.length >= 4, 'goals offered ' + q.length);
+  D.state().quests.push({ id: 'work', title: 'Find honest work', why: '', obj: { type: 'job' }, by: 2010, reward: { rep: 3 }, from: 2000 });
+  const before = p.rep; S.giveJob(p, T.J('Clerk', 1), S.era()); D.checkQuests(p); ok(D.state().quests.length === 0 && p.rep > before, 'completed and rewarded');
+  D.state().quests.push({ id: 'save', title: 'Save', obj: { type: 'money', v: 1e9 }, by: 2001, reward: {}, from: 2000 }); S.W.year = 2003; D.checkQuests(p); ok(D.state().quests.length === 0, 'expired');
+});
+test('Claude’s events are validated and clamped', () => {
+  const { Director: D } = T;
+  ok(!D.validEvent({ text: 'x', choices: [{ label: 'a' }] }), 'needs two choices'); ok(!D.validEvent(null)); ok(!D.validEvent('hello'));
+  const ev = D.validEvent({ title: '<b>Hi</b>', text: 'Something happens <script>', choices: [{ label: 'Go', result: 'ok', fx: { h: 999, mh: -999, money: 50, family: 99, royal: 1, jail: 5, $: 1e9 } }, { label: 'Stay', result: 'ok', fx: { sm: 3 }, risk: { chance: 5, result: 'oops', fx: { h: -50 } } }] });
+  ok(ev, 'valid'); const c = ev.ch[0].fx; eq(c.h, 14); eq(c.mh, -14); eq(c.$c, 1.2); eq(c.famc, 12); ok(!('royal' in c) && !('jail' in c) && !('$' in c), 'no forbidden keys');
+  ok(!/[<>]/.test(ev.title + ev.t), 'no markup'); ok(ev.ch[1].odds >= 0.1 && ev.ch[1].odds <= 0.9, 'odds clamped'); ok(ev.ch[1].alt.fx.h >= -14);
+});
+test('conversation topics answer in character and move closeness', () => {
+  const { Director: D } = T; fresh({ year: 1700, cc: 'ENG' }); const p = S.me(); const o = S.known(p).filter(S.alive)[0]; ok(o);
+  for (const [k] of D.TOPICS) { const r = D.reply(p, o, k); ok(typeof r.line === 'string' && r.line.length > 8, k); }
+});
+test('the quiet meter raises the chance of an event', () => {
+  const { Director: D } = T; fresh({ year: 1700, cc: 'ENG' }); const p = S.me(); p.born = 1670;
+  D.state().quiet = 0; let a = 0, b = 0; for (let i = 0; i < 300; i++) { D.state().quiet = 0; a += D.eventsFor(p).length; D.state().quiet = 4; b += D.eventsFor(p).length; }
+  ok(b > a * 2, `quiet ${b} vs busy ${a}`);
+});
+
+
+test('with Claude connected the Director queues an event for next year', async () => {
+  const { Director: D, AI } = T; fresh({ year: 1650, cc: 'FRA' }); const p = S.me(); p.born = 1620;
+  AI.backend = async () => 'hosted'; AI.settings = () => ({}); AI.ask = async () => ({ data: { title: 'The comet', text: 'A comet burns over Paris. The priests say it is a sign.', choices: [{ label: 'Pray', result: 'You felt calmer.', fx: { mh: 3 } }, { label: 'Observe it', result: 'You learned.', fx: { sm: 3 }, risk: { chance: 0.3, result: 'You strained your eyes.', fx: { h: -3 } } }], thread: 'comet', hook: 'The priests may blame someone.' } });
+  await D.requestAI(p); ok(D.state().q.length === 1, 'queued'); S.W.year = U.add(S.W.year, 1);
+  const out = D.eventsFor(p); ok(out.length === 1 && out[0].title === 'The comet', 'delivered'); eq(D.state().thr.comet, 'The priests may blame someone.');
+  AI.ask = async () => { throw new Error('offline'); }; await D.requestAI(p); ok(D.state().q.length === 0, 'failure leaves nothing queued');
+});
+
+runAll().then(() => { console.log(`\n${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0); });

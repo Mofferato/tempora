@@ -518,7 +518,7 @@ Object.assign(Sim, (() => {
     if (ev.ch) {
       if (npc) { const ok = ev.ch.filter(c => afford(p, c.fx)); const c = S.hooks.npcChoose ? S.hooks.npcChoose(p, ok.length ? ok : ev.ch) : U.pick(ok.length ? ok : ev.ch); resolve(p, c, text, true); return; }
       S.prompt({
-        title: `${U.fmtYearAD(W().year)} · Age ${S.age(p)}`, text, ev: ev.id,
+        title: ev.title ? `${ev.title} · ${U.fmtYearAD(W().year)}` : `${U.fmtYearAD(W().year)} · Age ${S.age(p)}`, text, ev: ev.id,
         choices: ev.ch.map(c => ({ l: c.l, dis: !afford(p, c.fx), src: c, go: () => resolve(p, c, text) })),
       });
       return;
