@@ -1,0 +1,148 @@
+/* =====================================================================
+   ATLAS, Americas 2 — the Andes, Colombia and Venezuela, the Southern Cone, Brazil and the Guianas.
+   (Start-style timelines.)
+   ===================================================================== */
+
+Land(`PER|Peru|Peruvian|am-andes
+pre=and:-900; nm=-900:the Chavín temple towns:Temple towns|-200:the Paracas, Nazca and Moche peoples:Early states|600:the Wari and Tiwanaku empires:Empires|1200:the Chimú and the rising Inca:Kingdoms|1438:the Inca Empire (Tawantinsuyu):Empire|1532:the Viceroyalty of Peru:Spanish viceroyalty|1821:the Republic of Peru:Republic;
+cap=-900:Chavín de Huántar|600:Huari|1200:Chan Chan|1438:Cusco|1535:Lima; cur=1438:barter goods:_:8|1535:reales:rs :12|1800:pesos:$:1.4|1863:soles:S/:1|1930:soles:S/:0.3|1945:soles:S/:0.15|1985:intis:I/.:0.5|1991:soles:S/:1|1999:soles:S/:0.29|2029:soles:S/:0.27;
+pop=1800:1.5,1900:3.7,1950:8.5,2000:26,2025:34; pm=1.5; nc=1438:quechua|1532:spanish|spanish; ga=andes; mix=MEX:.55,ITA:.2,CHN:.1,JPN:.05,WAF:.1; eth=Mestizo:60:amer@1535,Quechua:22:amer,White Peruvians:6:iber@1535,Aymara and Amazonian peoples:5:amer,Afro-Peruvians, Asian Peruvians and others:7:waf@1560;
+rs=-9000>an:100|1438>an:100|1532>an:20 ch:80|1700>ch:97 an:3|1950>ch:92 pr:5 an:2 ot:1|2025>ch:63 pr:17 pe:5 sc:11 an:2 ot:2;
+cu=andean O5 T10; lg=Spanish,Quechua,Aymara; fd=ceviche@1800,potatoes@-8000,cuy@1000,lomo saltado@1900; fs=Inti Raymi@1430,Independence Day@1821,Lord of Miracles@1651,Corpus Christi@1572; sp=football@1900,bullfighting@1560,surfing@1950;
+cs=Potatoes in four thousand varieties|Weaving traditions older than the Inca|Peruvian cuisine is a point of national pride; tr=Heart of the Inca Empire, with Machu Picchu as its symbol|Mountains, desert coast and Amazon rainforest|A mining and fishing economy;
+arr=8; arrT=1900; wv=1955; dv=1900; sx=; ind=1821; indFrom=Spain; tier=3; mil=2; pp=3; ww=2; dual=y; cit=soli; gv=flaw; bl=oas:1948;
+ov=inca:1438:1532|span:1532:1821;
+ev=-3000 cult Caral, the oldest city in the Americas, rises on the Supe River.|1438 pol Pachacuti founds the Inca Empire.|1532 war Pizarro captures Atahualpa: the Spanish conquest of the Inca #d=.1,m=.1,c=.05|1780 rev Túpac Amaru II leads a great Indigenous uprising #s=.2|1821 pol José de San Martín declares Peru independent.|1879-1883 war The War of the Pacific against Chile #d=.04,m=.05|1980-2000 war The Shining Path insurgency #d=.04,m=.04|2000 pol Fujimori's government falls.;
+ci=Caral~-3000~-1800~-3000:3|Chavín de Huántar~-900~-200~-900:2|Chan Chan~850~1470~850:4 1300:5|Cusco~1200~0~1200:3 1438:5 1532:4 1800:4 1950:5|Lima~1535~0~1535:2 1700:4 1800:5 1900:6 1950:7 2000:9|Arequipa~1540~0~1540:1 1900:3 1950:5|Machu Picchu~1450~1572~1450:2;`);
+
+Land(`BOL|Bolivia|Bolivian|am-andes
+pre=and:-900; nm=-900:the Tiwanaku and Pucará highlands:Early states|600:the Tiwanaku Empire:Empire|1000:the Aymara kingdoms:Kingdoms|1450:the Inca province of Collasuyu:Province|1538:the Audiencia of Charcas:Spanish colony|1825:the Republic of Bolivia:Republic|2009:the Plurinational State of Bolivia:Plurinational republic;
+cap=600:Tiwanaku|1450:Cusco|1559:La Plata|1825:Sucre|1899:La Paz; cur=1450:barter goods:_:8|1538:reales:rs :12|1825:bolivianos:Bs:1|1945:bolivianos:Bs:0.05|1963:peso bolivianos:$b:0.08|1987:bolivianos:Bs:0.5|1999:bolivianos:Bs:0.17|2029:bolivianos:Bs:0.14;
+pop=1800:1,1900:1.8,1950:3,2000:8.3,2025:12.4; pm=1; nc=1450:quechua|1538:spanish|spanish; ga=andes; eth=Indigenous (Quechua, Aymara, Guaraní):41:amer,Mestizo:68:amer@1538,White Bolivians:5:iber@1538,Other:1:world;
+rs=-9000>an:100|1450>an:100|1538>an:10 ch:90|1700>ch:97 an:3|1950>ch:94 pr:3 an:3|2025>ch:77 pr:16 an:3 sc:3 ot:1;
+cu=andean O5 T10 G10; lg=Spanish,Quechua,Aymara,Guaraní; fd=salteñas@1850,chuño@-500,anticuchos@1700,silpancho@1900; fs=Alasitas@1781,Carnaval de Oruro@1789,Gran Poder@1923,Independence Day@1825; sp=football@1900,cholita wrestling@2000,Andean music@1000;
+cs=Coca leaves are chewed for altitude and ritual|Cholitas in bowler hats and layered skirts|Pachamama is honoured before each journey; tr=Indigenous majority with a plurinational state|Silver, tin and gas shaped its history|Lost its sea coast in the War of the Pacific;
+arr=15; arrT=1900; wv=1952; dv=1938; sx=; ind=1825; indFrom=Spain; tier=4; mil=2; pp=3; ww=2; dual=y; cit=soli; gv=hyb; bl=oas:1948|nam:1979;
+ov=inca:1450:1532|span:1538:1825;
+ev=600 cult Tiwanaku rises beside Lake Titicaca as an Andean capital.|1545 tech Silver is struck at Potosí, one of the richest mines on earth.|1781 rev Túpac Katari lays siege to La Paz #d=.03,m=.04|1825 pol Bolívar's lieutenants found the republic named after him.|1879-1884 war The War of the Pacific: Bolivia loses its coast #d=.02,m=.03|1932-1935 war The Chaco War against Paraguay #d=.04,m=.06|1952 rev The National Revolution brings land reform and universal suffrage. #s=.2|2006 pol Evo Morales becomes the first Indigenous president.;
+ci=Tiwanaku~200~1100~200:3 600:4 1000:3|Potosí~1545~0~1545:4 1650:5 1800:3 1900:3|La Paz~1548~0~1548:1 1800:3 1900:4 1950:6 2000:7|Sucre~1538~0~1538:2 1700:3 1900:3 1950:4|Santa Cruz~1561~0~1561:1 1900:3 1950:5 2000:7;`);
+
+Land(`ECU|Ecuador|Ecuadorian|am-andes
+pre=and:-900; nm=-900:the Valdivia and Machalilla peoples:Villages|600:the Cañari, Quitu and Manteño kingdoms:Chiefdoms|1470:the northern Inca province of Chinchaysuyu:Province|1534:the Royal Audiencia of Quito:Spanish colony|1822:Gran Colombia:Federal republic|1830:the Republic of Ecuador:Republic;
+cap=1470:Tomebamba|1534:Quito; cur=1470:barter goods:_:8|1534:reales:rs :12|1800:pesos:$:1.4|1884:sucres:S/:0.6|1945:sucres:S/:0.07|1999:sucres:S/:0.0001|2000:US dollars:$:1|2029:US dollars:$:1;
+pop=1800:0.5,1900:1.3,1950:3.2,2000:12.3,2025:18.3; pm=1; nc=1470:quechua|1534:spanish|spanish; ga=andes; eth=Mestizo:72:amer@1534,Montubio:7:amer,Indigenous (Quechua, Kichwa):7:amer,Afro-Ecuadorian:7:waf@1560,White:6:iber@1534,Other:1:world;
+rs=-9000>an:100|1470>an:90 ch:10|1534>an:10 ch:90|1700>ch:98 an:2|1950>ch:96 pr:3 sc:1|2025>ch:74 pr:11 pe:3 sc:10 ot:2;
+cu=andean O5 G15; lg=Spanish,Kichwa,Shuar; fd=ceviche@1800,locro@1700,encebollado@1900,cuy@1000; fs=Inti Raymi@1430,Independence Day@1809,Carnival of Guaranda@1700,Day of the Dead@1900; sp=football@1900,ecuavolley@1950,Panama hats@1850;
+cs=The Panama hat is actually from here|Equatorial line marks the middle of the world|Páramo and Galápagos treasures; tr=The Galápagos Islands inspired Darwin|Oil, bananas and shrimp|Cities cut between mountains and coast;
+arr=10; arrT=1900; wv=1929; dv=1910; sx=; ind=1822; indFrom=Spain; tier=4; mil=1; pp=3; ww=2; dual=y; cit=soli; gv=flaw; bl=oas:1948|opec:1973;
+ov=inca:1470:1532|span:1534:1822;
+ev=1470 war Túpac Yupanqui's Inca armies conquer Quito and the Cañari.|1534 pol Sebastián de Belalcázar founds the Spanish city of Quito.|1809 rev Quito's first cry of independence: Primer Grito de Independencia #s=.2|1822 war The Battle of Pichincha secures independence #d=.01,m=.02|1830 pol Ecuador separates from Gran Colombia.|1941 war The war with Peru ends in the Rio Protocol #d=.0,m=.02|2000 law Ecuador adopts the US dollar after an economic crisis.;
+ci=Tomebamba~1470~1534~1470:3|Quito~1534~0~1534:2 1700:3 1800:3 1900:4 1950:6 2000:8|Guayaquil~1535~0~1535:1 1800:3 1900:5 1950:6 2000:8|Cuenca~1557~0~1557:1 1900:3 1950:4;`);
+
+Land(`COL|Colombia|Colombian|am-andes
+pre=and:-900; nm=-900:the Muisca, Tairona and Zenú peoples:Chiefdoms|1000:the Muisca Confederation and Tairona towns:Chiefdoms|1499:the Muisca, Tairona and Zenú chiefdoms:Chiefdoms|1538:the New Kingdom of Granada:Spanish colony|1819:Gran Colombia:Federal republic|1831:the Republic of New Granada:Republic|1886:the Republic of Colombia:Republic;
+cap=1499:Hunza|1538:Santafé de Bogotá|1819:Bogotá; cur=1499:barter goods:_:8|1538:reales:rs :12|1819:pesos:$:1.4|1880:pesos:$:0.7|1945:pesos:$:0.4|1999:pesos:$:0.0005|2029:pesos:$:0.00023;
+pop=1800:1.2,1900:4,1950:12,2000:40,2025:52; pm=1.5; nc=1499:native_na|1538:spanish|spanish; ga=latam; mix=MEX:.5,ITA:.3,WAF:.2; eth=Mestizo and White:87:latam,Afro-Colombian:10:waf@1530,Indigenous:3:amer;
+rs=-9000>an:100|1538>an:10 ch:90|1700>ch:98 an:2|1950>ch:94 pr:4 sc:2|2025>ch:67 pr:16 pe:4 sc:11 ot:2;
+cu=latam O10 G20; lg=Spanish,Wayuu,Nasa Yuwe; fd=arepas@1700,bandeja paisa@1900,ajiaco@1800,empanadas@1700; fs=Carnival of Barranquilla@1888,Independence Day@1810,Feria de las Flores@1957,Christmas lights@1900; sp=football@1900,cycling@1950,tejo@1500;
+cs=Cumbia and vallenato are everywhere|Coffee is the national drink and landscape|Magical realism comes from here: García Márquez; tr=A land of Caribbean coasts, Andean peaks and Amazon|Six decades of internal conflict ended with the 2016 peace deal|Coffee, flowers, oil and coal;
+arr=5; arrT=1900; wv=1954; dv=1980; sx=2022; ind=1819; indFrom=Spain; tier=3; mil=3; pp=3; ww=2; dual=y; cit=soli; gv=flaw; bl=oas:1948;
+ov=span:1538:1819;
+ev=1537 war Gonzalo Jiménez de Quesada conquers the Muisca #d=.1,m=.1|1550 tech Gold flows from the New Kingdom of Granada to Spain.|1810 rev The Cry of Independence in Bogotá #s=.2|1819 war Bolívar wins at Boyacá and founds Gran Colombia #d=.01,m=.03|1899-1902 war The Thousand Days' War #d=.1,m=.05|1948 rev The Bogotazo riots begin La Violencia #s=.2|1964 war The FARC insurgency begins; a civil conflict lasts over fifty years #d=.04,m=.04|2016 pol A peace deal with the FARC is signed.;
+ci=Hunza~1200~1538~1200:2|Cartagena de Indias~1533~0~1533:2 1700:4 1900:4 1950:5 2000:7|Bogotá~1538~0~1538:1 1700:3 1800:4 1900:5 1950:7 2000:9|Medellín~1616~0~1616:1 1900:4 1950:6 2000:8|Cali~1536~0~1536:1 1900:3 1950:6 2000:8;`);
+
+Land(`VEN|Venezuela|Venezuelan|am-andes
+pre=ama:-500; nm=-500:the Arawak, Carib and Timoto-Cuica peoples:Chiefdoms|1498:the Tribal lands of the Caribbean coast and llanos:Tribal nations|1528:the Captaincy General of Venezuela:Spanish colony|1810:the First Republic of Venezuela:Republic|1830:the Republic of Venezuela:Republic|1999:the Bolivarian Republic of Venezuela:Republic;
+cap=1528:Coro|1577:Caracas; cur=1498:barter goods:_:8|1528:reales:rs :12|1810:pesos:$:1.4|1879:bolívares:Bs:0.2|1945:bolívares:Bs:0.3|1999:bolívares:Bs:0.0015|2008:bolívares fuertes:Bs.F:0.5|2018:bolívares soberanos:Bs.S:0.0001|2029:bolívares:Bs:0.0001;
+pop=1800:0.8,1900:2.4,1950:5.1,2000:24,2025:28; pm=0.6; nc=1498:native_na|1528:spanish|spanish; ga=latam; mix=MEX:.4,ITA:.3,WAF:.3; eth=Mestizo:51:latam,White:43:iber@1528,Afro-Venezuelan:3:waf@1550,Indigenous:2:amer,Other:1:world@1950;
+rs=-9000>an:100|1528>an:10 ch:90|1700>ch:98 an:2|1950>ch:94 pr:3 sc:3|2025>ch:71 pr:17 sc:8 vo:2 ot:2;
+cu=latam O15 G20; lg=Spanish,Wayuu,Warao; fd=arepas@1700,pabellón criollo@1800,hallacas@1800,tequeños@1900; fs=Carnival@1700,Independence Day@1811,Christmas Gaitas@1900,Day of the Virgen of Coromoto@1651; sp=baseball@1895,football@1950,joropo@1700;
+cs=Baseball is more popular than football|Arepas for breakfast, lunch and supper|Joropo and llanero music; tr=The largest proven oil reserves in the world|Birthplace of Simón Bolívar|Economic collapse and mass emigration since 2014;
+arr=3; arrT=1900; wv=1946; dv=1935; sx=; ind=1811; indFrom=Spain; tier=3; mil=3; pp=4; ww=2; dual=y; cit=soli; gv=aut; bl=oas:1948|opec:1960|nam:1989|mercosur:2012;
+ov=span:1528:1811;
+ev=1498 pol Columbus sights the mainland of South America at the Orinoco.|1528 pol The Welsers, German bankers, are granted Venezuela by Charles V.|1811 rev Venezuela declares independence from Spain: first in South America.|1821 war Bolívar's victory at Carabobo secures independence #d=.02,m=.04|1830 pol Venezuela leaves Gran Colombia.|1914 tech Oil is struck at Zumaque I, and Venezuela turns petro-state.|1999 pol Hugo Chávez takes power.|2014 fam Hyperinflation and shortages drive millions to flee. #m=.0,h=12;
+ci=Coro~1527~0~1527:1 1577:1|Caracas~1567~0~1567:1 1800:3 1900:4 1950:6 2000:8|Maracaibo~1574~0~1574:1 1900:3 1950:5 2000:7|Valencia~1555~0~1555:1 1900:3 1950:5|Ciudad Bolívar~1764~0~1764:1 1900:3;`);
+
+Land(`CHL|Chile|Chilean|am-cone
+pre=con:-500; nm=-500:the Mapuche, Diaguita and Chinchorro peoples:Tribal nations|1470:the Mapuche tribal lands and the Inca province of Collasuyu:Tribal nations|1541:the Captaincy General of Chile:Spanish colony|1818:the Republic of Chile:Republic;
+cap=1541:Santiago; cur=1470:barter goods:_:8|1541:reales:rs :12|1818:pesos:$:1.4|1895:pesos:$:0.5|1960:escudos:E°:1|1975:pesos:$:0.0|1999:pesos:$:0.0019|2029:pesos:$:0.0011;
+pop=1800:0.8,1900:3,1950:6,2000:15,2025:19.7; pm=0.8; nc=1470:quechua|1541:spanish|spanish; ga=southcone; mix=MEX:.45,ITA:.3,ENG:.1,DEU:.1,WAF:.05; eth=Mestizo and White:89:iber@1541,Mapuche:9:amer,Other Indigenous peoples:2:amer;
+rs=-9000>an:100|1541>an:10 ch:90|1850>ch:95 an:2 pr:3|1950>ch:89 pr:6 at:3 ot:2|2025>ch:49 pr:15 sc:25 ju:1 ot:10;
+cu=latam O15 G25 T10; lg=Spanish,Mapudungun,Rapa Nui; fd=empanadas de pino@1700,pastel de choclo@1700,completos@1950,pisco sour@1900; fs=Fiestas Patrias@1810,La Tirana@1800,Fiesta de San Pedro@1700,Day of the Dead@1900; sp=football@1895,rodeo@1500,cueca dance@1850;
+cs=Poets: Neruda and Mistral are national treasures|Fiestas Patrias with cueca and barbecues|Wine from the central valley; tr=A thin country between the Andes and the Pacific|Copper and a stable economy|The Pinochet dictatorship and a return to democracy in 1990;
+arr=3; arrT=1900; wv=1949; dv=1927; sx=2015; ind=1818; indFrom=Spain; tier=2; mil=3; pp=2; ww=2; dual=y; cit=soli; gv=dem; bl=oas:1948|mercosur:2012;
+ov=inca:1470:1536|span:1541:1818;
+ev=1541 pol Pedro de Valdivia founds Santiago.|1598 war The Mapuche destroy Spanish cities in the Disaster of Curalaba #d=.02,m=.05|1818 pol Chile declares independence after San Martín crosses the Andes.|1879-1884 war The War of the Pacific: Chile gains the nitrate deserts #d=.03,m=.04|1962 war Chile hosts and wins third place in the World Cup. #d=0|1970 pol Salvador Allende is elected president.|1973 rev A coup brings General Pinochet to power. #s=.3|1990 pol Democracy returns.;
+ci=Santiago~1541~0~1541:1 1700:3 1800:4 1900:6 1950:7 2000:9|Valparaíso~1536~0~1536:1 1800:3 1900:5 1950:5|Concepción~1550~0~1550:1 1900:4 1950:5|Antofagasta~1868~0~1868:1 1900:3 1950:4;`);
+
+Land(`ARG|Argentina|Argentine|am-cone
+pre=con:-500; nm=-500:the Diaguita, Guaraní and Querandí peoples:Tribal nations|1536:the Río de la Plata tribal lands:Tribal nations|1580:the Governorate of Río de la Plata:Spanish colony|1776:the Viceroyalty of the Río de la Plata:Spanish viceroyalty|1816:the United Provinces of the Río de la Plata:Confederation|1853:the Argentine Confederation:Confederation|1880:the Argentine Republic:Republic;
+cap=1580:Buenos Aires; cur=1536:barter goods:_:8|1580:reales:rs :12|1816:pesos:$:1.4|1881:pesos:$:1|1945:pesos moneda nacional:$:0.25|1970:pesos ley:$:0.25|1992:pesos:$:1|1999:pesos:$:1|2002:pesos:$:0.3|2029:pesos:$:0.001;
+pop=1800:0.4,1900:4.7,1950:17,2000:37,2025:46; pm=0.3; nc=1536:guarani|1580:spanish|spanish; ga=southcone; mix=ITA:.55,MEX:.15,ENG:.05,DEU:.05,RUS:.05,WAF:.05; eth=European descent (Italian, Spanish and others):85:iber@1580,Mestizo:8:amer,Indigenous:3:amer,Arab, Jewish and Asian Argentines:4:world@1880;
+rs=-9000>an:100|1580>an:10 ch:90|1850>ch:95 ju:2 pr:3|1950>ch:93 ju:2 pr:2 ot:3|2025>ch:62 pr:15 sc:21 ju:1 ot:1;
+cu=latam O10 G30; lg=Spanish,Guaraní,Quechua,Welsh,Italian; fd=asado@1800,empanadas@1700,dulce de leche@1830,mate@1600; fs=Independence Day@1816,Carnaval@1800,Day of Tradition@1939,Immaculate Conception@1700; sp=football@1867,tango@1880,polo@1875,rugby@1873;
+cs=Mate is passed from hand to hand|Late dinners and barbecue on Sundays|Tango, the dance of Buenos Aires; tr=Grew rich on wheat and beef in the early 1900s|Waves of Italian and Spanish immigrants|Chronic inflation and debt crises;
+arr=1; arrT=1850; wv=1947; dv=1920; sx=2010; ind=1816; indFrom=Spain; tier=2; mil=3; pp=2; ww=2; dual=y; cit=soli; gv=flaw; bl=oas:1948|mercosur:1991;
+ov=span:1580:1816;
+ev=1536 pol Pedro de Mendoza founds the first Buenos Aires; it is abandoned.|1580 pol Juan de Garay refounds Buenos Aires.|1810 rev The May Revolution begins the move to independence. #s=.2|1816 pol The Congress of Tucumán declares independence.|1865-1870 war The Triple Alliance War against Paraguay #d=.05,m=.05|1880 pol The Conquest of the Desert opens the Pampas to settlers #d=.0,m=.03|1946 pol Juan Perón is elected president.|1976-1983 war The Dirty War: a military junta disappears thousands #d=.01,m=.03,c=.0|1982 war The Falklands War against Britain #d=.03,m=.03|1983 pol Democracy returns.;
+ci=Buenos Aires~1580~0~1580:1 1776:3 1850:4 1900:7 1950:9 2000:10|Córdoba~1573~0~1573:1 1800:3 1900:4 1950:6|Rosario~1725~0~1725:1 1900:4 1950:6|Mendoza~1561~0~1561:1 1900:3 1950:5|Tucumán~1565~0~1565:1 1900:3 1950:5;`);
+
+Land(`URY|Uruguay|Uruguayan|am-cone
+pre=con:-500; nm=-500:the Charrúa hunters:Tribal nations|1516:the Banda Oriental:Charrúa tribal land and Spanish-Portuguese frontier|1680:the Banda Oriental under Spain and Portugal:Contested colony|1811:the Banda Oriental in revolt:Provinces|1821:the Cisplatine Province of Brazil:Province|1828:the Oriental Republic of Uruguay:Republic;
+cap=1726:Montevideo; cur=1516:barter goods:_:8|1680:reales:rs :12|1828:pesos:$:1|1896:pesos:$:1|1945:pesos:$:0.5|1975:new pesos:$:0.02|1999:pesos:$:0.08|2029:pesos:$:0.025;
+pop=1700:0.01,1800:0.07,1900:0.94,1950:2.2,2000:3.3,2025:3.5; pm=0.5; nc=1516:guarani|1680:spanish|spanish; ga=southcone; mix=ITA:.5,MEX:.2,ENG:.1,WAF:.1,DEU:.1; eth=White (Italian, Spanish):88:iber@1700,Mestizo and Afro-Uruguayan:8:amer,Indigenous (Charrúa descent):2:amer,Other:2:world@1900;
+rs=-9000>an:100|1680>an:10 ch:90|1850>ch:85 ju:1 pr:14|1950>ch:70 at:25 pr:3 ot:2|2025>ch:42 at:41 pr:10 sc:5 ot:2;
+cu=latam O10 G35; lg=Spanish,Portuguese,Portuñol; fd=chivito@1950,asado@1800,dulce de leche@1830,mate@1600; fs=Carnival@1750,Tourism Week@1919,Independence Day@1825,Candombe Parade@1800; sp=football@1880,candombe drums@1800,rugby@1900;
+cs=Mate is carried in a thermos everywhere|Candombe drumming flows through Montevideo|Secular, liberal and progressive: first in Latin America on many reforms; tr=Football world champions in 1930 and 1950|A small, literate, stable democracy|Legalised cannabis in 2013;
+arr=0; arrT=1850; wv=1932; dv=1907; sx=2013; ind=1828; indFrom=Brazil; tier=2; mil=0; pp=1; ww=; dual=y; cit=soli; gv=dem; bl=oas:1948|mercosur:1991;
+ov=span:1680:1811|port:1816:1828;
+ev=1680 pol The Portuguese found Colonia del Sacramento, opposite Buenos Aires.|1726 pol Montevideo is founded by Spain.|1811 rev José Artigas leads the Orientales to revolt against Spain. #s=.2|1825 war The Thirty-Three Orientals begin the war against Brazil #d=.02,m=.03|1828 pol A treaty creates the Oriental Republic of Uruguay.|1930 pol Uruguay hosts and wins the first FIFA World Cup.|1973-1985 pol A military dictatorship rules.|2013 law Uruguay legalises cannabis.;
+ci=Colonia del Sacramento~1680~0~1680:1 1800:2 1900:2|Montevideo~1726~0~1726:1 1800:3 1900:6 1950:8 2000:8|Salto~1756~0~1756:1 1900:3|Paysandú~1772~0~1772:1 1900:3;`);
+
+Land(`PRY|Paraguay|Paraguayan|am-cone
+pre=con:-500; nm=-500:the Guaraní and Chaco tribes:Tribal nations|1537:the Guaraní lands and Spanish Asunción:Tribal nations and a Spanish fort|1600:the Jesuit Reductions of Paraguay:Jesuit missions in Spanish colony|1811:the Republic of Paraguay:Republic|1870:the Republic of Paraguay:Republic;
+cap=1537:Asunción; cur=1537:barter goods:_:8|1600:reales:rs :12|1811:pesos:$:1.4|1870:pesos:$:0.3|1943:guaraníes:₲:0.3|1999:guaraníes:₲:0.0005|2029:guaraníes:₲:0.00013;
+pop=1800:0.1,1900:0.5,1950:1.4,2000:5.3,2025:7.4; pm=0.6; nc=1537:guarani|1600:spanish|spanish; ga=southcone; mix=MEX:.7,ITA:.1,DEU:.1,ENG:.1; eth=Mestizo (Guaraní-Spanish):90:amer@1537,White:4:iber@1537,Indigenous:2:amer,Mennonites, Japanese and others:4:world@1920;
+rs=-9000>an:100|1537>an:20 ch:80|1900>ch:96 pr:2 ot:2|2025>ch:86 pr:9 ot:5;
+cu=latam T10 F10; lg=Spanish,Guaraní; fd=sopa paraguaya@1800,chipa@1700,tereré@1600,asado@1800; fs=Independence Day@1811,San Juan Night@1700,Caacupé Virgin Day@1603,Carnaval@1900; sp=football@1900,harp music@1700,tereré drinking@1600;
+cs=Guaraní is spoken by most people, an official language|Ice-cold tereré herbal tea|The harp is the national instrument; tr=The only bilingual country in the Americas where most people speak an Indigenous language|The Triple Alliance War killed most of its men|Hydroelectric dams at Itaipú;
+arr=8; arrT=1900; wv=1961; dv=1992; sx=; ind=1811; indFrom=Spain; tier=4; mil=1; pp=3; ww=2; dual=y; cit=soli; gv=hyb; bl=oas:1948|mercosur:1991;
+ov=span:1537:1811;
+ev=1537 pol Spanish settlers found Asunción, the 'mother of cities'.|1609 pol Jesuits start the missions among the Guaraní.|1767 pol Spain expels the Jesuits.|1811 rev Paraguay breaks free from Spain without bloodshed.|1864-1870 war The Triple Alliance War kills most of Paraguay's men #d=.1,m=.2,c=.05|1932-1935 war The Chaco War against Bolivia #d=.03,m=.04|1954-1989 pol Stroessner's dictatorship.;
+ci=Asunción~1537~0~1537:2 1700:3 1800:3 1900:4 1950:6 2000:8|Ciudad del Este~1957~0~1957:1 2000:6|Encarnación~1614~0~1614:1 1950:3;`);
+
+Land(`BRA|Brazil|Brazilian|am-braz
+pre=ama:-1000; nm=-1000:the Amazonian and Tupi-Guaraní peoples:Tribal nations|1500:Colonial Brazil:Portuguese colony|1815:the United Kingdom of Portugal, Brazil and the Algarves:Kingdom|1822:the Empire of Brazil:Empire|1889:the Republic of Brazil:Republic;
+cap=1549:Salvador|1763:Rio de Janeiro|1960:Brasília; cur=1500:barter goods:_:8|1500:réis:rs :12|1822:réis:rs :1|1942:cruzeiros:Cr$:0.06|1986:cruzados:Cz$:0.7|1994:reais:R$:1|1999:reais:R$:0.55|2029:reais:R$:0.2;
+pop=1800:3.3,1900:17.4,1950:52,2000:175,2025:213; pm=0.6; nc=1500:guarani|1549:portuguese|portuguese; ga=latam; mix=ITA:.3,MEX:.3,WAF:.35,JPN:.05; eth=White (Portuguese, Italian, German):43:iber@1500,Pardo (mixed):45:waf@1500,Black Brazilians:10:waf@1530,Indigenous:0.6:amer,Asian Brazilians:1:han@1908;
+rs=-9000>an:100|1500>an:40 ch:60|1700>ch:92 an:3 ot:5|1950>ch:92 pr:4 ot:2 ot:2|2025>ch:50 pr:31 ot:2 sc:14 ot:3;
+cu=latam O15 G25; lg=Portuguese,Tupi-Guaraní,Spanish,Italian,German; fd=feijoada@1700,pão de queijo@1800,moqueca@1700,brigadeiro@1940,churrasco@1800; fs=Carnival@1830,Independence Day@1822,Festa Junina@1700,Círio de Nazaré@1793,Iemanjá Day@1900; sp=football@1894,capoeira@1500,samba@1917,volleyball@1920;
+cs=Football is a national religion|Samba, bossa nova and Carnaval|Candomblé and Umbanda blend African and Catholic faiths; tr=The largest country in South America, home of the Amazon|Slavery lasted until 1888, the last in the Americas|A mixing of Portuguese, African, Indigenous and immigrant peoples;
+arr=3; arrT=1850; wv=1932; dv=1977; sx=2013; ind=1822; indFrom=Portugal; tier=2; mil=4; pp=2; ww=2; dual=y; cit=soli; gv=flaw; bl=oas:1948|brics:2009|mercosur:1991|nam:1961;
+ov=port:1500:1822;
+ev=1500 pol Pedro Álvares Cabral lands in Brazil and claims it for Portugal.|1549 pol Salvador is founded as the first capital.|1630-1654 war Dutch Brazil: the Dutch hold the sugar coast of Pernambuco #d=.03,m=.04|1695 war Palmares, the great runaway-slave state, falls #d=.01,m=.03|1808 pol The Portuguese court flees to Rio de Janeiro.|1822 pol Pedro I declares Brazilian independence.|1888 law The Golden Law abolishes slavery.|1889 rev The republic is proclaimed. #s=.1|1964 pol A military coup begins the dictatorship.|1985 pol Democracy returns.;
+ci=Salvador~1549~0~1549:2 1700:4 1800:4 1900:5 1950:6|Rio de Janeiro~1565~0~1565:1 1763:3 1800:4 1900:7 1950:9 2000:10|São Paulo~1554~0~1554:1 1800:2 1900:5 1950:8 2000:10|Brasília~1960~0~1960:1 2000:8|Recife~1537~0~1537:1 1700:3 1950:6|Manaus~1669~0~1669:1 1900:3 1950:5 2000:7;`);
+
+Land(`GUY|Guyana|Guyanese|am-braz
+pre=ama:-1000; nm=-1000:the Arawak, Carib and Warao peoples:Tribal nations|1500:Guiana of the Arawak and Carib:Tribal nations|1616:Dutch Essequibo and Berbice:Dutch colony|1814:British Guiana:British colony|1966:Guyana:Parliamentary monarchy|1970:the Co-operative Republic of Guyana:Republic;
+cap=1616:Fort Kyk-Over-Al|1782:Stabroek|1812:Georgetown; cur=1616:guilders:ƒ:0.4|1814:pounds:£:4.85|1839:British Guiana dollars:G$:1|1966:Guyanese dollars:G$:2.4|1999:dollars:G$:0.0055|2029:dollars:G$:0.0048;
+pop=1800:0.1,1900:0.3,1950:0.5,2000:0.74,2025:0.82; pm=0.4; nc=1616:dutch|1814:colonial|caribbean; ga=carib; mix=IND:.4,NGA:.4,MEX:.1,ENG:.1; eth=Indo-Guyanese:39:indn@1838,Afro-Guyanese:29:waf@1620,Mixed:20:world@1700,Amerindian:11:amer,Other:1:world;
+rs=-1000>na:100|1616>ch:30 pr:40 na:30|1838>pr:40 hi:30 su:9 ch:10 ot:11|2025>pr:28 hi:23 su:7 ch:8 sc:5 ot:29;
+cu=creole O10 G15; lg=English,Guyanese Creole,Hindi,Arawakan,Cariban; fd=pepperpot@1700,cook-up rice@1800,roti@1900,metemgee@1800; fs=Mashramani@1970,Phagwah@1838,Diwali@1838,Emancipation Day@1834; sp=cricket@1895,calypso@1950,boat racing@1900;
+cs=Mashramani celebrates the republic with costumed bands|A mix of South Asian and African traditions|The 'Land of Many Waters'; tr=Oil discoveries in 2015 transformed the economy|The only English-speaking country in South America|Venezuela claims the Essequibo region;
+arr=10; arrT=1950; wv=1953; dv=1900; sx=2018; ind=1966; indFrom=Britain; tier=3; mil=0; pp=3; ww=2; dual=y; cit=soli; gv=hyb; bl=commonw:1966|nam:1970;
+ov=dutch:1616:1814|british:1814:1966;
+ev=1616 pol Dutch traders found a fort on the Essequibo river.|1763 rev Cuffy leads the Berbice slave uprising #s=.2|1814 pol Britain acquires the Dutch colonies by treaty.|1834 law Slavery ends; indentured Indians arrive from 1838.|1966 pol Guyana becomes independent.|2015 tech Giant offshore oil is discovered.;
+ci=Georgetown~1781~0~1781:1 1812:3 1900:4 1950:5 2000:5|Linden~1960~0~1960:1 2000:3|New Amsterdam~1739~0~1739:1 1900:3;`);
+
+Land(`SUR|Suriname|Surinamese|am-braz
+pre=ama:-1000; nm=-1000:the Arawak, Carib and Wayana peoples:Tribal nations|1500:Guiana of the Arawak and Carib:Tribal nations|1667:Dutch Surinam:Dutch colony|1954:Suriname within the Kingdom of the Netherlands:Autonomous territory|1975:the Republic of Suriname:Republic;
+cap=1651:Paramaribo; cur=1667:guilders:ƒ:0.4|1940:Surinamese guilders:ƒ:0.5|2004:Surinamese dollars:$:0.36|2029:dollars:$:0.03;
+pop=1800:0.05,1900:0.08,1950:0.21,2000:0.45,2025:0.62; pm=0.4; nc=1667:dutch|1954:dutch|dutch; ga=carib; mix=IND:.37,NGA:.36,CHN:.1,MEX:.1,IDN:.07; eth=Indo-Surinamese (Hindustani):27:indn@1873,Maroon:21:waf@1700,Creole:16:waf@1667,Javanese:14:seai@1890,Mixed:13:world@1850,Indigenous:4:amer,Chinese and others:5:han@1850;
+rs=-1000>na:100|1667>pr:70 na:30|1873>pr:45 hi:20 su:15 ch:10 ot:10|2025>pr:24 hi:22 su:14 ch:22 ot:18;
+cu=creole O15; lg=Dutch,Sranan Tongo,Sarnami,Javanese,Maroon creoles; fd=pom@1800,bami and nasi@1900,roti@1900,moksi alesi@1700; fs=Keti Koti@1863,Independence Day@1975,Phagwa@1873,Diwali@1873; sp=football@1920,kaseko music@1950,kawina@1700;
+cs=Mosques and synagogues share a street in Paramaribo|The most forested country on earth|A kaleidoscope of Hindu, Javanese, African and Chinese; tr=Dutch-speaking in South America|A tiny, diverse population|Bauxite, gold and oil;
+arr=8; arrT=1950; wv=1948; dv=1900; sx=; ind=1975; indFrom=the Netherlands; tier=3; mil=0; pp=3; ww=2; dual=y; cit=sang; gv=hyb; bl=nam:1983|oas:2004;
+ov=dutch:1667:1975;
+ev=1651 pol English settlers found a colony on the Suriname river.|1667 pol The Treaty of Breda gives Surinam to the Dutch in exchange for New Amsterdam.|1863 law Slavery ends in the Dutch colonies; Keti Koti, the breaking of chains.|1873 pol Indentured workers arrive from British India, and from Java after 1890.|1975 pol Suriname becomes independent.|1980 pol Dési Bouterse seizes power in a coup. #s=.1|1986-1992 war The Surinamese Interior War #d=.01,m=.02;
+ci=Paramaribo~1651~0~1651:1 1700:2 1800:3 1900:4 1950:5 2000:6|Nieuw Nickerie~1880~0~1880:1 1950:2|Albina~1950~0~1950:1;`);

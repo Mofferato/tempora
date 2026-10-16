@@ -7,7 +7,7 @@ const path = require('path');
 
 // Natural Earth ADM0_A3 -> Tempora country id. Anything not listed keeps its own ADM0_A3.
 // Dependencies follow their sovereign (see SOV_A3), except where listed here.
-const ALIAS = { GBR: 'ENG', SOL: 'SOM', CYN: 'CYP', KOS: 'KOS', PSX: 'PSE', SAH: 'MOR', MAR: 'MOR', ALD: 'FIN', ATC: 'AUS', IOA: 'AUS', SDS: 'SSD' };
+const ALIAS = { GBR: 'ENG', SOL: 'SOM', CYN: 'CYP', KOS: 'KOS', PSX: 'PSE', SAH: 'MOR', MAR: 'MOR', ALD: 'FIN', ATC: 'AUS', IOA: 'AUS', SDS: 'SSD', AND: 'ADO' };
 const SKIP = new Set(['ATA', 'ATF', 'HMD', 'SGS', 'IOT', 'KAS', 'BJN', 'SER', 'USG', 'CNM', 'SCR', 'NOL', 'BRI', 'CLP']);
 const SOV_FIX = { GBR: 'ENG', GB1: 'ENG', MAR: 'MOR', SOL: 'SOM', CYN: 'CYP', AU1: 'AUS', FR1: 'FRA', NZ1: 'NZL', US1: 'USA', IS1: 'ISR', DN1: 'DNK', NL1: 'NLD', FI1: 'FIN', CH1: 'CHN' };
 

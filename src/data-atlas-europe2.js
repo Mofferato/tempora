@@ -28,7 +28,7 @@ ov=roman:-139:409|goth:409:711|umaya:711:1139|port:1415:1975; bl=nato:1949|eu:19
 ev=-139 war Viriathus leads Lusitania against Rome: the Lusitanian War #d=.08,m=.08|1139 pol Afonso Henriques is acclaimed the first king of Portugal.|1415 pol Portugal takes Ceuta and the age of discovery begins.|1498 tech Vasco da Gama reaches India by sea.|1755 dis The Lisbon earthquake, fire and tsunami destroy the capital. #p=.06,h=-25,l=.4|1910 rev The monarchy falls and Portugal becomes a republic. #s=.15|1974 pol The Carnation Revolution ends the dictatorship.;
 ci=Olisipo~-138~0~-138:3 500:3 1100:3 1415:4 1500:5 1900:6|Coimbra~-138~0~-138:2 1200:3 1500:3|Porto~-300~0~-300:2 1300:3 1700:4 1900:5|Braga~-16~0~-16:3 300:4 1000:3 1900:3;`);
 
-Land(`AND|Andorra|Andorran|eu-iber
+Land(`ADO|Andorra|Andorran|eu-iber
 pre=euw:-800; nmu=-800:the Pyrenean tribes:Tribes|409:the Pyrenean valleys:Roman then Visigothic valleys|988:the Marca Hispanica:Frankish march|1278:the Valleys of Andorra:Co-principality|Andorra:Co-principality;
 capu=99999:Andorra la Vella; curu=1913:French francs:F:0.19|1945:francs and pesetas:F:0.01|1999:francs and pesetas:F:0.15|2029:euros:€:1.1|euros:€:1.1;
 pop=1800:0.004,1900:0.005,1950:0.006,2000:0.065,2025:0.08; pm=0.5; nc=1000:spanish|spanish; ga=iber; eth=Andorrans:48:iber,Spaniards:24:iber,Portuguese and French:20:iber,Other:8:world@1990;
