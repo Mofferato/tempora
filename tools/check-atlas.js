@@ -13,6 +13,7 @@ for (const c of D.countries) {
   if (!c.at) continue;
   const id = c.id, at = c.at;
   if (!map[id]) warn.push(`${id}: no shape on the map`);
+  if (c.mix && typeof c.mix === 'object') for (const k of Object.keys(c.mix)) if (!ids.has(k)) bad.push(`${id}: mix names unknown land ${k}`);
   if (!AT.subs[c.sub]) bad.push(`${id}: unknown subregion ${c.sub}`);
   if (!AT.cult[at.cu?.id]) bad.push(`${id}: unknown culture`);
   for (const [p] of at.ov) if (!AT.polities[p]) bad.push(`${id}: unknown polity ${p}`);

@@ -9,7 +9,7 @@
 (() => {
   const S = Sim, ui = UI, P = Places, { esc, toast, render } = ui;
   const base = { ...P };
-  const ISL = ['EGY', 'IRN', 'MAG', 'MSP', 'LEV', 'ANA'];
+  const ISL = { includes: cc => Atlas.islamic(cc, Sim.W.year) };
   const era = () => S.era().id, yr = () => S.W.year;
   const pre = () => DATA.PREMODERN.includes(era());
 

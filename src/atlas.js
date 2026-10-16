@@ -188,7 +188,7 @@ const Atlas = (() => {
     }
   }
   function cityList(rec) {
-    return list(rec.f.ci).map(e => { const p = e.split('~'); return [p[0].trim(), +p[1], +p[2] || 0, (p[3] || '').trim()]; }).filter(x => x[3]);
+    return list(rec.f.ci).map(e => { const p = e.split('~'); return [p[0].trim(), +p[1], +p[2] || 0, (p[3] || '').trim().replace(/:(\d+)/g, (m, n) => ':' + Math.min(7, +n))]; }).filter(x => x[3]);
   }
 
   /* ---------- the culture-flavoured events, activities and holidays every land gets ---------- */
@@ -410,6 +410,14 @@ const Atlas = (() => {
     return last;
   }
 
+  // the old combined region a land belongs to (or itself), so older rules written for those regions still apply
+  const OLD = {}; for (const [k, ids] of Object.entries(LEGACY)) for (const i of ids) OLD[i] = k;
+  const old = cc => OLD[cc] || cc;
+  // share of the people following a family of faiths (islamic, abrahamic, ...) or one faith by code
+  function share(cc, y, test) { let t = 0; for (const [k, v] of faithMix(cc, y)) if (test(AT.faiths[k], k)) t += v; return t; }
+  const islamic = (cc, y) => share(cc, y, (f, k) => k === 'su' || k === 'sh' || k === 'ib') >= 0.5;
+  const nordic = cc => OLD[cc] === 'SCA';
+
   build();
-  return { C, faithMix, ethnic, culture, arranged, polity, net, blocs, neighbors, tier, subLabel, femSurname, LEGACY, LEGACY_HOME, GOV, build, genCache };
+  return { C, old, share, islamic, nordic, faithMix, ethnic, culture, arranged, polity, net, blocs, neighbors, tier, subLabel, femSurname, LEGACY, LEGACY_HOME, GOV, build, genCache };
 })();

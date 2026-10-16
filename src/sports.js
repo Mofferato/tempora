@@ -11,7 +11,7 @@ DATA.sports = [
   { id: 'spear', n: 'Spear throwing', who: 'Spear thrower', from: -10000, to: -800 },
   { id: 'chariot', n: 'Chariot racing', who: 'Charioteer', from: -1500, to: 600, risk: 0.05, fame: 1.5 },
   { id: 'boxing', n: 'Boxing', who: 'Boxer', from: -700, to: 99999, risk: 0.03 },
-  { id: 'ballgame', n: 'The ball game (ōllamaliztli)', who: 'Ball player', from: -1400, to: 1540, only: ['MEX'] },
+  { id: 'ballgame', n: 'The ball game (ōllamaliztli)', who: 'Ball player', from: -1400, to: 1540, only: ['MEX', 'GTM', 'BLZ', 'HND', 'SLV'] },
   { id: 'jousting', n: 'Jousting', who: 'Jouster', from: 1000, to: 1600, sex: 'M', risk: 0.05, fame: 1.5, cls: 3, only: ['ENG', 'FRA', 'ITA', 'SCA', 'RUS'] },
   { id: 'archery', n: 'Archery', who: 'Archer', from: -3000, to: 99999 },
   { id: 'cuju', n: 'Cuju (kickball)', who: 'Cuju player', from: -300, to: 1650, only: ['CHN'] },
@@ -26,7 +26,7 @@ DATA.sports = [
   { id: 'tennis', n: 'Tennis', who: 'Tennis player', from: 1874, to: 99999 },
   { id: 'basketball', n: 'Basketball', who: 'Basketball player', from: 1891, to: 99999, fame: 1.3 },
   { id: 'athletics', n: 'Athletics', who: 'Athlete', from: 1880, to: 99999 },
-  { id: 'hockey', n: 'Ice hockey', who: 'Hockey player', from: 1875, to: 99999, only: ['RUS', 'SCA', 'USA'], risk: 0.03 },
+  { id: 'hockey', n: 'Ice hockey', who: 'Hockey player', from: 1875, to: 99999, only: ['RUS', 'SCA', 'USA', 'CAN'], risk: 0.03 },
   { id: 'swimming', n: 'Swimming', who: 'Swimmer', from: 1880, to: 99999 },
   { id: 'martial', n: 'Martial arts', who: 'Martial artist', from: 500, to: 99999, only: ['CHN', 'JPN'] },
   { id: 'esports', n: 'Esports', who: 'Pro gamer', from: 2000, to: 99999, fame: 1.2, mind: 1 },
@@ -43,7 +43,7 @@ const Sports = (() => {
   const PAY = [0, 0.2, 0.8, 3, 12];            // share of a year's living cost
   const spec = id => DATA.sports.find(s => s.id === id);
   const nameIn = (s, cc) => (s.cc && s.cc[cc]) || s.n;
-  const avail = p => DATA.sports.filter(s => yr() >= s.from && yr() <= s.to && (!s.only || s.only.includes(p.cc)) && (!s.sex || s.sex === p.sex) && (!s.cls || (p.cls ?? 2) >= s.cls));
+  const avail = p => DATA.sports.filter(s => yr() >= s.from && yr() <= s.to && (!s.only || s.only.includes(p.cc) || s.only.includes(Atlas.old(p.cc))) && (!s.sex || s.sex === p.sex) && (!s.cls || (p.cls ?? 2) >= s.cls));
   const olympics = () => { const y = yr(); return (y >= -776 && y <= 393 && (y + 776) % 4 === 0) || (y >= 1896 && y % 4 === 0 && ![1916, 1940, 1944].includes(y)); };
   const label = p => { const s = p.sport && spec(p.sport.id); return s ? `${LVL[p.sport.lvl]} · ${nameIn(s, p.cc)} · skill ${Math.round(p.sport.skill)}` : ''; };
   const prime = a => (a < 14 ? 1.3 : a < 26 ? 1.15 : a < 31 ? 1 : a < 36 ? 0.6 : 0.3);

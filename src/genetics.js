@@ -65,7 +65,7 @@ const Gen = (() => {
         const goal = target || world;
         for (const k of KEYS) P[k] += (goal[k] - P[k]) * rate * step;
       }
-      if (c.id === 'MEX' && year > 1521) for (const k of KEYS) P[k] += (blend({ MEX: 0.6, ITA: 0.3, WAF: 0.1 })[k] - P[k]) * 0.003 * step;
+      if (c.id === 'MEX' && year > 1521) for (const k of KEYS) P[k] += (blend({ MEX: 0.6, ITA: 0.3, NGA: 0.1 })[k] - P[k]) * 0.003 * step;
       if (year % 50 < step) P.hist.push([year, Object.fromEntries(KEYS.map(k => [k, +P[k].toFixed(3)]))]);
       if (P.hist.length > 120) P.hist.splice(0, P.hist.length - 120);
     }

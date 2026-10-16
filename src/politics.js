@@ -30,7 +30,7 @@ const Pol = (() => {
     if (/corporate|charter|authority/.test(g)) return 'charter';
     return 'monarchy';
   }
-  const ISLAMIC = ['EGY', 'IRN', 'MAG', 'MSP', 'LEV', 'ANA'];
+  const ISLAMIC = { includes: cc => Atlas.islamic(cc, Sim.W.year) };
   function headTitle(cc, sex) {
     const g = (S.world.gov(cc) || '').toLowerCase(), n = (S.world.name(cc) || '').toLowerCase(), F = sex === 'F', y = yr();
     if (cc === 'EGY' && y < -30) return 'Pharaoh';
@@ -49,14 +49,14 @@ const Pol = (() => {
     const y = yr();
     if (cc === 'ITA' && y >= -509 && y <= -27) return 'Consul';
     if (cc === 'GRC' && y < -146) return 'Archon';
-    if (cc === 'MAG' && y < -146) return 'Suffete';
+    if (Atlas.old(cc) === 'MAG' && y < -146) return 'Suffete';
     if (/prime minister/i.test(S.world.gov(cc))) return 'Prime Minister';
     return 'President';
   }
   function legisTitle(cc) {
     const y = yr();
     if (cc === 'ITA' && y < 476) return 'Senator'; if (cc === 'GRC' && y < -146) return 'Member of the Boule';
-    if (cc === 'USA') return 'Senator'; if (cc === 'FRA') return 'Deputy'; if (cc === 'SCA' && y < 1300) return 'Speaker at the Thing';
+    if (cc === 'USA') return 'Senator'; if (cc === 'FRA') return 'Deputy'; if (Atlas.old(cc) === 'SCA' && y < 1300) return 'Speaker at the Thing';
     return 'Member of Parliament';
   }
   const LADDERS = {
