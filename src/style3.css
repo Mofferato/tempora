@@ -14,3 +14,10 @@
 .heritage > summary::-webkit-details-marker { display: none; }
 .idgrid { display: grid; gap: 12px; }
 ul.plain { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; }
+
+.dims { display: grid; gap: 8px; margin: 8px 0 12px; }
+.dim .dn { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
+.kvs { display: grid; gap: 6px; }
+.kv { display: grid; grid-template-columns: 110px 1fr; gap: 8px; font-size: 13px; color: var(--ink-2); }
+.kv b { color: var(--ink); font-weight: 600; }
+@media (max-width: 560px) { .kv { grid-template-columns: 1fr; gap: 0; } }

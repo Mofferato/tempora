@@ -1,7 +1,7 @@
 // Feature tests that run the real game headlessly: node tools/test-features.js [name]
 const { makeContext } = require('./harness.js');
 const T = makeContext();
-const { Sim: S, UI: ui, DATA, U, Atlas: A, Identity: I } = T;
+const { Sim: S, UI: ui, DATA, U, Atlas: A, Identity: I, Faith: Fa, Marriage: M } = T;
 let pass = 0, fail = 0;
 const only = process.argv[2];
 function test(name, f) {
@@ -89,6 +89,59 @@ test('old saves with combined regions move to real countries', () => {
   const q = S.mkPerson({ cc: 'ENG', born: 1820 }); q.cc = 'WAF'; w.pops.WAF = {}; w.nat.LEV = {};
   S.hooks.migrate(w);
   ok(!A.LEGACY[q.cc], 'moved to ' + q.cc); ok(A.LEGACY.WAF.includes(q.cc), 'to a West African land: ' + q.cc);
+});
+
+
+console.log('faith');
+const share = (cc, year, id, n = 400) => { fresh({ year, cc }); let k = 0; for (let i = 0; i < n; i++) { const q = S.mkPerson({ cc, born: U.add(year, -30), sex: 'M' }); if (Fa.get(q) === id) k++; } return k / n; };
+test('people follow their country’s majority faith', () => {
+  ok(share('IRN', 2020, 'sh') > 0.8, 'Iran is Shia'); ok(share('ENG', 1500, 'ch') > 0.8, 'England was Catholic'); ok(share('THA', 2020, 'bt') > 0.8, 'Thailand is Theravada');
+  ok(share('ENG', 2020, 'sc') > 0.25, 'secular England in 2020');
+});
+test('children take their parents’ faith', () => {
+  fresh({ year: 1700, cc: 'ENG' });
+  const a = S.mkPerson({ cc: 'ENG', sex: 'M', born: 1670 }), b = S.mkPerson({ cc: 'ENG', sex: 'F', born: 1672 }); a.faith = b.faith = 'pr'; S.marry(a, b);
+  let same = 0; for (let i = 0; i < 40; i++) { const c = S.childOf(a, b, 1700); if (Fa.get(c) === 'pr') same++; }
+  ok(same >= 36, 'same faith ' + same);
+});
+test('conversion costs closeness with devout kin', () => {
+  fresh({ year: 1900, cc: 'IRN' });
+  const p = S.me(); for (const q of S.parents(p)) { q.faith = 'sh'; q.piety = 90; } p.faith = 'sh'; p.piety = 50;
+  const q = S.parents(p)[0]; S.rel(p, q).c = 80;
+  const t = Fa.convert(p, 'ch'); ok(S.rel(p, q).c < 80, 'closeness fell'); eq(p.faith, 'ch');
+});
+test('faith practices are activities', () => {
+  fresh({ year: 1900, cc: 'IRN' }); const p = S.me(); p.born = 1870; p.faith = 'sh'; p.piety = 50;
+  const a = S.activities(p).find(x => x.id === 'e:faith-w'); ok(a, 'a worship activity'); const before = p.piety; S.doActivity('e:faith-w'); ok(p.piety > before, 'piety rose');
+});
+test('faith events do not break the engine', () => {
+  fresh({ year: 1600, cc: 'ESP' }); const p = S.me(); p.born = 1570;
+  for (let i = 0; i < 30; i++) { const ev = Fa.f && S.hooks.events(p); ok(Array.isArray(ev)); }
+});
+
+console.log('marriage');
+test('arranged marriage is the norm in 1950 India and rare in 2020 America', () => {
+  ok(A.arranged('IND', 1950) > 0.7, 'India ' + A.arranged('IND', 1950)); ok(A.arranged('USA', 2020) < 0.15, 'USA ' + A.arranged('USA', 2020));
+  ok(A.arranged('ENG', 1500) > 0.5, 'Europe in 1500 ' + A.arranged('ENG', 1500));
+});
+test('a family offers a match, and an arranged marriage grows warmer', () => {
+  fresh({ year: 1950, cc: 'IND' });
+  const p = S.me(); p.born = 1930; p.sp = null; p.sex = 'M'; p.cls = 3; p.money = 1e6;
+  for (const k of Object.keys(p.rels)) if (p.rels[k].k === 'lover') delete p.rels[k];
+  let found = null;
+  for (let i = 0; i < 60 && !found; i++) { S.prompts.length = 0; p.flags.matchY = 0; S.hooks.postYear(p, S.era()); found = S.prompts.find(x => /match/i.test(x.title)); }
+  ok(found, 'a match was proposed'); eq(found.choices[0].l.startsWith('Accept'), true);
+  found.choices[0].go();
+  const fi = Object.entries(p.rels).find(([id, r]) => r.k === 'fiance' && r.arr); ok(fi, 'engaged by arrangement');
+  S.W.year = U.add(S.W.year, 1); S.hooks.postYear(p, S.era());
+  const sp = S.spouse(p); ok(sp, 'married next year'); ok(p.rels[sp.id].arr, 'flagged arranged');
+  const c0 = p.rels[sp.id].c; for (let i = 0; i < 5; i++) { p.rels[sp.id].c = Math.min(p.rels[sp.id].c, 40); const d = S.hadd('relDrift', p, sp, p.rels[sp.id]); ok(d > 0, 'warms'); }
+});
+test('parents are asked about their children’s marriages', () => {
+  fresh({ year: 1950, cc: 'IND' });
+  const p = S.me(); p.born = 1900; p.sp = null; const kid = S.childOf(p, S.mkPerson({ cc: 'IND', sex: 'F', born: 1901 }), 1928); kid.sp = null; kid.cc = 'IND'; kid.cls = 3;
+  let found = null; for (let i = 0; i < 80 && !found; i++) { S.prompts.length = 0; kid.flags.matchY = 0; S.hooks.postYear(p, S.era()); found = S.prompts.find(x => /A match for/.test(x.title)); }
+  ok(found, 'asked about the child');
 });
 
 console.log(`\n${pass} passed, ${fail} failed`);
