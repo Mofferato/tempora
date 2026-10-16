@@ -129,7 +129,7 @@
       ${acts.length ? `<div class="acts" style="margin-top:14px">${acts.map(a => ui.interactBtn(o, a)).join('')}</div>` : ''}
       ${!self && liv && S.alive(p) ? `<button class="btn era block" style="margin-top:10px" data-act="become" data-id="${o.id}">Become ${esc(o.first)}</button>
         <p class="faint" style="font-size:12px;margin:8px 0 0">${esc(p.first)} keeps living in the world as an ordinary person.</p>` : ''}
-      ${S.godAllowed() ? `<button class="btn sm" style="margin-top:10px" data-act="godEdit" data-id="${o.id}">Edit with god powers</button>` : ''}`, { label: S.fullName(o) });
+      ${S.sandboxAllowed() ? `<button class="btn sm" style="margin-top:10px" data-act="sandboxEdit" data-id="${o.id}">Edit with sandbox tools</button>` : ''}`, { label: S.fullName(o) });
   };
 
   /* ---------------- Life: log or story ---------------- */

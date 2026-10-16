@@ -246,13 +246,13 @@ LATE.push(() => {
     return `<div class="panel cpanel"><div class="eyebrow">${esc(c.short)}${po ? ` · ${esc(po.name)}` : ''}</div><h3 style="margin:2px 0 4px">${esc(nm)}</h3>
       ${rel != null ? `<div class="faint" style="margin-bottom:6px">${relTag(rel)} Relations ${rel > 0 ? '+' : ''}${rel}${G.allied(p.cc, id) ? ' · allied with your land' : ''}</div>` : ''}
       ${wars.length ? `<p style="margin:0 0 6px"><span class="tag bad">${id !== p.cc && G.atWar(p.cc, id) ? 'At war with you' : 'At war'}</span> ${wars.filter(h => h.n.length < 42).map(h => esc(h.n)).join(', ')}</p>` : ''}
-      <div class="kvs">${rows.map(([k, v]) => `<div class="kv"><b>${k}</b><span>${esc(v)}</span></div>`).join('')}</div>
+      <div class="kvrs">${rows.map(([k, v]) => `<div class="kvr"><b>${k}</b><span>${esc(v)}</span></div>`).join('')}</div>
       <div class="eyebrow" style="margin-top:10px">Belief</div><div class="ethbar">${fm.map(([f, v]) => `<i style="width:${v * 100}%;background:${FAITH_COL[f] || '#999'}" title="${esc(Faith.f(f).n)} ${pct(v)}"></i>`).join('')}</div>
       <div class="ethkey">${fm.map(([f, v]) => `<span><b style="background:${FAITH_COL[f] || '#999'}"></b>${esc(Faith.f(f).n)} ${pct(v)}</span>`).join('')}</div>
-      <details style="margin-top:8px"><summary class="faint">Culture and customs</summary><div class="kvs" style="margin-top:6px">
-        <div class="kv"><b>Marriage</b><span>${esc(Marriage.label(A.arranged(id, y)))}</span></div>
-        <div class="kv"><b>Society</b><span>${cu.T >= 65 ? 'Tradition-bound' : cu.T <= 35 ? 'Change-seeking' : 'Balanced'} · ${cu.I >= 65 ? 'individualist' : cu.I <= 35 ? 'collectivist' : 'mixed'} · ${cu.R >= 65 ? 'devout' : cu.R <= 35 ? 'secular' : 'moderately religious'}</span></div>
-        ${at.lg ? `<div class="kv"><b>Languages</b><span>${at.lg.map(esc).join(', ')}</span></div>` : ''}${at.cs ? `<div class="kv"><b>Customs</b><span>${at.cs.slice(0, 3).map(esc).join(' · ')}</span></div>` : ''}${at.tr ? `<div class="kv"><b>Notes</b><span>${at.tr.slice(0, 3).map(esc).join(' · ')}</span></div>` : ''}</div></details>
+      <details style="margin-top:8px"><summary class="faint">Culture and customs</summary><div class="kvrs" style="margin-top:6px">
+        <div class="kvr"><b>Marriage</b><span>${esc(Marriage.label(A.arranged(id, y)))}</span></div>
+        <div class="kvr"><b>Society</b><span>${cu.T >= 65 ? 'Tradition-bound' : cu.T <= 35 ? 'Change-seeking' : 'Balanced'} · ${cu.I >= 65 ? 'individualist' : cu.I <= 35 ? 'collectivist' : 'mixed'} · ${cu.R >= 65 ? 'devout' : cu.R <= 35 ? 'secular' : 'moderately religious'}</span></div>
+        ${at.lg ? `<div class="kvr"><b>Languages</b><span>${at.lg.map(esc).join(', ')}</span></div>` : ''}${at.cs ? `<div class="kvr"><b>Customs</b><span>${at.cs.slice(0, 3).map(esc).join(' · ')}</span></div>` : ''}${at.tr ? `<div class="kvr"><b>Notes</b><span>${at.tr.slice(0, 3).map(esc).join(' · ')}</span></div>` : ''}</div></details>
       ${nb.length ? `<div class="eyebrow" style="margin-top:10px">Neighbours</div><div class="chips">${nb.map(n => `<button class="chip" data-act="mapSelect" data-cc="${n}">${esc(shortName(nameAt(n, y)))}</button>`).join('')}</div>` : ''}
       ${acts.length ? `<div class="row-actions" style="margin-top:12px">${acts.join('')}</div>` : ''}</div>`;
   }

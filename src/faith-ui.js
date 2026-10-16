@@ -33,13 +33,13 @@ LATE.push(() => {
   function cultureSection(p) {
     const c = A.culture(p.cc, S.W.year), at = A.C(p.cc)?.at || {};
     const bar = ([k, n, lo, hi]) => `<div class="dim"><div class="dn"><span>${n}</span><span class="faint">${c[k] >= 65 ? hi : c[k] <= 35 ? lo : 'Balanced'}</span></div><div class="bar era"><i style="width:${c[k]}%"></i></div></div>`;
-    const list = (title, a) => (a && a.length ? `<div class="kv"><b>${title}</b><span>${a.map(esc).join(' · ')}</span></div>` : '');
+    const list = (title, a) => (a && a.length ? `<div class="kvr"><b>${title}</b><span>${a.map(esc).join(' · ')}</span></div>` : '');
     const clean = a => (a || []).map(x => String(x).replace(/@-?\d+$/, '')).slice(0, 5);
     const y = S.W.year;
     const aged = a => (a || []).filter(x => { const m = String(x).match(/@(-?\d+)$/); return !m || +m[1] <= y; });
     return `<div class="panel"><div class="eyebrow">Culture of ${esc(S.world.name(p.cc))}</div>
       <div class="dims">${DIMS.map(bar).join('')}</div>
-      <div class="kvs">${list('Languages', at.lg)}${list('Food', clean(aged(at.fd)))}${list('Festivals', clean(aged(at.fs)))}${list('Sport and play', clean(aged(at.sp)))}${list('Customs', at.cs)}${list('What stands out', at.tr)}</div></div>`;
+      <div class="kvrs">${list('Languages', at.lg)}${list('Food', clean(aged(at.fd)))}${list('Festivals', clean(aged(at.fs)))}${list('Sport and play', clean(aged(at.sp)))}${list('Customs', at.cs)}${list('What stands out', at.tr)}</div></div>`;
   }
   function marriageSection(p) {
     const v = Marriage.prevalence(p.cc, p), dow = Marriage.dowType(p.cc), sp = S.spouse(p);

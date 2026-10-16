@@ -1,6 +1,6 @@
 /* =====================================================================
    UI, part 4 — start screen with modes and countries, tab list, World
-   (era, nations, organisations, god editor), menu with game modes.
+   (era, nations, organisations, sandbox editor), menu with game modes.
    ===================================================================== */
 
 (() => {
@@ -11,27 +11,27 @@
   const MODES = [
     ['narrative', 'Narrative', 'A story told in chapters. Choices pop up as your life unfolds, and your life reads back as prose.'],
     ['household', 'Household', 'Run the whole home: plan each family member’s year and manage the shared budget.'],
-    ['god', 'God', 'Everything unlocked: edit any stat, person, gene, class or year. Keeps the Narrative and Household features.'],
+    ['sandbox', 'Sandbox', 'Everything unlocked: edit any stat, person, gene, class or year. Keeps the Narrative and Household features.'],
   ];
 
   /* ---------------- tabs ---------------- */
   ui.tabList = () => {
     const m = S.W?.mode;
     const t = [['life', 'Life'], ['rel', 'Relationships'], ['act', 'Activities'], ['places', 'Places'], ['job', 'Occupation'], ['assets', 'Assets']];
-    if (m === 'household' || m === 'god') t.push(['home', 'Household']);
+    if (m === 'household' || m === 'sandbox') t.push(['home', 'Household']);
     for (const x of (ui.extraTabs || []).filter(x => !x.show || x.show(S.me()))) t.splice(Math.min(t.length, x.order ?? t.length), 0, [x.id, x.n]);
     t.push(['tree', 'Family Tree'], ['world', 'World'], ['community', 'Community']);
     return t;
   };
 
   /* ---------------- start screen ---------------- */
-  const pick = { era: 'medieval', year: START_YEAR.medieval, cc: '', mode: 'narrative', godOn: false, anc: '', anc2: '', origin: '', oside: 'both', sugg: null };
+  const pick = { era: 'medieval', year: START_YEAR.medieval, cc: '', mode: 'narrative', sandboxOn: false, anc: '', anc2: '', origin: '', oside: 'both', sugg: null };
   const keepFields = () => ['f-first', 'f-last', 'f-sex', 'f-orient', 'f-cls', 'f-anc', 'f-anc2', 'f-origin', 'f-oside'].map(id => [id, $('#' + id)?.value]);
   const restoreFields = k => k.forEach(([id, v]) => { if ($('#' + id) && v != null) $('#' + id).value = v; });
   ui.start = () => {
     const e = pick.era === 'random' ? null : DATA.eras.find(x => x.id === pick.era);
     ui.setEraTheme(e || DATA.eras[2]);
-    $('#when').innerHTML = ''; $('#agebar').hidden = true; $('#btnGod').hidden = true;
+    $('#when').innerHTML = ''; $('#agebar').hidden = true; $('#btnSandbox').hidden = true;
     const auto = ui.store.get('tempora.autosave');
     const [lo, hi] = e ? rangeOf(e) : [0, 0];
     const lands = e ? DATA.countries.filter(c => pick.year >= c.from) : [];
@@ -42,14 +42,14 @@
       ${auto ? `<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:200px"><div class="eyebrow">Saved dynasty</div><div style="font-family:var(--f-display);font-size:20px">${esc(U.house(auto.dyn?.name || ''))} · ${U.fmtYearAD(auto.year)}</div></div><button class="btn era" data-act="continue">Continue</button></div>` : ''}
       <div class="sec-h"><h3>How do you want to play?</h3></div>
       <div class="modes">${MODES.map(([id, n, d]) => `<button class="modecard" data-act="pickMode" data-m="${id}" aria-pressed="${pick.mode === id}"><div class="n">${n}</div><div class="d">${esc(d)}</div></button>`).join('')}</div>
-      ${pick.mode !== 'god' ? `<label class="check"><input type="checkbox" id="f-god" ${pick.godOn ? 'checked' : ''} data-input="godOn"> Also allow god tools (off by default)</label>` : ''}
+      ${pick.mode !== 'sandbox' ? `<label class="check"><input type="checkbox" id="f-sandbox" ${pick.sandboxOn ? 'checked' : ''} data-input="sandboxOn"> Also allow sandbox tools (off by default)</label>` : ''}
       <div class="sec-h"><h3>Choose when to be born</h3></div>
       <div class="eras">${DATA.eras.map(x => `<button class="eracard" style="--c:${ui.eraCol(x)}" data-act="pickEra" data-id="${x.id}" aria-pressed="${pick.era === x.id}"><div class="n">${esc(x.name)}</div><div class="r">${U.fmtYear(x.from)}${x.to > 9000 ? '+' : `–${U.fmtYear(x.to)}`}</div></button>`).join('')}
         <button class="eracard" style="--c:var(--ink-3)" data-act="pickEra" data-id="random" aria-pressed="${pick.era === 'random'}"><div class="n">Random</div><div class="r">any year, any land</div></button></div>
       ${e ? `<div class="panel"><div class="form">
         <div class="field" style="grid-column:1/-1"><label for="yr">Birth year: <b class="mono" id="yrl">${U.fmtYearAD(pick.year)}</b></label>
         <input type="range" id="yr" min="${lo}" max="${hi}" step="1" value="${pick.year}" data-input="year"><span class="faint">${esc(e.blurb)}</span></div>
-        <div class="field" style="grid-column:1/-1"><label for="f-cc">Land of birth</label><select id="f-cc" data-input="cc"><option value="">Random land</option>${lands.map(c => `<option value="${c.id}" ${pick.cc === c.id ? 'selected' : ''}>${esc(S_name(c.id, pick.year))} (${esc(c.short)})</option>`).join('')}</select></div></div></div>`
+        <div class="field" style="grid-column:1/-1"><label for="f-cc">Land of birth</label><select id="f-cc" data-input="cc"><option value="">Random land</option>${landOptions(lands)}</select></div></div></div>`
         : '<div class="panel"><p class="lede" style="margin:0">Fate will choose the era, the year and the land.</p></div>'}
       ${ui.heritagePanel ? ui.heritagePanel(pick, lands) : ''}
       <div class="panel"><div class="form">
@@ -60,24 +60,32 @@
         <div class="field"><label for="f-cls">Family fortune</label><select id="f-cls"><option value="">Random</option>${S.CLASSES.map(c => `<option value="${c.id}">${c.id[0].toUpperCase() + c.id.slice(1)}</option>`).join('')}</select></div>
       </div>${ui.nameChips ? ui.nameChips(pick) : ''}<button class="btn era block" style="margin-top:14px;height:48px;font-size:16px" data-act="begin">Begin a life</button></div></div>`;
   };
+  // the lands of the world grouped by region, in the order of the atlas
+  function landOptions(lands) {
+    const order = Object.keys(DATA.atlas.subs), groups = new Map();
+    for (const c of lands) { const k = c.sub || 'other'; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(c); }
+    const keys = [...groups.keys()].sort((a, b) => (order.indexOf(a) < 0 ? 99 : order.indexOf(a)) - (order.indexOf(b) < 0 ? 99 : order.indexOf(b)));
+    const opt = c => `<option value="${c.id}" ${pick.cc === c.id ? 'selected' : ''}>${esc(S_name(c.id, pick.year))}</option>`;
+    return keys.map(k => `<optgroup label="${esc(k === 'other' ? 'Other lands' : DATA.atlas.subs[k]?.[0] || k)}">${groups.get(k).sort((a, b) => S_name(a.id, pick.year).localeCompare(S_name(b.id, pick.year))).map(opt).join('')}</optgroup>`).join('');
+  }
   // country names at an arbitrary year, before any world exists
   function S_name(cc, y) { const c = DATA.countries.find(x => x.id === cc); for (const x of c.names) if (y <= x[0]) return x[1]; return c.names[c.names.length - 1][1]; }
   ui.on.pickMode = el => { const k = keepFields(); pick.mode = el.dataset.m; ui.start(); restoreFields(k); };
-  ui.input.godOn = el => { pick.godOn = el.checked; };
+  ui.input.sandboxOn = el => { pick.sandboxOn = el.checked; };
   ui.on.pickEra = el => { const k = keepFields(); pick.era = el.dataset.id; if (pick.era !== 'random') pick.year = START_YEAR[pick.era]; ui.start(); restoreFields(k); };
   ui.input.year = el => {
     pick.year = +el.value === 0 ? 1 : +el.value; $('#yrl').textContent = U.fmtYearAD(pick.year);
     const sel = $('#f-cc'); if (!sel) return;
     const lands = DATA.countries.filter(c => pick.year >= c.from);
     if (sel.options.length - 1 !== lands.length) { const k = keepFields(); ui.start(); restoreFields(k); }
-    else [...sel.options].slice(1).forEach(o => { o.textContent = `${S_name(o.value, pick.year)} (${DATA.countries.find(c => c.id === o.value).short})`; });
+    else [...sel.options].slice(1).forEach(o => { o.textContent = S_name(o.value, pick.year); });
   };
   ui.input.cc = el => { pick.cc = el.value; pick.anc = pick.anc2 = ''; const k = keepFields(); ui.start(); restoreFields(k); };
   ui.pick = pick; ui.keepFields = keepFields; ui.restoreFields = restoreFields;
   ui.on.begin = () => {
     let year = pick.year, cc = pick.cc || null;
     if (pick.era === 'random') { const e = U.pick(DATA.eras), [lo, hi] = rangeOf(e); year = U.ri(lo, hi) || 1; cc = null; }
-    S.newWorld({ year, cc, ...(ui.heritageOpts ? ui.heritageOpts(pick, cc) : {}), mode: pick.mode, godOn: pick.mode === 'god' || pick.godOn, first: $('#f-first').value, last: $('#f-last').value, sex: $('#f-sex').value || null, orient: $('#f-orient').value, cls: $('#f-cls').value || null });
+    S.newWorld({ year, cc, ...(ui.heritageOpts ? ui.heritageOpts(pick, cc) : {}), mode: pick.mode, sandboxOn: pick.mode === 'sandbox' || pick.sandboxOn, first: $('#f-first').value, last: $('#f-last').value, sex: $('#f-sex').value || null, orient: $('#f-orient').value, cls: $('#f-cls').value || null });
     ui.tab = 'life'; $('#screen').innerHTML = ''; render(); ui.save();
   };
 
@@ -86,15 +94,15 @@
   ui.views.world = p => {
     const extra = (ui.worldExtra || []).filter(x => !x.show || x.show(p));
     const tabs = [['era', 'This era'], ...extra.filter(x => x.first).map(x => [x.id, x.n]), ['nations', 'Nations'], ['orgs', 'Organisations'], ...extra.filter(x => !x.first).map(x => [x.id, x.n])];
-    if (S.godAllowed()) tabs.push(['god', 'God mode']);
+    if (S.sandboxAllowed()) tabs.push(['sandbox', 'Sandbox mode']);
     if (!tabs.some(t => t[0] === ui.worldTab)) ui.worldTab = 'era';
     const head = `<div class="subtabs" role="tablist">${tabs.map(([id, n]) => `<button data-act="worldTab" data-v="${id}" aria-selected="${ui.worldTab === id}">${n}</button>`).join('')}</div>`;
     if (ui.worldTab === 'nations') return head + nationsView(p);
     if (ui.worldTab === 'orgs') return head + orgsView(p);
-    if (ui.worldTab === 'god') return head + godView(p);
+    if (ui.worldTab === 'sandbox') return head + sandboxView(p);
     const ex = extra.find(x => x.id === ui.worldTab); if (ex) return head + ex.view(p);
-    const w = S.W, g = w.god; w.god = false;
-    const html = eraView(p); w.god = g;
+    const w = S.W, g = w.sandbox; w.sandbox = false;
+    const html = eraView(p); w.sandbox = g;
     const local = S.world.laws(p.cc);
     return head + (local.length ? `<div class="panel"><div class="eyebrow">Law in ${esc(S.world.name(p.cc))}</div><ul class="laws">${local.map(l => `<li>${esc(l)}</li>`).join('')}</ul></div>` : '') + html;
   };
@@ -167,14 +175,14 @@
   ui.on.org = el => orgSheet(el.dataset.id);
   ui.on.orgAct = el => { const t = S.orgAct(el.dataset.id, el.dataset.a); ui.open = null; render(); orgSheet(el.dataset.id, t); };
 
-  /* ---------------- god mode editor ---------------- */
+  /* ---------------- sandbox mode editor ---------------- */
   const HAIR = [['black', '#1E1714'], ['dark brown', '#3F2A1C'], ['brown', '#5E3F28'], ['light brown', '#8A6040'], ['dark blonde', '#B08A4E'], ['blonde', '#D6B56E'], ['platinum blonde', '#E9D9A6'], ['red', '#A5431F'], ['auburn', '#7A3520'], ['grey', '#A9A6A0'], ['white', '#E8E6E1']];
-  function godView(p) {
-    const target = S.P(ui.godTarget) || p, isMe = target.id === p.id, e = S.era();
+  function sandboxView(p) {
+    const target = S.P(ui.sandboxTarget) || p, isMe = target.id === p.id, e = S.era();
     const people = [p, ...S.known(p)].slice(0, 120);
     const ph = S.pheno(target), o = target.phx || {};
     const sel = (id, opts, cur) => `<select id="${id}" data-input="gLook" data-k="${id.slice(3)}"><option value="">From genes</option>${opts.map(([v, n]) => `<option value="${esc(v)}" ${String(cur) === String(v) ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>`;
-    return `<div class="panel god"><div class="eyebrow">God mode · editing</div>
+    return `<div class="panel sandbox"><div class="eyebrow">Sandbox mode · editing</div>
       <div class="field" style="margin-top:6px"><select id="g-target" data-input="gTarget">${people.map(x => `<option value="${x.id}" ${x.id === target.id ? 'selected' : ''}>${esc(S.fullName(x))} · ${x.id === p.id ? 'you' : esc(S.relLabel(p, x))}${S.alive(x) ? '' : ' †'}</option>`).join('')}</select></div>
       <div class="grid">${DATA.stats.map(s => `<label for="g-${s.k}">${s.n} <span class="mono" id="gv-${s.k}">${Math.round(target[s.k] ?? 0)}</span><input id="g-${s.k}" type="range" min="0" max="100" value="${Math.round(target[s.k] ?? 0)}" data-input="gStat" data-k="${s.k}"></label>`).join('')}
         ${!isMe ? `<label for="g-close">Closeness to you <span class="mono" id="gv-close">${Math.round(p.rels[target.id]?.c ?? 0)}</span><input id="g-close" type="range" min="0" max="100" value="${Math.round(p.rels[target.id]?.c ?? 50)}" data-input="gClose"></label>` : ''}
@@ -193,39 +201,39 @@
         ${S.alive(target) ? `<button class="btn sm" data-act="gHeal">Heal completely</button>${!isMe ? '<button class="btn sm danger" data-act="gKill">Strike down</button>' : ''}` : '<button class="btn sm" data-act="gRevive">Raise from the dead</button>'}
         <button class="btn sm" data-act="gEdu">Grant full education</button><button class="btn sm" data-act="gFree">Release from prison</button>
         ${!isMe && S.alive(target) ? `<button class="btn sm" data-act="become" data-id="${target.id}">Become them</button>` : ''}</div></div>
-    <div class="panel god"><div class="eyebrow">Create people</div><div class="btnrow" style="margin-top:8px">${['friend', 'lover', 'rival', 'child', 'sibling'].map(k => `<button class="btn sm" data-act="gSpawn" data-k="${k}">New ${k}</button>`).join('')}</div>
-      <div class="eyebrow" style="margin-top:14px">Time</div><div class="btnrow" style="margin-top:8px">${[1, 5, 10, 25, 50, 100].map(n => `<button class="btn sm" data-act="godJump" data-n="${n}">+${n} years</button>`).join('')}</div>
+    <div class="panel sandbox"><div class="eyebrow">Create people</div><div class="btnrow" style="margin-top:8px">${['friend', 'lover', 'rival', 'child', 'sibling'].map(k => `<button class="btn sm" data-act="gSpawn" data-k="${k}">New ${k}</button>`).join('')}</div>
+      <div class="eyebrow" style="margin-top:14px">Time</div><div class="btnrow" style="margin-top:8px">${[1, 5, 10, 25, 50, 100].map(n => `<button class="btn sm" data-act="sandboxJump" data-n="${n}">+${n} years</button>`).join('')}</div>
       <div class="grid">
-        <label for="god-hist">Historical event<select id="god-hist">${DATA.history.map((h, i) => `<option value="${i}">${U.fmtYear(h.y)} · ${esc(h.t.slice(0, 64))}${h.where ? ` (${h.where.join(', ')})` : ''}</option>`).join('')}</select><button class="btn sm" data-act="godHist">Unleash it now</button></label>
-        <label for="god-ev">Life event<select id="god-ev">${S.eventPool().map(ev => `<option value="${ev.id}">${esc((Array.isArray(ev.t) ? ev.t[0] : ev.t).slice(0, 64))}</option>`).join('')}</select><button class="btn sm" data-act="godEv">Make it happen</button></label></div></div>`;
+        <label for="sb-hist">Historical event<select id="sb-hist">${DATA.history.map((h, i) => `<option value="${i}">${U.fmtYear(h.y)} · ${esc(h.t.slice(0, 64))}${h.where ? ` (${h.where.join(', ')})` : ''}</option>`).join('')}</select><button class="btn sm" data-act="sandboxHist">Unleash it now</button></label>
+        <label for="sb-ev">Life event<select id="sb-ev">${S.eventPool().map(ev => `<option value="${ev.id}">${esc((Array.isArray(ev.t) ? ev.t[0] : ev.t).slice(0, 64))}</option>`).join('')}</select><button class="btn sm" data-act="sandboxEv">Make it happen</button></label></div></div>`;
   }
-  const tgt = () => S.P(ui.godTarget) || S.me();
+  const tgt = () => S.P(ui.sandboxTarget) || S.me();
   const reG = t => { render(); if (t) toast(t); };
-  ui.on.godEdit = el => { ui.godTarget = +el.dataset.id; ui.tab = 'world'; ui.worldTab = 'god'; ui.open = null; $('#modal').innerHTML = ''; reG(); };
-  ui.input.gTarget = el => { ui.godTarget = +el.value; reG(); };
-  ui.input.gStat = el => { S.god.stat(tgt().id, el.dataset.k, el.value); $(`#gv-${el.dataset.k}`).textContent = el.value; if (tgt().id === S.me().id) $('#card').innerHTML = ui.cardHTML(S.me()); };
-  ui.input.gClose = el => { S.god.closeness(tgt().id, el.value); $('#gv-close').textContent = el.value; };
-  ui.input.gCls = el => { S.god.cls(tgt().id, el.value); reG('Class changed.'); };
-  ui.input.gCC = el => { S.god.country(tgt().id, el.value); reG('Moved.'); };
+  ui.on.sandboxEdit = el => { ui.sandboxTarget = +el.dataset.id; ui.tab = 'world'; ui.worldTab = 'sandbox'; ui.open = null; $('#modal').innerHTML = ''; reG(); };
+  ui.input.gTarget = el => { ui.sandboxTarget = +el.value; reG(); };
+  ui.input.gStat = el => { S.sandbox.stat(tgt().id, el.dataset.k, el.value); $(`#gv-${el.dataset.k}`).textContent = el.value; if (tgt().id === S.me().id) $('#card').innerHTML = ui.cardHTML(S.me()); };
+  ui.input.gClose = el => { S.sandbox.closeness(tgt().id, el.value); $('#gv-close').textContent = el.value; };
+  ui.input.gCls = el => { S.sandbox.cls(tgt().id, el.value); reG('Class changed.'); };
+  ui.input.gCC = el => { S.sandbox.country(tgt().id, el.value); reG('Moved.'); };
   ui.input.gLook = el => {
     const k = el.dataset.k, v = el.value;
     const val = v === '' ? '' : k === 'hair' ? v.split('|') : k === 'eyes' ? v : +v;
-    S.god.look(tgt().id, k, val);
+    S.sandbox.look(tgt().id, k, val);
     if (k === 'height' && v !== '' && v.length < 3) return;
     reG();
   };
-  ui.on.gMoney = () => { S.god.money(tgt().id, +$('#g-money').value || 0); reG('Money set.'); };
-  ui.on.gTitle = () => { S.god.title(tgt().id, $('#g-title').value.trim()); reG('Title set.'); };
+  ui.on.gMoney = () => { S.sandbox.money(tgt().id, +$('#g-money').value || 0); reG('Money set.'); };
+  ui.on.gTitle = () => { S.sandbox.title(tgt().id, $('#g-title').value.trim()); reG('Title set.'); };
   ui.on.gHeal = () => { const t = tgt(); t.h = 100; t.sick = []; reG('Fully healed.'); };
-  ui.on.gKill = () => { S.god.kill(tgt().id); reG('It is done.'); };
-  ui.on.gRevive = () => { S.god.revive(tgt().id); reG('They live again.'); };
+  ui.on.gKill = () => { S.sandbox.kill(tgt().id); reG('It is done.'); };
+  ui.on.gRevive = () => { S.sandbox.revive(tgt().id); reG('They live again.'); };
   ui.on.gEdu = () => { const t = tgt(); t.edu = 4; t.school = null; reG('A lifetime of learning, instantly.'); };
   ui.on.gFree = () => { tgt().prison = 0; reG('The cell door swings open.'); };
-  ui.on.gSpawn = el => { const o = S.god.spawn(el.dataset.k); reG(o ? `${S.fullName(o)} now exists.` : 'Nobody to attach them to.'); };
-  ui.on.god = () => {
+  ui.on.gSpawn = el => { const o = S.sandbox.spawn(el.dataset.k); reG(o ? `${S.fullName(o)} now exists.` : 'Nobody to attach them to.'); };
+  ui.on.sandbox = () => {
     if (!S.W) return;
-    if (!S.godAllowed()) return toast('God tools are off. Turn them on in Menu → Game mode.');
-    ui.tab = 'world'; ui.worldTab = 'god'; render();
+    if (!S.sandboxAllowed()) return toast('Sandbox tools are off. Turn them on in Menu → Game mode.');
+    ui.tab = 'world'; ui.worldTab = 'sandbox'; render();
   };
 
   /* ---------------- menu ---------------- */
@@ -236,10 +244,10 @@
     const box = $('#modal .sheet h2');
     box.insertAdjacentHTML('afterend', `<div class="eyebrow" style="margin-top:14px">Game mode</div>
       <div class="modes compact">${MODES.map(([id, n, d]) => `<button class="modecard" data-act="setMode" data-m="${id}" aria-pressed="${w.mode === id}"><div class="n">${n}</div><div class="d">${esc(d)}</div></button>`).join('')}</div>
-      ${w.mode !== 'god' ? `<label class="check"><input type="checkbox" data-input="godOnLive" ${w.godOn ? 'checked' : ''}> Allow god tools in ${w.mode} mode</label>` : ''}
+      ${w.mode !== 'sandbox' ? `<label class="check"><input type="checkbox" data-input="sandboxOnLive" ${w.sandboxOn ? 'checked' : ''}> Allow sandbox tools in ${w.mode} mode</label>` : ''}
       <div class="btnrow" style="margin-top:12px"><button class="btn" data-act="auto">Auto-play…</button><button class="btn" data-act="fusion">Reality fusion…</button><button class="btn" data-act="goCommunity">Community</button></div>`);
   };
-  ui.on.setMode = el => { S.W.mode = el.dataset.m; if (S.W.mode === 'god') S.W.godOn = true; ui.open = null; $('#modal').innerHTML = ''; render(); ui.save(); toast(`${el.dataset.m[0].toUpperCase() + el.dataset.m.slice(1)} mode.`); };
-  ui.input.godOnLive = el => { S.W.godOn = el.checked; render(); ui.save(); };
+  ui.on.setMode = el => { S.W.mode = el.dataset.m; if (S.W.mode === 'sandbox') S.W.sandboxOn = true; ui.open = null; $('#modal').innerHTML = ''; render(); ui.save(); toast(`${el.dataset.m[0].toUpperCase() + el.dataset.m.slice(1)} mode.`); };
+  ui.input.sandboxOnLive = el => { S.W.sandboxOn = el.checked; render(); ui.save(); };
   ui.on.goCommunity = () => { ui.open = null; $('#modal').innerHTML = ''; ui.tab = 'community'; render(); };
 })();

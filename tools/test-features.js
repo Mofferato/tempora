@@ -250,4 +250,12 @@ test('with Claude connected the Director queues an event for next year', async (
   AI.ask = async () => { throw new Error('offline'); }; await D.requestAI(p); ok(D.state().q.length === 0, 'failure leaves nothing queued');
 });
 
+
+group('sandbox');
+test('God mode is now Sandbox mode, and old saves are carried over', () => {
+  fresh({ year: 1900, cc: 'FRA' }); const w = S.W; w.mode = 'god'; w.godOn = true; w.god = false; w.v = 3;
+  S.hooks.migrate(w); eq(w.mode, 'sandbox'); eq(w.sandboxOn, true); ok(!('godOn' in w)); ok(S.sandboxAllowed(), 'allowed');
+  fresh({ year: 1900, cc: 'FRA', mode: 'sandbox' }); ok(S.sandboxAllowed()); ok(ui.views.world(S.me()).includes('Sandbox'), 'tab shown');
+});
+
 runAll().then(() => { console.log(`\n${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0); });

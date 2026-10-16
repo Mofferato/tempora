@@ -224,8 +224,8 @@ const Sim = (() => {
   function newWorld(opt) {
     const year = opt.year;
     W = { v: 3, year, nid: 1, people: {}, playerId: null, news: [], started: year,
-      dyn: { name: '', score: 0, lives: [], played: [], founder: null, houses: [] }, god: false, lastEra: eraOf(year).id,
-      mode: opt.mode || 'narrative', godOn: !!opt.godOn, pets: {}, auto: {}, rel: {}, nat: {}, pops: {} };
+      dyn: { name: '', score: 0, lives: [], played: [], founder: null, houses: [] }, sandbox: false, lastEra: eraOf(year).id,
+      mode: opt.mode || 'narrative', sandboxOn: !!opt.sandboxOn, pets: {}, auto: {}, rel: {}, nat: {}, pops: {} };
     spawnFamily(opt);
     return W;
   }

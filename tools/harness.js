@@ -11,7 +11,7 @@ function makeContext() {
   const els = {};
   const document = {
     documentElement: { dataset: {}, style: { setProperty() {} } },
-    querySelector: s => (/^#(modal|toast|screen|card|tabs|view|ribbon|when|agebar|ageBtn|btnGod|layout|autoBtn|btnSound|btnAI|phoneBadge)$/.test(s) ? (els[s] ||= el()) : null),
+    querySelector: s => (/^#(modal|toast|screen|card|tabs|view|ribbon|when|agebar|ageBtn|btnSandbox|layout|autoBtn|btnSound|btnAI|phoneBadge)$/.test(s) ? (els[s] ||= el()) : null),
     querySelectorAll: () => [], addEventListener() {}, createElement: el, body: el(), getElementById: () => null, head: el(),
     visibilityState: 'visible',
   };

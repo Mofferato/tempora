@@ -52,11 +52,13 @@ const Identity = (() => {
     return p.eth;
   }
   const pct = s => `${Math.round(s * 100)}%`;
+  const plain = n => n.replace(/\s*\([^)]*\)/g, '').trim();
   function ethText(p) {
     const e = eth(p); if (!e || !e.length) return '';
-    if (e.length === 1) return e[0].n;
-    if (e.length === 2 && Math.abs(e[0].s - 0.5) < 0.02) return `Half ${e[0].n}, half ${e[1].n}`;
-    return e.map(x => `${pct(x.s)} ${x.n}`).join(' · ');
+    if (e.length === 1) return plain(e[0].n);
+    if (e.length === 2 && Math.abs(e[0].s - 0.5) < 0.02) return `Half ${plain(e[0].n)}, half ${plain(e[1].n)}`;
+    if (e.length > 3) return `Mixed: ${e.slice(0, 3).map(x => `${pct(x.s)} ${plain(x.n)}`).join(', ')} and more`;
+    return e.map(x => `${pct(x.s)} ${plain(x.n)}`).join(', ');
   }
   // a genome drawn from the people they belong to, not only the land they live in
   function genomeFor(e, cc, y, sex) {

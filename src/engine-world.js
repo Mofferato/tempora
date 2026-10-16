@@ -2,7 +2,7 @@
    ENGINE, part 3 — the world layer. Implements the engine hooks for
    countries, currencies, laws, social classes, genetics, new stats,
    nations, travel and emigration, organisations, pets, ambitions,
-   narrative chapters and god-mode edits. No DOM access.
+   narrative chapters and sb-mode edits. No DOM access.
    ===================================================================== */
 
 (() => {
@@ -424,7 +424,7 @@
   }
 
   /* ---------------- ambitions, chapters, story ---------------- */
-  const hasNarrative = () => ['narrative', 'god'].includes(W().mode);
+  const hasNarrative = () => ['narrative', 'sandbox'].includes(W().mode);
   const CHAPTERS = [[0, 'I', 'Beginnings'], [6, 'II', 'Childhood'], [13, 'III', 'Coming of Age'], [18, 'IV', 'Setting Out'], [30, 'V', 'The Middle of the Road'], [50, 'VI', 'Harvest'], [70, 'VII', 'Twilight'], [90, 'VIII', 'The Long Evening']];
   function chapterText(p, a) {
     const tier = k => DATA.statTier(k, p[k] ?? 50).name.toLowerCase();
@@ -483,7 +483,13 @@
     w.mode ||= 'narrative'; w.pets ||= {}; w.auto ||= {}; w.rel ||= {};
     nat();
   }
-  H.migrate = w => { ensureWorld(); Object.values(w.people).forEach(ensurePerson); };
+  H.migrate = w => {
+    // saves from before "God mode" was renamed Sandbox mode
+    if (w.mode === 'god') w.mode = 'sandbox';
+    if ('godOn' in w) { w.sandboxOn = w.godOn; delete w.godOn; }
+    if ('god' in w) { w.sandbox = w.god; delete w.god; }
+    ensureWorld(); Object.values(w.people).forEach(ensurePerson);
+  };
   H.preYear = (p, e) => {
     ensureWorld();
     natTick();
@@ -493,8 +499,8 @@
   };
   H.postYear = (p, e) => { classTick(p, e); ambitionTick(p); chaptersTick(p); };
 
-  /* ---------------- god-mode edits ---------------- */
-  const god = {
+  /* ---------------- sb-mode edits ---------------- */
+  const sandbox = {
     stat(id, k, v) { const p = S.P(id); if (p) p[k] = U.clamp(+v); },
     money(id, v) { const p = S.P(id); if (p) p.money = +v * S.curNow(p.cc).r; },
     cls(id, v) { const p = S.P(id); if (p) p.cls = U.clamp(+v, 0, 6); },
@@ -533,7 +539,7 @@
 
   Object.assign(S, {
     world: { C, name: cName, gov: cGov, cap: cCap, popAt, countriesAt, rel: relOf, addRel: (a, b, d) => { relOf(a, b); addRel(a, b, d); }, wars: warsOf, laws: lawsFor, nations, travel, emigrate, invest, diplomacy, inOffice, tripCost, ladder },
-    className, ladder, orgsAvail, orgWhy, orgAct, petsOf, petsAvail, petSpec, adoptPet, petAct, story, god, pheno, ensureWorld, ensurePerson,
-    hasNarrative, godAllowed: () => W().mode === 'god' || !!W().godOn, CHAPTERS,
+    className, ladder, orgsAvail, orgWhy, orgAct, petsOf, petsAvail, petSpec, adoptPet, petAct, story, sandbox, pheno, ensureWorld, ensurePerson,
+    hasNarrative, sandboxAllowed: () => W().mode === 'sandbox' || !!W().sandboxOn, CHAPTERS,
   });
 })();

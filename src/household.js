@@ -1,6 +1,6 @@
 /* =====================================================================
    HOUSEHOLD — plan every family member's year, share meals and holidays,
-   hire help. Available in Household and God modes.
+   hire help. Available in Household and Sandbox modes.
    ===================================================================== */
 
 const House = (() => {

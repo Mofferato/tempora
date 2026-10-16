@@ -54,7 +54,7 @@ const Geo = (() => {
   function known(p) {
     const y = yr(), era = S.era().id, depth = REACH[era] ?? 99;
     const all = ids();
-    if (depth >= 99 || S.W.mode === 'sandbox' || S.W.god) return new Set(all);
+    if (depth >= 99 || S.W.mode === 'sandbox' || S.W.sandbox) return new Set(all);
     const seen = new Set(), q = [];
     const add = (cc, d) => { if (cc && M.shapes[cc] && !seen.has(cc)) { seen.add(cc); q.push([cc, d]); } };
     add(p.cc, 0);

@@ -21,10 +21,10 @@ LATE.push(() => {
     return head + `<div class="panel"><div class="eyebrow">Time online</div><div class="chips">${hrs}</div><p class="faint" style="margin:8px 0 0">${esc(N.HRS[s.hrs][1])}</p></div>
       <div class="sec-h"><h3>Do something</h3></div><div class="list">${acts}</div>
       <div class="panel" style="margin-top:12px"><div class="eyebrow">Your online life</div>
-        <div class="kvs"><div class="kv"><b>Reputation</b><span>${Math.round(s.rep)}/100</span></div><div class="kv"><b>Security</b><span>${Math.round(s.sec)}/100</span></div>
-        ${ph && ph.followers ? `<div class="kv"><b>Followers</b><span>${ph.followers.toLocaleString()}</span></div>` : ''}
-        ${s.income ? `<div class="kv"><b>Earned online</b><span>${esc(S.money(s.income))}</span></div>` : ''}
-        ${s.comms.length ? `<div class="kv"><b>Communities</b><span>${s.comms.map(esc).join(' · ')}</span></div>` : ''}</div></div>`;
+        <div class="kvrs"><div class="kvr"><b>Reputation</b><span>${Math.round(s.rep)}/100</span></div><div class="kvr"><b>Security</b><span>${Math.round(s.sec)}/100</span></div>
+        ${ph && ph.followers ? `<div class="kvr"><b>Followers</b><span>${ph.followers.toLocaleString()}</span></div>` : ''}
+        ${s.income ? `<div class="kvr"><b>Earned online</b><span>${esc(S.money(s.income))}</span></div>` : ''}
+        ${s.comms.length ? `<div class="kvr"><b>Communities</b><span>${s.comms.map(esc).join(' · ')}</span></div>` : ''}</div></div>`;
   }
   ui.views.web = view;
   ui.extraTabs.push({ id: 'web', n: 'Web', order: 6, show: p => S.W.year >= 1991 });

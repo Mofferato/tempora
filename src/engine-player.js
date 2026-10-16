@@ -1,6 +1,6 @@
 /* =====================================================================
    ENGINE, part 2 — the player's year, choices, careers, school,
-   relationships, assets, death & inheritance, dynasty, god mode, saves.
+   relationships, assets, death & inheritance, dynasty, sandbox mode, saves.
    ===================================================================== */
 
 Object.assign(Sim, (() => {
@@ -638,7 +638,7 @@ Object.assign(Sim, (() => {
     }
   }
 
-  /* ---------------- god mode ---------------- */
+  /* ---------------- sandbox mode ---------------- */
   function autoResolve() { while (S.prompts.length) { const pr = S.prompts.shift(); const ok = pr.choices.filter(c => !c.dis); (ok[ok.length - 1] || pr.choices[0]).go(); } }
   function jump(n) {
     for (let i = 0; i < n; i++) { ageUp(); autoResolve(); if (W().dead) break; }

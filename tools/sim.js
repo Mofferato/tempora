@@ -34,7 +34,7 @@ function renderAll() {
   for (const tab of Object.keys(ui.views)) {
     try { ui.views[tab](p); } catch (e) { err('view ' + tab, e); }
   }
-  for (const sub of ['era', 'nations', 'orgs', 'god', 'politics']) { ui.worldTab = sub; try { ui.views.world(p); } catch (e) { err('world/' + sub, e); } }
+  for (const sub of ['era', 'nations', 'orgs', 'sandbox', 'politics']) { ui.worldTab = sub; try { ui.views.world(p); } catch (e) { err('world/' + sub, e); } }
   ui.worldTab = 'era';
   try { ui.cardHTML(p); } catch (e) { err('card', e); }
   for (const o of [p, ...S.known(p).slice(0, 4)]) { try { ui.person(o.id); } catch (e) { err('person sheet', e); } }
@@ -142,7 +142,7 @@ for (let d = 0; d < N; d++) {
   if (!e) { console.error('Unknown era', eraId); process.exit(1); }
   const hi = e.to > 9000 ? 2400 : e.to;
   const year = U.ri(e.from, Math.max(e.from, hi - 60)) || 1;
-  try { S.newWorld({ year, mode: U.pick(['narrative', 'household', 'god']) }); } catch (e2) { err('newWorld ' + eraId, e2); continue; }
+  try { S.newWorld({ year, mode: U.pick(['narrative', 'household', 'sandbox']) }); } catch (e2) { err('newWorld ' + eraId, e2); continue; }
   let years = 0, lastId = S.me().id, fameMax = 0;
   const born = S.me().born;
   while (years < YEARS) {
