@@ -195,7 +195,7 @@ const Geo = (() => {
       case 'sanction': { S.world.addRel(mine, cc, -18); const st = S.W.nat[cc]; if (st) st.stab = U.clamp(st.stab - 5); state().sanc.push({ by: mine, on: cc, y: yr() }); S.applyFx(p, { fm: 3, rep: -1 }); news(`${S.world.name(mine)} imposes sanctions on ${name}.`, [mine, cc], 'politics'); return 'Sanctions imposed.'; }
       case 'aid': { const cost = S.toVal(c * 0.4 * lvl); if (p.money < cost) return `Aid costs ${S.money(cost)}.`; p.money -= cost; S.world.addRel(mine, cc, 14); const st = S.W.nat[cc]; if (st) st.stab = U.clamp(st.stab + 5); S.applyFx(p, { rep: 3, fm: 2 }); return `Your aid reached ${name}.`; }
       case 'peace': {
-        const war = S.activeWars().find(h => h.dyn && h.where.includes(mine) && h.where.includes(cc)); if (!war) return 'You are not at war with them.';
+        const war = S.activeWars().find(h => h.dyn && h.where?.includes(mine) && h.where?.includes(cc)); if (!war) return 'You are not at war with them.';
         if (U.chance(U.clamp(0.25 + (-Math.abs(war.score || 0) / 40) + lvl * 0.1 + (r + 50) / 300, 0.1, 0.8))) { Pol.endWar(war, null); return 'The envoys agreed a peace.'; }
         return 'The other side refused to talk.';
       }

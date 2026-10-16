@@ -251,7 +251,7 @@ LATE.push(() => {
       acts.push(btn('mapInvest', 'Invest'));
       if (G.isLeader(p)) {
         acts.push(G.allied(p.cc, id) ? btn('mapDip', 'End alliance', 'data-k="break"') : btn('mapDip', 'Propose alliance', 'data-k="alliance"'), btn('mapDip', 'Trade pact', 'data-k="trade"'), btn('mapDip', 'Send aid', 'data-k="aid"'), btn('mapDip', 'Sanctions', 'data-k="sanction"'));
-        if (S.world.wars(id).some(h => h.where.includes(p.cc))) acts.push(btn('mapDip', 'Send peace envoys', 'data-k="peace"'));
+        if (S.world.wars(id).some(h => h.where?.includes(p.cc))) acts.push(btn('mapDip', 'Send peace envoys', 'data-k="peace"'));
       }
     }
     return `<div class="panel cpanel"><div class="eyebrow">${esc(c.short)}${po ? ` · ${esc(po.name)}` : ''}</div><h3 style="margin:2px 0 4px">${esc(nm)}</h3>
