@@ -393,7 +393,7 @@ const Atlas = (() => {
   function net(cc, y) {
     const c = C(cc); if (!c?.at || y < 1991) return 0;
     const t = c.at.tier, ov = c.at.net ? c.at.net.split(':').map(Number) : null;
-    const mid = ov ? ov[0] : 2000 + (t - 1) * 5 + 6, ceil = (ov && ov[1] != null ? ov[1] / 100 : TIER_CEIL[t]) + Math.max(0, (y - 2030) * 0.006);
+    const mid = ov ? ov[0] : 2001 + (t - 1) * 5.5, ceil = (ov && ov[1] != null ? ov[1] / 100 : TIER_CEIL[t]) + Math.max(0, (y - 2030) * 0.006);
     return U.clamp(Math.min(0.99, ceil) / (1 + Math.exp(-(y - mid) / 4.5)), 0, 0.99);
   }
   const blocs = (cc, y) => (C(cc)?.at?.bl || []).filter(([b, a, z]) => y >= a && y <= z && AT.blocs[b]).map(([b]) => b);

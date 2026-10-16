@@ -144,5 +144,23 @@ test('parents are asked about their children’s marriages', () => {
   ok(found, 'asked about the child');
 });
 
+
+console.log('net');
+test('nobody is online before 1991 and the web spreads unevenly', () => {
+  const { Net: N } = T; fresh({ year: 1985, cc: 'USA' }); eq(N.access(S.me()), 0, 'offline in 1985');
+  ok(A.net('USA', 2000) > A.net('ETH', 2000) * 3, 'digital divide'); ok(A.net('KOR', 2005) > 0.5, 'Korea early');
+});
+test('the web tab and its actions work', () => {
+  const { Net: N } = T; fresh({ year: 2015, cc: 'USA' }); const p = S.me(); p.born = 1990; p.money = 1e5; p.net = { u: 0, hrs: 1, rep: 50, comms: [], sec: 0, handle: '', income: 0 };
+  eq(N.access(p), 2, 'connected'); const ids = N.available(p).map(a => a.id); ok(ids.includes('freelance') && ids.includes('community'), ids.join());
+  for (const id of ['learn', 'community', 'sell', 'freelance', 'create', 'news', 'play', 'secure']) { const t = N.act(id); ok(typeof t === 'string' && t.length > 3, id + ': ' + t); }
+  ok(N.events(p).length > 3, 'online events exist'); ok(ui.views.web(p).includes('Do something'));
+});
+test('censorship events appear only where the state censors', () => {
+  const { Net: N } = T; fresh({ year: 2015, cc: 'CHN' }); const p = S.me(); p.born = 1990; p.net = { u: 0, hrs: 1, rep: 50, comms: [], sec: 0 };
+  ok(N.events(p).some(e => e.id === 'net-censor'), 'censor event in China'); fresh({ year: 2015, cc: 'NLD' }); const q = S.me(); q.born = 1990; q.net = { u: 0, hrs: 1, rep: 50, comms: [], sec: 0 };
+  ok(!N.events(q).some(e => e.id === 'net-censor'), 'none in the Netherlands');
+});
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
