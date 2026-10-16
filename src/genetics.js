@@ -15,7 +15,7 @@ const Gen = (() => {
 
   // Frequencies of rarer single-gene traits, the same everywhere
   const UNI = { myo: 0.2, ast: 0.15, lon: 0.05, twn: 0.12, lh: 0.3, dim: 0.3, hem: 0.0003, hun: 0.0002 };
-  const WORLD = 'ENG FRA ITA GRC EGY CHN JPN IND WAF MEX IRN RUS LEV MSP ANA MAG SCA AND'.split(' ');
+  const WORLD = 'ENG FRA ITA GRC EGY CHN JPN IND NGA MEX IRN RUS SYR IRQ TUR DZA SWE PER'.split(' ');
   const KEYS = ['sk', 'hd', 'rd', 'eb', 'eg', 'cu', 'lac', 'sc', 'cf', 'cb'];
 
   /* ---------- population frequencies (with microevolution) ---------- */
