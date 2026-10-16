@@ -243,7 +243,7 @@
     const mult = a?.region === 'space' || b?.region === 'space' ? 2 : a?.region !== b?.region ? 0.25 : 0.08;
     return S.toVal(e.cost * mult);
   }
-  const enemies = (a, b) => S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b);
+  const enemies = (a, b) => (typeof Geo !== 'undefined' ? Geo.atWar(a, b) : S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b));
   function travel(cc) {
     const p = S.me(), e = S.era(), c = C(cc);
     if (cc === p.cc) return 'You are already here.';

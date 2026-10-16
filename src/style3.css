@@ -20,4 +20,29 @@ ul.plain { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 
 .kvs { display: grid; gap: 6px; }
 .kv { display: grid; grid-template-columns: 110px 1fr; gap: 8px; font-size: 13px; color: var(--ink-2); }
 .kv b { color: var(--ink); font-weight: 600; }
-@media (max-width: 560px) { .kv { grid-template-columns: 1fr; gap: 0; } }
+@media (max-width: 560px) { .kv { grid-template-columns: 92px 1fr; } }
+
+/* the Atlas */
+.mapbox { display: grid; gap: 8px; margin-bottom: 12px; }
+.maptools .chips { margin-top: 0; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.maptools .chips::-webkit-scrollbar { display: none; }
+.maptools .chip { white-space: nowrap; flex: none; }
+.mapwrap { position: relative; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); background: #cfe0ea; touch-action: none; user-select: none; }
+.mapwrap canvas { display: block; cursor: grab; touch-action: none; outline: none; }
+.mapwrap canvas:active { cursor: grabbing; }
+.mapzoom { position: absolute; right: 8px; top: 8px; display: grid; gap: 6px; }
+.mapzoom .iconbtn { background: color-mix(in srgb, var(--surface) 90%, transparent); border: 1px solid var(--line); width: 34px; height: 34px; border-radius: 8px; font-size: 18px; line-height: 1; color: var(--ink); cursor: pointer; }
+.maptip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); padding: 3px 9px; border-radius: 6px; font-size: 12px; white-space: nowrap; }
+.maplegend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink-2); }
+.maplegend .lg i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; border: 1px solid rgb(0 0 0 / .15); }
+.mapclock { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 13px; color: var(--ink-2); }
+.mapclock input[type="range"] { flex: 1 1 200px; accent-color: var(--era); min-width: 140px; }
+.cpanel .kvs { margin-top: 4px; }
+
+.mapbox > * { min-width: 0; }
+.mapcard { position: absolute; left: 8px; right: 8px; bottom: 8px; background: color-mix(in srgb, var(--surface) 96%, transparent); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; box-shadow: var(--shadow); display: none; }
+.mapcard h4 { margin: 0; font: 600 17px/1.2 var(--f-display); }
+.mapcard .x { position: absolute; right: 6px; top: 6px; background: none; border: 0; font-size: 16px; color: var(--ink-3); cursor: pointer; padding: 6px; }
+.mapcard:not([hidden]) { display: block; }
+@media (min-width: 900px) { .mapcard { display: none !important; } }
+@media (max-width: 899px) { .mapsel .cpanel { display: none; } }

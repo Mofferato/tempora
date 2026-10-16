@@ -560,14 +560,14 @@ const Sim = (() => {
           const a = age(p);
           if (p.flags.war === h.key) {
             if (a > 50 || W.year === end) { delete p.flags.war; p.flags.vet = 1; if (p === pl) log(p, `You came home from the ${h.n}.`, 'good'); continue; }
-            if (U.chance(h.mort)) kill(p, `wounds in the ${h.n}`);
+            if (U.chance(h.mort)) kill(p, `wounds in the ${h.n.replace(/^The /, '')}`);
             else if (p === pl && U.chance(0.3)) { p.h = U.clamp(p.h - U.ri(5, 20)); log(p, `You were wounded at the front.`, 'bad'); }
             continue;
           }
           if (p.sex === 'M' && a >= 18 && a <= 45 && !p.prison && !law('noDraft', era(), p.cc) && U.chance(h.draft * hmul('draftMul', p))) {
             if (p === pl) draftPrompt(p, h);
             else if (conn.has(p.id)) { p.flags.war = h.key; if (known(pl).includes(p)) log(pl, `Your ${relLabel(pl, p).toLowerCase()} ${p.first} was called up for the ${h.n}.`, 'world'); }
-          } else if (h.civ && U.chance(h.civ)) kill(p, `the ${h.n}`);
+          } else if (h.civ && U.chance(h.civ)) kill(p, `the ${h.n.replace(/^The /, "")}`);
         }
       } else if (h.type === 'famine') {
         for (const p of living) {

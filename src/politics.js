@@ -204,7 +204,7 @@ const Pol = (() => {
 
   /* ---------- wars ---------- */
   const warsNow = () => (W().wars || []).filter(h => yr() >= h.y && yr() <= h.end);
-  const atWar = (a, b) => S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b);
+  const atWar = (a, b) => (typeof Geo !== 'undefined' ? Geo.atWar(a, b) : S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b));
   function strength(cc) {
     const pop = S.world.popAt(cc) || 0.01, r = reg(cc);
     const pl = S.me(), lead = pl && pl.cc === cc && pl.office?.lvl >= 4 ? (pl.sm + (pl.wp ?? 50)) / 60 + (S.pers?.has(pl, 'brave') ? 0.5 : 0) : 0;

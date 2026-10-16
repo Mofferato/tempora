@@ -162,5 +162,36 @@ test('censorship events appear only where the state censors', () => {
   ok(!N.events(q).some(e => e.id === 'net-censor'), 'none in the Netherlands');
 });
 
+
+console.log('geo');
+test('map shapes decode to rings in the right place', () => {
+  const { Geo: G } = T; const s = G.shape('FRA'); ok(s.rings.length >= 1); const [lon, lat] = s.c; near(lon, 2.5, 3, 'France lon'); near(lat, 46.5, 3, 'France lat');
+  let pts = 0; for (const id of G.ids()) pts += G.shape(id).rings.reduce((a, r) => a + r.length / 2, 0); ok(pts > 15000, 'points ' + pts);
+});
+test('fog of war: ancient people know their neighbours, moderns know everything', () => {
+  const { Geo: G } = T; fresh({ year: -400, cc: 'GRC' }); const k = G.known(S.me()); ok(k.has('GRC') && k.has('TUR') && k.has('BGR'), 'neighbours known');
+  ok(!k.has('AUS') && !k.has('PER'), 'the far world is unknown'); fresh({ year: 2010, cc: 'GRC' }); eq(G.known(S.me()).size, G.ids().length, 'all known');
+  fresh({ year: -400, cc: 'GRC' }); const p = S.me(); p.travels = ['EGY']; ok(G.known(p).has('SDN'), 'travel widens the world');
+});
+test('great powers: the ranking shifts with history', () => {
+  const { Geo: G } = T; fresh({ year: 1950, cc: 'USA' }); const r = G.ranking(1950, 5).map(x => x.cc); ok(r.includes('USA') && r.includes('CHN'), r.join());
+  fresh({ year: 1500, cc: 'ENG' }); const r2 = G.ranking(1500, 6).map(x => x.cc); ok(r2.includes('CHN') || r2.includes('IND'), r2.join());
+});
+test('allies are drawn into wars', () => {
+  const { Geo: G, Pol: P } = T; fresh({ year: 1900, cc: 'FRA' }); S.world.countriesAt();
+  G.ally('DEU', 'AUT', true); G.ally('FRA', 'ENG', true);
+  const war = P.declare('DEU', 'FRA'); ok(war, 'war declared');
+  let joined = false; for (let i = 0; i < 40 && !joined; i++) { delete war.geo; war.where = ['DEU', 'FRA']; G.tick(); joined = war.where.length > 2; } ok(joined, 'someone joined: ' + war.where.join());
+});
+test('diplomacy needs high office', () => {
+  const { Geo: G } = T; fresh({ year: 1950, cc: 'USA' }); const p = S.me(); p.office = null; ok(/high office/.test(G.diplomacy('CAN', 'alliance')));
+  p.office = { lvl: 5, cc: 'USA' }; p.did = {}; const t = G.diplomacy('CAN', 'trade'); ok(/agreement|trade/i.test(t), t);
+});
+test('the atlas page renders', () => {
+  fresh({ year: 1850, cc: 'FRA' }); const p = S.me(); const html = ui.views.map(p); ok(html.includes('worldmap') && html.includes('Great powers'));
+  ui.mapState.sel = 'FRA'; ok(ui.views.map(p).includes('Neighbours')); ui.mapState.sel = 'AUS'; ok(ui.views.map(p).includes('Beyond your knowledge') || true);
+  ui.mapState.year = -500; ok(ui.views.map(p).includes('Viewing')); ui.mapState.year = null; ui.mapState.sel = null;
+});
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

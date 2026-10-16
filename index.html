@@ -662,6 +662,38 @@ body.docked { padding-bottom: calc(104px + var(--dockh) + env(safe-area-inset-bo
 .idgrid { display: grid; gap: 12px; }
 ul.plain { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; }
 
+.dims { display: grid; gap: 8px; margin: 8px 0 12px; }
+.dim .dn { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
+.kvs { display: grid; gap: 6px; }
+.kv { display: grid; grid-template-columns: 110px 1fr; gap: 8px; font-size: 13px; color: var(--ink-2); }
+.kv b { color: var(--ink); font-weight: 600; }
+@media (max-width: 560px) { .kv { grid-template-columns: 92px 1fr; } }
+
+/* the Atlas */
+.mapbox { display: grid; gap: 8px; margin-bottom: 12px; }
+.maptools .chips { margin-top: 0; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.maptools .chips::-webkit-scrollbar { display: none; }
+.maptools .chip { white-space: nowrap; flex: none; }
+.mapwrap { position: relative; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); background: #cfe0ea; touch-action: none; user-select: none; }
+.mapwrap canvas { display: block; cursor: grab; touch-action: none; outline: none; }
+.mapwrap canvas:active { cursor: grabbing; }
+.mapzoom { position: absolute; right: 8px; top: 8px; display: grid; gap: 6px; }
+.mapzoom .iconbtn { background: color-mix(in srgb, var(--surface) 90%, transparent); border: 1px solid var(--line); width: 34px; height: 34px; border-radius: 8px; font-size: 18px; line-height: 1; color: var(--ink); cursor: pointer; }
+.maptip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); padding: 3px 9px; border-radius: 6px; font-size: 12px; white-space: nowrap; }
+.maplegend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink-2); }
+.maplegend .lg i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; border: 1px solid rgb(0 0 0 / .15); }
+.mapclock { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 13px; color: var(--ink-2); }
+.mapclock input[type="range"] { flex: 1 1 200px; accent-color: var(--era); min-width: 140px; }
+.cpanel .kvs { margin-top: 4px; }
+
+.mapbox > * { min-width: 0; }
+.mapcard { position: absolute; left: 8px; right: 8px; bottom: 8px; background: color-mix(in srgb, var(--surface) 96%, transparent); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; box-shadow: var(--shadow); display: none; }
+.mapcard h4 { margin: 0; font: 600 17px/1.2 var(--f-display); }
+.mapcard .x { position: absolute; right: 6px; top: 6px; background: none; border: 0; font-size: 16px; color: var(--ink-3); cursor: pointer; padding: 6px; }
+.mapcard:not([hidden]) { display: block; }
+@media (min-width: 900px) { .mapcard { display: none !important; } }
+@media (max-width: 899px) { .mapsel .cpanel { display: none; } }
+
 </style>
 </head>
 <body>
@@ -5994,7 +6026,7 @@ const Atlas = (() => {
   function net(cc, y) {
     const c = C(cc); if (!c?.at || y < 1991) return 0;
     const t = c.at.tier, ov = c.at.net ? c.at.net.split(':').map(Number) : null;
-    const mid = ov ? ov[0] : 2000 + (t - 1) * 5 + 6, ceil = (ov && ov[1] != null ? ov[1] / 100 : TIER_CEIL[t]) + Math.max(0, (y - 2030) * 0.006);
+    const mid = ov ? ov[0] : 2001 + (t - 1) * 5.5, ceil = (ov && ov[1] != null ? ov[1] / 100 : TIER_CEIL[t]) + Math.max(0, (y - 2030) * 0.006);
     return U.clamp(Math.min(0.99, ceil) / (1 + Math.exp(-(y - mid) / 4.5)), 0, 0.99);
   }
   const blocs = (cc, y) => (C(cc)?.at?.bl || []).filter(([b, a, z]) => y >= a && y <= z && AT.blocs[b]).map(([b]) => b);
@@ -6586,14 +6618,14 @@ const Sim = (() => {
           const a = age(p);
           if (p.flags.war === h.key) {
             if (a > 50 || W.year === end) { delete p.flags.war; p.flags.vet = 1; if (p === pl) log(p, `You came home from the ${h.n}.`, 'good'); continue; }
-            if (U.chance(h.mort)) kill(p, `wounds in the ${h.n}`);
+            if (U.chance(h.mort)) kill(p, `wounds in the ${h.n.replace(/^The /, '')}`);
             else if (p === pl && U.chance(0.3)) { p.h = U.clamp(p.h - U.ri(5, 20)); log(p, `You were wounded at the front.`, 'bad'); }
             continue;
           }
           if (p.sex === 'M' && a >= 18 && a <= 45 && !p.prison && !law('noDraft', era(), p.cc) && U.chance(h.draft * hmul('draftMul', p))) {
             if (p === pl) draftPrompt(p, h);
             else if (conn.has(p.id)) { p.flags.war = h.key; if (known(pl).includes(p)) log(pl, `Your ${relLabel(pl, p).toLowerCase()} ${p.first} was called up for the ${h.n}.`, 'world'); }
-          } else if (h.civ && U.chance(h.civ)) kill(p, `the ${h.n}`);
+          } else if (h.civ && U.chance(h.civ)) kill(p, `the ${h.n.replace(/^The /, "")}`);
         }
       } else if (h.type === 'famine') {
         for (const p of living) {
@@ -7761,7 +7793,7 @@ const Gen = (() => {
     const mult = a?.region === 'space' || b?.region === 'space' ? 2 : a?.region !== b?.region ? 0.25 : 0.08;
     return S.toVal(e.cost * mult);
   }
-  const enemies = (a, b) => S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b);
+  const enemies = (a, b) => (typeof Geo !== 'undefined' ? Geo.atWar(a, b) : S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b));
   function travel(cc) {
     const p = S.me(), e = S.era(), c = C(cc);
     if (cc === p.cc) return 'You are already here.';
@@ -8334,6 +8366,597 @@ const Identity = (() => {
   S.addHook('migrate', w => remap(w));
 
   return { eth, ethText, rollEth, merge, norm, genomeFor, mixChance, rules, natsOf, isCitizen, conflict, canApply, apply, renounce, descentClaims, resYears, needYears, suggest, surnames, petNames, setName, name, remap };
+})();
+
+/* ---- faith.js ---- */
+/* =====================================================================
+   FAITH — what people believe, and what it asks of them.
+   Every person has a faith (p.faith) and a piety (p.piety, 0..100).
+   * Children take their parents' faith; mixed households choose, and the
+     modern world drifts toward doubt.
+   * Practices (worship, fasting, pilgrimage, study, giving) are
+     activities for the player, in each faith's own words.
+   * Events: festivals, crises of faith, a calling to the clergy,
+     missionaries, and prejudice against minorities.
+   * Conversion is a real choice with real costs: the family's reaction
+     depends on both faiths' attitudes toward leaving and tolerance.
+   * Faiths differ on divorce, same-sex love, marrying outside the faith,
+     and arranged marriage; the numbers come from data-faiths.js.
+   ===================================================================== */
+
+const Faith = (() => {
+  const S = Sim, A = Atlas, F = DATA.atlas.faiths, yr = () => S.W.year;
+  const f = id => F[id] || F.ot;
+  const adj = id => f(id).adj || f(id).n;
+  const mixAt = (cc, y = yr()) => A.faithMix(cc, y);
+  const majority = (cc, y = yr()) => mixAt(cc, y)[0]?.[0] || 'an';
+  const share = (cc, id, y = yr()) => (mixAt(cc, y).find(x => x[0] === id) || [0, 0])[1];
+
+  /* ---------- who believes what ---------- */
+  function seed(p) {
+    const y = Math.min(yr(), U.add(p.born, 18));
+    const m = mixAt(p.cc || 'ENG', y);
+    return U.wpick(m, x => x[1])?.[0] || 'an';
+  }
+  const pietyOf = (id, y) => {
+    const base = id === 'sc' ? U.ri(5, 30) : f(id).fam === 'folk' ? U.ri(30, 85) : U.ri(25, 90);
+    return U.clamp(base - (y > 1950 ? 8 : 0) - (y > 2000 ? 7 : 0));
+  };
+  function childFaith(c, fa, mo) {
+    const a = fa?.faith, b = mo?.faith;
+    if (a && b && a === b) return U.chance(0.97) ? a : seed(c);
+    if (a || b) {
+      const pa = fa?.piety ?? 40, pb = mo?.piety ?? 40;
+      // the more devout parent usually decides; the mother raises the children slightly more often in most societies
+      const pick = U.chance(pa + 5 === pb ? 0.5 : (pa * (fa ? 1 : 0) + 8) / ((pa * (fa ? 1 : 0)) + (pb * (mo ? 1 : 0)) + 16)) ? a : b;
+      return pick || a || b;
+    }
+    return seed(c);
+  }
+  function get(p) {
+    if (!p) return 'an';
+    if (!p.faith) {
+      const fa = S.P(p.fa), mo = S.P(p.mo);
+      p.faith = fa && mo && fa.faith && mo.faith ? childFaith(p, fa, mo) : seed(p);
+      p.piety = Math.round(U.clamp((fa?.piety ?? pietyOf(p.faith, p.born)) * 0.6 + pietyOf(p.faith, p.born) * 0.4 + U.ri(-8, 8)));
+    }
+    return p.faith;
+  }
+  // the faiths of people who are close: partner, parents, children
+  const circle = p => [S.spouse(p), ...S.parents(p), ...S.kids(p)].filter(x => x && S.alive(x));
+
+  /* ---------- how faiths regard each other ---------- */
+  function compat(a, b) {
+    if (a === b) return 1;
+    const A_ = f(a), B_ = f(b);
+    let base = A_.fam === B_.fam ? (A_.fam === 'abrahamic' ? 0.62 : 0.8) : (A_.fam === 'none' || B_.fam === 'none') ? 0.78 : (A_.fam === 'folk' || B_.fam === 'folk') ? 0.55 : 0.5;
+    if ((a === 'su' && b === 'sh') || (a === 'sh' && b === 'su')) base = 0.5;
+    if ((a === 'ch' && b === 'pr') || (a === 'pr' && b === 'ch')) base = 0.7;
+    return base * (0.55 + 0.45 * (A_.tol + B_.tol) / 2);
+  }
+  // how welcome a marriage across faiths is, 0..1
+  const interfaith = (a, b) => (a === b ? 1 : U.clamp(((f(a).ifm + f(b).ifm) / 2) * compat(a, b) * 1.4, 0, 1));
+  const minority = (p, y = yr()) => get(p) !== majority(p.cc, y) && share(p.cc, p.faith, y) < 0.25;
+  const intolerant = (cc, y = yr()) => (f(majority(cc, y)).tol ?? 0.5) < 0.4;
+
+  /* ---------- conversion ---------- */
+  function conversionCost(p, id) {
+    const old = get(p), O = f(old), N = f(id);
+    // leaving a strict faith costs more with the family, and more with devout kin
+    const strict = (1 - O.tol) * (O.fam === 'abrahamic' ? 1.2 : 0.7);
+    return { strict: U.clamp(strict, 0.1, 1), accept: N.mis ?? 0.1 };
+  }
+  function convert(p, id, why = 'by choice') {
+    const old = get(p); if (old === id) return 'You already follow it.';
+    const { strict, accept } = conversionCost(p, id);
+    p.faith = id; p.fhist = [...(p.fhist || []), { y: yr(), from: old, to: id }];
+    p.piety = Math.round(U.clamp(40 + U.ri(0, 30) - (id === 'sc' ? 25 : 0)));
+    const loss = [];
+    for (const q of circle(p)) {
+      if (get(q) !== old) continue;
+      const r = S.rel(p, q), d = -Math.round(strict * (q.piety ?? 40) / 6) - U.ri(0, 4);
+      if (d < 0) { r.c = U.clamp(r.c + d); loss.push(q); }
+    }
+    S.applyFx(p, { mh: [-2, 4], rep: minority({ ...p, faith: id, cc: p.cc }) ? -2 : 1 });
+    S.log(p, `You ${why === 'by marriage' ? 'took your partner’s faith' : 'converted'} and became ${/^[aeiou]/i.test(adj(id)) ? 'an' : 'a'} ${adj(id)}${loss.length ? `. ${loss[0].first} took it hard` : ''}.`, 'life');
+    return `You are now ${/^[aeiou]/i.test(adj(id)) ? 'an' : 'a'} ${adj(id)}.`;
+  }
+  // the faiths a person can turn to, here and now
+  function options(p) {
+    const y = yr(), here = new Set(mixAt(p.cc, y).map(x => x[0]));
+    return DATA.atlas.convertible.filter(id => f(id).from <= y && id !== get(p) && (here.has(id) || (y >= 1850 && id !== 'fu') || y >= 2000))
+      .filter(id => id !== 'fu' || y >= f('fu').from).sort((a, b) => share(p.cc, b, y) - share(p.cc, a, y));
+  }
+
+  /* ---------- practices ---------- */
+  const PR = {
+    w: { n: 'Worship', gain: 2, fx: { mh: [1, 3], hp: [1, 3] }, c: 0, t: 'A calm hour among your own people.' },
+    f: { n: 'Fast', gain: 3, fx: { wp: 1, h: [-1, 1], mh: 1 }, c: 0, t: 'Hunger sharpened your focus, and your resolve.' },
+    pg: { n: 'Pilgrimage', gain: 9, fx: { mh: [4, 9], hp: [4, 9], im: 2 }, c: 0.5, min: 14, t: 'The road was long. You came home changed.' },
+    sc: { n: 'Study', gain: 2, fx: { sm: [1, 2], im: 1 }, c: 0, t: 'You read and reasoned, and understood a little more.' },
+    ch: { n: 'Give', gain: 3, fx: { rep: [1, 3], hp: [1, 3] }, c: 0.04, t: 'You gave, and felt lighter for it.' },
+  };
+  function acts(p, e) {
+    const id = get(p), fa = f(id), out = [];
+    if (S.age(p) < 5 || fa.from > yr()) return out;
+    for (const [k, d] of Object.entries(PR)) {
+      if (!fa[k]) continue;
+      if (id === 'sc' && (k === 'pg' || k === 'f')) continue;
+      out.push({ id: `faith-${k}`, n: fa[k], d: `${d.n} · ${adj(id)}`, min: d.min || 6, c: d.c, cost: Math.round(e.cost * d.c * 100) / 100, kind: 'faith', pr: k, fx: d.fx, t: d.t });
+    }
+    return out;
+  }
+  S.addHook('acts', (p, e) => acts(p, e), 'cat');
+  S.hooks.actKind ||= {};
+  S.hooks.actKind.faith = (p, act) => {
+    const d = PR[act.src.pr], fa = f(get(p)), y = yr();
+    S.applyFx(p, d.fx);
+    p.piety = U.clamp((p.piety ?? 40) + d.gain + U.ri(0, 2));
+    if (act.src.pr === 'ch') S.pers?.nudge(p, 'generous', 0.5);
+    if (act.src.pr === 'sc') S.pers?.nudge(p, 'diligent', 0.3);
+    const extra = U.chance(0.15) ? ` ${fa.clergy ? `The ${fa.clergy} remembered your name.` : ''}` : '';
+    return `${d.t}${extra}`;
+  };
+
+  /* ---------- the yearly drift ---------- */
+  const secularTrend = y => (y < 1700 ? 0 : y < 1900 ? 0.15 : y < 1990 ? 0.35 : y < 2100 ? 0.5 : 0.3);
+  function drift(p, a) {
+    if (a < 14) return;
+    get(p);
+    const cc = p.cc, id = p.faith, maj = share(cc, id);
+    let d = (maj > 0.6 ? 0.2 : -0.3) - secularTrend(yr()) * (1 - (A.culture(cc, yr()).R || 50) / 130) + (a > 55 ? 0.4 : 0) + U.rand(-1.4, 1.4);
+    if (p.sick.length) d += 0.5;
+    p.piety = U.clamp((p.piety ?? 40) + d);
+    // the lapsed leave quietly
+    if (id !== 'sc' && p.piety < 6 && yr() > 1800 && U.chance(0.12) && S.alive(p)) { p.faith = 'sc'; p.fhist = [...(p.fhist || []), { y: yr(), from: id, to: 'sc' }]; if (p.id === S.W.playerId) S.log(p, 'You stopped believing, and said so to nobody.', 'life'); }
+  }
+  S.addHook('tick', (p, e, a) => drift(p, a));
+  S.addHook('onCreate', p => get(p));
+  S.addHook('hpTarget', p => {
+    if (!p.faith) return 0;
+    const maj = share(p.cc, p.faith);
+    return U.clamp(((p.piety ?? 40) - 40) / 30 * (maj > 0.5 ? 1 : 0.4), -0.5, 2) - (minority(p) && intolerant(p.cc) ? 1.2 : 0);
+  }, 'add');
+  S.addHook('relDrift', (p, o) => {
+    const a = get(p), b = get(o);
+    if (a === b) return (p.piety ?? 40) > 60 ? 0.6 : 0.2;
+    const c = compat(a, b);
+    return -(1 - c) * (((p.piety ?? 40) + (o.piety ?? 40)) / 160);
+  }, 'add');
+
+  /* ---------- events ---------- */
+  function events(p) {
+    const id = get(p), fa = f(id), cc = p.cc, a = S.age(p), out = [];
+    if (a < 8) return out;
+    const hd = fa.hd || [];
+    if (hd.length) {
+      const day = U.pick(hd), pious = (p.piety ?? 40) > 55;
+      out.push({ id: 'fh-' + id, p: pious ? 0.24 : 0.14, min: 8, t: `It is ${day}. ${pious ? 'Your family has been preparing for days.' : 'Your relatives expect you to join in.'}`, ch: [
+        { l: 'Observe it fully', fx: { $c: -0.02, hp: 5, mh: 3, famc: 4 }, t: `You kept ${day} properly, with ${fa.place ? `a visit to the ${fa.place} and ` : ''}the people you love.`, piety: 4 },
+        { l: 'Join in a little', fx: { hp: 3, famc: 2 }, t: 'You took part, for family’s sake.', piety: 1 },
+        { l: 'Skip it', fx: { famc: id === 'sc' ? 0 : -2, mh: 1 }, t: 'You let the day pass.', piety: -2 }] });
+    }
+    if (a >= 16 && id !== 'sc') {
+      out.push({ id: 'fcrisis', p: 0.03 + (p.sick.length ? 0.03 : 0), min: 16, c: q => (q.piety ?? 40) >= 25, t: `A death, a book, a long night: you begin to doubt what ${adj(id)}s believe.`, ch: [
+        { l: `Wrestle with it (${fa.sc || 'study'})`, odds: 0.6, win: { fx: { sm: 2, wp: 3, mh: 3 }, t: 'Your faith emerged deeper, and your own.', piety: 12 }, alt: { fx: { mh: -4 }, t: 'The questions stayed, unanswered.', piety: -10 } },
+        { l: `Ask the ${fa.clergy || 'elders'}`, fx: { rep: 1, mh: 2 }, t: `The ${fa.clergy || 'elder'} listened and did not flinch.`, piety: 5 },
+        { l: 'Let it go', fx: { mh: 3, famc: id === 'sc' ? 0 : -4 }, t: 'You drifted away from the faith you were raised in.', piety: -22 }] });
+    }
+    if (a >= 18 && a <= 45 && (p.piety ?? 40) >= 70 && id !== 'sc') {
+      out.push({ id: 'fcall', p: 0.012, min: 18, max: 45, once: true, t: `You feel a calling to serve as ${/^[aeiou]/i.test(fa.clergy || 'priest') ? 'an' : 'a'} ${fa.clergy || 'priest'}.`, ch: [
+        { l: `Take up the life of a ${fa.clergy || 'priest'}`, fx: { rep: 3, mh: 4, hp: 3 }, t: `You joined the ${fa.place || 'community'} as ${fa.clergy || 'a priest'}.`, piety: 12, job: true },
+        { l: 'Serve as a layperson', fx: { rep: 1, hp: 2 }, t: 'You found other ways to serve.', piety: 4 },
+        { l: 'Not for me', fx: {}, t: 'You set the thought aside.', piety: -3 }] });
+    }
+    if (a >= 14 && minority(p) && intolerant(cc)) {
+      out.push({ id: 'fpreju', p: 0.1, min: 14, t: `Neighbours who follow ${adj(majority(cc))} ways turn on you for being ${adj(id)}.`, ch: [
+        { l: 'Keep your head down', fx: { mh: -3, rep: -1 }, t: 'You stayed quiet and safe.', piety: -2 },
+        { l: 'Stand your ground', odds: 0.5, win: { fx: { rep: 3, wp: 3, mh: 2 }, t: 'People came to respect you.', piety: 5 }, alt: { fx: { h: -8, hp: -5, rep: -2 }, t: 'It turned ugly, and you were hurt.', piety: 4 } },
+        { l: `Convert to ${adj(majority(cc))} belief`, fx: { famc: -3 }, t: 'You changed faith to be left in peace.', convert: majority(cc) },
+        { l: 'Leave the district', fx: { $c: -0.08, mh: -2 }, t: 'You moved to be among your own.', piety: 2 }] });
+    }
+    if (a >= 16 && a <= 60 && id !== majority(cc) && (f(majority(cc)).mis ?? 0) > 0.4) {
+      out.push({ id: 'fmission', p: 0.04, min: 16, t: `Missionaries of ${adj(majority(cc))} faith come to your door with kind words and a bowl of food.`, ch: [
+        { l: 'Hear them out', fx: { sm: 1, im: 2 }, t: 'You listened. The conversation stayed with you.', piety: -4 },
+        { l: `Convert to ${adj(majority(cc))} belief`, fx: { hp: 3 }, t: 'You took their faith as your own.', convert: majority(cc) },
+        { l: 'Politely decline', fx: {}, t: 'You wished them well, and meant it.', piety: 2 }] });
+    }
+    if (fa.pg && a >= 14 && (p.piety ?? 40) >= 40) {
+      out.push({ id: 'fpilgrim', p: 0.025, min: 14, t: `A group from your community is setting out: ${fa.pg.toLowerCase()}.`, ch: [
+        { l: 'Join them', fx: { $c: -0.4, mh: 6, hp: 6, im: 3 }, t: 'It was the journey of a lifetime.', piety: 10 },
+        { l: 'Sponsor a traveller', fx: { $c: -0.1, rep: 3 }, t: 'You paid for another to go in your place.', piety: 4 },
+        { l: 'Not this year', fx: {}, t: '', piety: 0 }] });
+    }
+    return out;
+  }
+  S.addHook('events', p => events(p), 'cat');
+  // events carry two extra keys the engine does not know about: piety changes and conversions
+  S.addHook('chose', (p, c, won) => {
+    const src = c.src || c; let node = src;
+    if (won === true && src.win) node = src.win; else if (won === false && src.alt) node = src.alt;
+    if (node.piety) p.piety = U.clamp((p.piety ?? 40) + node.piety);
+    if (node.convert) convert(p, node.convert, 'under pressure');
+    if (node.job) {
+      const e = S.era(), fa = f(get(p)), j = J(fa.clergy ? fa.clergy[0].toUpperCase() + fa.clergy.slice(1) : 'Priest', Math.round(e.cost * 0.7 * 100) / 100, { rep: 2, fame: 0.5 });
+      j.id = 'clergy'; S.giveJob(p, j, e);
+    }
+  });
+
+  return { f, adj, get, seed, childFaith, compat, interfaith, minority, intolerant, majority, share, mixAt, convert, options, conversionCost, acts, circle };
+})();
+
+/* ---- marriage.js ---- */
+/* =====================================================================
+   MARRIAGE — arranged marriages, dowry and bride-price.
+   How common arranged marriage is comes from the country and the year
+   (Atlas.arranged), nudged by class and by the faith's own view.
+   * When you are single and of age, your family may bring a match.
+     Accept, ask to meet first, ask for another, refuse, or marry the
+     one you love. Each has a cost that depends on how strict your
+     society is.
+   * Arranged marriages begin cooler and grow warmer, year by year, and
+     last: couples in places where it is the norm divorce less.
+   * When your own children come of age, you may arrange their marriage,
+     ask what they want, or leave them to find their own partner.
+   * Dowry (the bride's side pays) and bride-price (the groom's side
+     pays) follow the country's customs.
+   ===================================================================== */
+
+const Marriage = (() => {
+  const S = Sim, A = Atlas, yr = () => S.W.year;
+  const dowType = cc => A.culture(cc, yr()).dow || 'none';
+  function prevalence(cc, p, y = yr()) {
+    let v = A.arranged(cc, y);
+    if (p) {
+      const fa = Faith.f(Faith.get(p)).arr ?? 0.5;
+      v = v * 0.8 + fa * v * 0.4;                  // devout communities arrange more
+      const cls = p.cls ?? 2;
+      v *= cls >= 4 ? 1.15 : cls <= 1 ? 0.88 : 1;
+    }
+    return U.clamp(v, 0, 0.99);
+  }
+  const strict = cc => { const c = A.culture(cc, yr()); return U.clamp((c.T + c.F + c.R - c.G - c.I) / 200 + 0.4, 0, 1); };
+  const label = v => (v >= 0.8 ? 'Almost every marriage is arranged' : v >= 0.55 ? 'Arranged marriage is the norm' : v >= 0.3 ? 'Many marriages are arranged or introduced by family' : v >= 0.1 ? 'Families often introduce the couple' : 'Almost everyone chooses their own partner');
+
+  /* ---------- the money ---------- */
+  function price(p, groom, bride) {
+    const t = dowType(p.cc), e = S.era(), rich = ((groom.cls ?? 2) + (bride.cls ?? 2)) / 2;
+    const base = S.toVal(e.cost * (0.25 + rich * 0.18));
+    if (t === 'dowry') return { payer: 'bride', amt: base, label: 'dowry' };
+    if (t === 'bride') return { payer: 'groom', amt: base * 0.8, label: 'bride-price' };
+    if (t === 'mutual') return { payer: 'both', amt: base * 0.4, label: 'gift exchange' };
+    return { payer: null, amt: 0, label: '' };
+  }
+  // what this person's family pays or receives at the wedding
+  function settle(p, groom, bride, side) {
+    const pr = price(p, groom, bride); if (!pr.payer) return 0;
+    if (pr.payer === 'both') return side === 'groom' ? -pr.amt / 2 : -pr.amt / 2;
+    return pr.payer === side ? -pr.amt : pr.amt;
+  }
+
+  /* ---------- finding a match ---------- */
+  function candidate(p, forKid) {
+    const e = S.era(), subject = forKid || p, sex = subject.orient === 'gay' && S.sameSexOK(e, subject.cc) ? subject.sex : subject.sex === 'M' ? 'F' : 'M';
+    const a = S.age(subject), older = sex === 'M' ? U.ri(0, 8) : -U.ri(0, 6);
+    const o = S.mkPerson({ cc: subject.cc, near: subject, sex, born: U.add(yr(), -U.clamp(a + older, S.law('marry', e, subject.cc), 60)) });
+    o.money = S.toVal(e.cost) * U.rand(0.2, 3);
+    if (S.age(o) >= 16) S.npcJob(o, e);
+    // arranged matches are mostly within the same faith and people
+    const endog = U.clamp(0.9 - (yr() > 1950 ? 0.25 : 0) - (yr() > 2000 ? 0.15 : 0), 0.3, 0.95);
+    if (U.chance(endog)) { o.faith = Faith.get(subject); o.piety = U.clamp((subject.piety ?? 40) + U.ri(-20, 20)); }
+    if (U.chance(endog) && Identity.eth(subject)) { const top = Identity.eth(subject)[0]; o.eth = [{ n: top.n, k: top.k, s: 1 }]; o.g = Identity.genomeFor(o.eth, o.cc, o.born, o.sex); }
+    o.nats = [...Identity.natsOf(subject)].slice(0, 1);
+    return o;
+  }
+  const pitch = (p, o) => {
+    const bits = [`${S.age(o)}`, S.className(o).toLowerCase(), o.job ? `works as ${o.job.t.toLowerCase()}` : 'has no trade'];
+    const f = Faith.get(o), same = f === Faith.get(p);
+    bits.push(same ? 'shares your faith' : `follows ${Faith.adj(f)} ways`);
+    const e1 = Identity.ethText(o), e0 = Identity.ethText(p);
+    if (e1 !== e0) bits.push(e1);
+    return `${o.first} ${o.last}, ${bits.join(', ')}`;
+  };
+  const compatScore = (p, o) => {
+    const fc = Faith.interfaith(Faith.get(p), Faith.get(o)), sm = 1 - Math.abs((p.sm ?? 50) - (o.sm ?? 50)) / 100;
+    const cls = 1 - Math.abs((p.cls ?? 2) - (o.cls ?? 2)) / 5;
+    return U.clamp(fc * 0.4 + sm * 0.25 + cls * 0.35, 0.05, 1);
+  };
+
+  /* ---------- the offer ---------- */
+  function setEngaged(p, o, how) {
+    const c0 = Math.round(18 + compatScore(p, o) * 38 + U.ri(0, 10));
+    p.rels[o.id] = { k: 'fiance', c: c0, arr: yr(), wed: U.add(yr(), 1) };
+    o.rels[p.id] = { k: 'fiance', c: c0 - U.ri(-6, 6), arr: yr(), wed: U.add(yr(), 1) };
+    S.log(p, `${how}, you are engaged to ${o.first} ${o.last}. The wedding is next year.`, 'love');
+  }
+  function offer(p) {
+    const e = S.era(), cc = p.cc, str = strict(cc);
+    const o = p.flags.matchWith && S.P(p.flags.matchWith) && S.alive(S.P(p.flags.matchWith)) ? S.P(p.flags.matchWith) : candidate(p);
+    delete p.flags.matchWith; p.flags.matchY = yr();
+    const groom = p.sex === 'M' ? p : o, bride = p.sex === 'M' ? o : p, pr = price(p, groom, bride);
+    const me = pr.payer === 'both' ? 'groom' : p.sex === 'M' ? 'groom' : 'bride';
+    const net = settle(p, groom, bride, me), fear = Math.round(4 + str * 12);
+    const lover = Object.entries(p.rels).map(([id, r]) => (r.k === 'lover' && S.alive(S.P(+id)) ? S.P(+id) : null)).find(Boolean);
+    const money = net ? ` Custom calls for a ${pr.label}${net < 0 ? ` of about ${S.money(-net)} from your side` : ` of about ${S.money(net)} coming to your family`}.` : '';
+    const par = S.parents(p).find(S.alive);
+    const who = par ? `Your ${S.relLabel(p, par).toLowerCase()} ${par.first}` : 'Your family';
+    const choices = [
+      { l: `Accept ${o.first}`, dis: net < 0 && p.money < -net, go: () => { if (net) p.money += net; setEngaged(p, o, 'By arrangement'); S.applyFx(p, { famc: 4, rep: 1 }); return `You said yes. You are engaged to ${o.first}.`; } },
+      { l: 'Ask to meet first', go: () => { p.flags.matchWith = o.id; p.rels[o.id] = { k: 'friend', c: U.ri(25, 50) }; o.rels[p.id] = { k: 'friend', c: U.ri(25, 50) }; return `You asked to meet ${o.first} before deciding. The families agreed to wait a year.`; } },
+      { l: 'Ask for a different match', go: () => { S.applyFx(p, { famc: -2 }); return 'Your family sighed and promised to look again.'; } },
+      ...(lover ? [{ l: `Marry ${lover.first}, whom you love`, go: () => { const r = p.rels[lover.id]; r.k = 'fiance'; S.rel(lover, p).k = 'fiance'; S.applyFx(p, { famc: -fear, rep: -Math.round(str * 6), hp: 3 }); return `You told your family you would marry ${lover.first}. They were not pleased.`; } }] : []),
+      { l: 'Refuse', go: () => {
+        S.applyFx(p, { famc: -fear, rep: -Math.round(str * 5), mh: 2 });
+        if (str > 0.65 && U.chance(0.12)) { S.log(p, 'Your family cut off your allowance for defying them.', 'bad'); p.money = Math.max(0, p.money * 0.7); }
+        return 'You refused. Your family did not hide their disappointment.';
+      } },
+    ];
+    S.prompt({ title: 'A match is proposed', text: `${who} has found a match for you: ${pitch(p, o)}.${money} ${prevalence(cc, p) > 0.5 ? 'In this place, it is how marriages are made.' : 'It is a little old-fashioned, but families still do this.'}`, choices });
+  }
+
+  /* ---------- for your children ---------- */
+  function forChild(p, kid) {
+    const e = S.era(), cc = kid.cc, v = prevalence(cc, p), o = candidate(p, kid);
+    kid.flags.matchY = yr();
+    const groom = kid.sex === 'M' ? kid : o, bride = kid.sex === 'M' ? o : kid, pr = price(p, groom, bride);
+    const side = kid.sex === 'M' ? 'groom' : 'bride', net = settle(p, groom, bride, side);
+    const money = net ? ` Custom calls for a ${pr.label}${net < 0 ? ` of about ${S.money(-net)} from your side` : ` of about ${S.money(net)} to your family`}.` : '';
+    const note = (kid.sex === 'F' ? 'her' : 'him');
+    S.prompt({ title: `A match for ${kid.first}`, text: `Word has reached you of ${pitch(kid, o)}, who would make a match for ${kid.first}.${money}`, choices: [
+      { l: 'Arrange the marriage', dis: net < 0 && p.money < -net, go: () => {
+        p.money += net; setEngaged(kid, o, `At ${p.first}’s wish`);
+        const d = Math.round((v - 0.45) * 12 + U.ri(-6, 4)); S.rel(p, kid).c = U.clamp(S.rel(p, kid).c + d);
+        S.log(p, `You arranged ${kid.first}’s marriage to ${o.first} ${o.last}.${d < -3 ? ` ${kid.first} was unhappy about it.` : ''}`, 'family'); return `${kid.first} will marry ${o.first}.`;
+      } },
+      { l: `Ask ${kid.first} what ${kid.sex === 'M' ? 'he' : 'she'} wants`, go: () => {
+        const yes = U.chance(0.35 + v * 0.35); S.rel(p, kid).c = U.clamp(S.rel(p, kid).c + 4);
+        if (yes && !(net < 0 && p.money < -net)) { p.money += net; setEngaged(kid, o, `With ${kid.first}’s consent`); return `${kid.first} agreed to the match.`; }
+        return `${kid.first} would rather find ${note === 'her' ? 'her' : 'his'} own way.`;
+      } },
+      { l: 'Let them choose for themselves', go: () => { S.rel(p, kid).c = U.clamp(S.rel(p, kid).c + 3); kid.flags.free = yr(); return `You left it to ${kid.first}.`; } },
+    ] });
+  }
+
+  /* ---------- the years ---------- */
+  function weddings(p) {
+    for (const [id, r] of Object.entries(p.rels)) {
+      if (r.k !== 'fiance' || !r.arr || U.span(r.wed ?? yr(), yr()) < 0) continue;
+      const o = S.P(+id); if (!o || !S.alive(o) || p.sp != null || o.sp != null) { r.k = 'ex'; continue; }
+      S.marry(p, o);
+      const rr = S.rel(p, o); rr.c = Math.max(rr.c, 20); rr.arr = r.arr; S.rel(o, p).arr = r.arr;
+      S.log(p, `You married ${o.first} ${o.last}, a match arranged by your families.`, 'love'); S.applyFx(p, { hp: 6, famc: 3 });
+    }
+  }
+  S.addHook('postYear', p => {
+    const e = S.era(), a = S.age(p), mA = S.law('marry', e, p.cc);
+    weddings(p);
+    if (p.prison > 0) return;
+    // matches for you
+    const pending = Object.values(p.rels).some(r => r.k === 'fiance');
+    if (p.sp == null && !pending && a >= mA && a <= 38 && p.flags.matchY !== yr() && p.flags.free !== yr() - 1) {
+      const v = prevalence(p.cc, p);
+      if (U.chance(v * (a < 30 ? 0.45 : 0.2) * (p.flags.matchWith ? 2.2 : 1))) offer(p);
+    }
+    // matches for your children
+    for (const kid of S.kids(p)) {
+      if (!S.alive(kid) || kid.sp != null || S.age(kid) < S.law('marry', e, kid.cc) + 1 || S.age(kid) > 34 || kid.flags.matchY === yr()) continue;
+      if (Object.values(kid.rels).some(r => r.k === 'fiance' || r.k === 'lover')) continue;
+      const v = prevalence(kid.cc, p);
+      if (v > 0.2 && U.chance(v * 0.22)) { forChild(p, kid); break; }
+    }
+  });
+
+  S.addHook('tick', p => { if (p.id !== S.W.playerId && S.alive(p) && Object.values(p.rels).some(r => r.arr && r.k === 'fiance')) weddings(p); });
+  // arranged marriages warm over the years; where they are the norm, they last
+  S.addHook('relDrift', (p, o, r) => (r.arr && p.sp === o.id && r.c < 80 ? 1.2 + (r.c < 50 ? 1 : 0) : 0), 'add');
+  S.addHook('npcMul', (p, what) => (what === 'divorce' && p.sp != null && S.rel(p, S.P(p.sp)).arr ? 0.35 : 1), 'mul');
+
+  return { prevalence, label, dowType, price, strict, candidate, offer, forChild, pitch, compatScore };
+})();
+
+/* ---- net.js ---- */
+/* =====================================================================
+   NET — the internet, from the first email in 1991 to the neural net.
+   * Access depends on the country and year (Atlas.net), your wealth and
+     your age: nobody is online in 1985, and a village in a poor country
+     may only reach it through a café or a shared phone for years.
+   * Online life: learn, join communities, date, sell, freelance for
+     foreign clients (the pay follows the client's country, not yours),
+     create, game, follow the news, invest.
+   * Time online is a choice (light, normal, heavy) that shapes sleep,
+     mood, savings and relationships.
+   * Risks: scams, hacks, bullying, viral shame, addiction, misinformation,
+     censorship and shutdowns where the state is strict or shaky.
+   ===================================================================== */
+
+const Net = (() => {
+  const S = Sim, A = Atlas, yr = () => S.W.year;
+  const state = p => (p.net ||= { u: Math.random(), hrs: 1, rep: 50, comms: [], sec: 0, handle: '', income: 0, jobCC: null });
+  const pen = (cc, y = yr()) => A.net(cc, y);
+  const censorship = cc => A.C(cc)?.at?.cz ?? 0;
+  const ERAS = [
+    [1991, 1995, 'Email and bulletin boards', 'mailing lists, bulletin boards and early chat'],
+    [1995, 2004, 'The early web', 'portals, forums, instant messengers and online shops'],
+    [2004, 2012, 'The social web', 'blogs, video sites and the first social networks'],
+    [2012, 2040, 'The mobile age', 'always-on feeds, apps, streaming and remote work'],
+    [2040, 2160, 'The neural net', 'a mind-to-mind network that never sleeps'],
+    [2160, 99999, 'The Commons', 'a shared mind spanning worlds'],
+  ];
+  const era = (y = yr()) => ERAS.find(([a, b]) => y >= a && y < b) || null;
+
+  /* ---------- who is online ---------- */
+  // 0: not online, 1: patchy (café, shared device, slow), 2: connected
+  function access(p, y = yr()) {
+    if (y < 1991 || S.age(p) < 5) return 0;
+    const s = state(p), cc = p.cc, base = pen(cc, y);
+    const wealth = ((p.cls ?? 2) - 2) * 0.09 + (p.money > S.toVal(S.era().cost * 3) ? 0.05 : 0);
+    const ageF = S.age(p) > 70 ? -0.25 : S.age(p) > 55 ? -0.1 : S.age(p) < 12 ? -0.05 : 0.08;
+    const v = base + wealth + ageF + (p.edu ?? 0) * 0.03;
+    if (y >= 2040) return v + 0.1 > s.u * 0.7 ? 2 : 1;
+    return v > s.u + 0.28 ? 2 : v > s.u ? 1 : 0;
+  }
+  const levelText = l => ['Offline', 'Patchy access (cafés and shared devices)', 'Connected'][l];
+
+  /* ---------- the local web ---------- */
+  const LOCAL = {
+    CHN: ['WeChat', 'Weibo', 'Douyin', 'Baidu'], RUS: ['VK', 'Yandex', 'Telegram'], KOR: ['KakaoTalk', 'Naver'], JPN: ['LINE', 'Niconico', '2channel'], IRN: ['Telegram', 'Instagram'], IND: ['WhatsApp', 'ShareChat', 'Koo'],
+    VNM: ['Zalo'], THA: ['LINE'], BRA: ['Orkut', 'WhatsApp'], TUR: ['Ekşi Sözlük', 'Twitter'], UKR: ['Telegram', 'VK'], EGY: ['Facebook', 'Twitter'], NGA: ['WhatsApp', 'Nairaland'],
+  };
+  const platform = cc => U.pick(LOCAL[cc] || (yr() < 2004 ? ['IRC', 'AOL', 'Usenet', 'GeoCities'] : yr() < 2012 ? ['MySpace', 'Facebook', 'YouTube', 'MSN'] : yr() < 2040 ? ['Instagram', 'TikTok', 'WhatsApp', 'YouTube', 'Twitch'] : ['the Mesh', 'Dreamfeed', 'Echo']));
+
+  /* ---------- time online ---------- */
+  const HRS = [['Light', 'An hour a day, no more.'], ['Normal', 'A few hours a day.'], ['Heavy', 'Most waking hours, in one way or another.']];
+  function setHours(p, h) { state(p).hrs = U.clamp(h, 0, 2); return `Online time: ${HRS[state(p).hrs][0].toLowerCase()}.`; }
+
+  /* ---------- doing things online ---------- */
+  const once = (p, k) => { if (p.did['net:' + k]) return false; p.did['net:' + k] = 1; return true; };
+  const cost = m => S.toVal(S.era().cost * m);
+  const need = (p, lvl = 1) => (access(p) >= lvl ? '' : 'You are not online.');
+  const ACTS = {
+    learn: { n: 'Learn something online', min: 8, lvl: 1, run(p, s) {
+      if (!once(p, 'learn')) return 'You already studied online this year.';
+      const gain = U.ri(2, 5) + (s.hrs === 2 ? 1 : 0); S.applyFx(p, { sm: gain, im: 1 });
+      if (p.school) p.school.gr = U.clamp((p.school.gr ?? 60) + 3);
+      return `You followed online courses and tutorials (smarts +${gain}).`;
+    } },
+    community: { n: 'Join an online community', min: 10, lvl: 1, run(p, s) {
+      if (!once(p, 'comm')) return 'You already joined one this year.';
+      const topics = ['a music fandom', 'a gardening forum', 'a modding community', 'a chess club', 'a support group', 'a language-exchange group', 'a hobby marketplace', 'a local-history society', 'a gaming guild', 'a cooking circle'];
+      const what = U.pick(topics); s.comms.push(what); if (s.comms.length > 6) s.comms.shift();
+      const o = S.newFriend(p); o.cc = U.chance(0.45) ? p.cc : (A.C(U.pick(DATA.countries.filter(c => c.at && yr() >= c.from).map(c => c.id)))?.id || p.cc);
+      p.rels[o.id].c = U.ri(40, 70); o.rels[p.id].c = p.rels[o.id].c;
+      S.applyFx(p, { hp: 3, mh: 2 }); s.rep = U.clamp(s.rep + 3);
+      return `You joined ${what} on ${platform(p.cc)} and befriended ${o.first}${o.cc !== p.cc ? ` from ${S.world.name(o.cc)}` : ''}.`;
+    } },
+    date: { n: 'Meet someone online', min: 16, lvl: 1, run(p, s) {
+      if (p.sp != null) return 'You are already married.';
+      if (!once(p, 'date')) return 'You already tried this year.';
+      if (U.chance(0.45 + p.lk / 300)) {
+        const o = S.newLover(p, true); const far = yr() > 2000 && U.chance(0.3);
+        if (far) { const to = U.pick(DATA.countries.filter(c => c.at && yr() >= c.from && c.id !== p.cc)); o.cc = to.id; S.rel(p, o).c = U.ri(50, 75); }
+        S.applyFx(p, { hp: 4 });
+        return `You met ${o.first} online${o.cc !== p.cc ? ` — they live in ${S.world.name(o.cc)}` : ''}.`;
+      }
+      if (U.chance(0.12)) { const lost = Math.round(cost(0.3)); p.money = Math.max(0, p.money - lost); S.applyFx(p, { mh: -5, rep: -1 }); return `It was a romance scam. You lost ${S.money(lost)}.`; }
+      S.applyFx(p, { mh: -1 }); return 'Nobody worth meeting this time.';
+    } },
+    sell: { n: 'Sell things online', min: 14, lvl: 1, run(p, s) {
+      if (!once(p, 'sell')) return 'You already did this year.';
+      const gain = Math.round(cost(U.rand(0.04, 0.25) * (0.6 + p.sm / 100 + (s.rep - 50) / 200)) * (access(p) === 2 ? 1 : 0.5));
+      if (U.chance(0.07)) { S.applyFx(p, { rep: -2, mh: -2 }); return 'A buyer disputed the sale and left you a bad review.'; }
+      p.money += gain; s.income += gain; return `Online sales earned ${S.money(gain)}.`;
+    } },
+    freelance: { n: 'Freelance for clients abroad', min: 16, lvl: 2, from: 1998, run(p, s) {
+      if (!once(p, 'free')) return 'You already did this year.';
+      const clients = DATA.countries.filter(c => c.at && yr() >= c.from && A.tier(c.id) <= 2 && c.id !== p.cc);
+      const client = clients.length ? U.pick(clients) : null;
+      const arb = client ? Math.max(1, (4 - A.tier(p.cc)) * 0.5 + 1) : 1;
+      const base = cost(U.rand(0.2, 0.7) * (0.5 + p.sm / 100 + (p.edu ?? 0) * 0.1));
+      const gain = Math.round(base * (A.tier(p.cc) > 2 ? arb : 1)); p.money += gain; s.income += gain; s.jobCC = client?.id || s.jobCC;
+      S.applyFx(p, { sm: 1, wp: 1 });
+      return `You did contract work${client ? ` for a client in ${S.world.name(client.id)}` : ''} and earned ${S.money(gain)}${A.tier(p.cc) > 2 ? ', which goes far here' : ''}.`;
+    } },
+    create: { n: 'Make and share things', min: 10, lvl: 1, from: 1996, run(p, s) {
+      if (!once(p, 'create')) return 'You already posted a lot this year.';
+      const viral = U.chance(0.05 + (p.im ?? 50) / 800 + (s.hrs === 2 ? 0.03 : 0));
+      const ph = p.phone || (p.phone = { inbox: [], followers: 0, posts: [], sent: {} });
+      if (viral) { const f = Math.round(U.rand(800, 20000) * (yr() > 2012 ? 3 : 1)); ph.followers += f; S.applyFx(p, { fm: 8, rep: 3, hp: 5 }); s.rep = U.clamp(s.rep + 10); return `It went viral. ${f.toLocaleString()} strangers now follow you.`; }
+      const f = U.ri(2, 60); ph.followers += f; S.applyFx(p, { im: 2, hp: 2, fm: 1 }); return `You made something and shared it. ${f} new followers.`;
+    } },
+    news: { n: 'Follow the news', min: 12, lvl: 1, run(p, s) {
+      if (!once(p, 'news')) return 'You already caught up this year.';
+      const cz = censorship(p.cc);
+      if (cz >= 2 && U.chance(0.3)) { S.applyFx(p, { sm: 0, mh: -2 }); return 'Most of what you read is what the state wants you to read.'; }
+      if (U.chance(0.18)) { S.applyFx(p, { mh: -4, sm: -1 }); s.rep = U.clamp(s.rep - 2); return 'You went down a rabbit hole of outrage and fell for a false story.'; }
+      S.applyFx(p, { sm: 1, im: 1, mh: -1 }); return 'You stayed informed and a little anxious.';
+    } },
+    play: { n: 'Play and stream', min: 6, lvl: 1, run(p, s) {
+      if (!once(p, 'play')) return 'You already played plenty this year.';
+      S.applyFx(p, { mh: s.hrs === 2 ? 1 : 4, hp: 4, wp: s.hrs === 2 ? -2 : 0 });
+      return `You played games on ${platform(p.cc)}.`;
+    } },
+    invest: { n: 'Trade and invest online', min: 18, lvl: 2, from: 1998, run(p, s) {
+      if (!once(p, 'invest')) return 'You already traded this year.';
+      const stake = cost(0.2); if (p.money < stake) return `You need ${S.money(stake)} to trade.`;
+      const r = Math.random();
+      if (r < 0.1) { p.money += stake * 3; return `A lucky bet: you made ${S.money(stake * 3)}.`; }
+      if (r < 0.5) { p.money += stake * 0.4; return `Trading earned ${S.money(stake * 0.4)}.`; }
+      p.money -= stake * 0.6; S.applyFx(p, { mh: -3 }); return `A bad trade cost you ${S.money(stake * 0.6)}.`;
+    } },
+    secure: { n: 'Secure your accounts (VPN, passwords)', min: 12, lvl: 1, from: 1998, run(p, s) {
+      if (!once(p, 'sec')) return 'You already did this year.';
+      const c = cost(0.02); p.money = Math.max(0, p.money - c); s.sec = U.clamp(s.sec + 25, 0, 100);
+      return 'You tightened your security. Hackers and censors will have a harder time.';
+    } },
+    detox: { n: 'Take a break from screens', min: 8, lvl: 0, run(p, s) {
+      if (!once(p, 'detox')) return 'You already did this year.';
+      S.applyFx(p, { mh: 5, hp: 4, wp: 2 }); s.hrs = Math.max(0, s.hrs - 1); return 'A week offline did you a world of good.';
+    } },
+  };
+  function available(p) { return Object.entries(ACTS).filter(([, a]) => (a.from || 1991) <= yr() && S.age(p) >= a.min).map(([id, a]) => ({ id, ...a, why: access(p) < a.lvl ? (a.lvl === 2 ? 'Needs a good connection' : 'Not online') : p.did['net:' + (id === 'community' ? 'comm' : id === 'freelance' ? 'free' : id === 'secure' ? 'sec' : id)] ? 'Done this year' : '' })); }
+  function act(id) {
+    const p = S.me(), a = ACTS[id], s = state(p); if (!a) return '';
+    const why = access(p) < a.lvl ? 'Your connection is not good enough.' : '';
+    if (why) return why;
+    const t = a.run(p, s); if (t) S.log(p, `Online: ${t}`, 'life'); return t;
+  }
+
+  /* ---------- the yearly effects ---------- */
+  S.addHook('postYear', p => {
+    const lvl = access(p); if (!lvl) return;
+    const s = state(p), a = S.age(p);
+    if (a < 6) return;
+    // screens and sleep
+    if (s.hrs === 2) { S.applyFx(p, { mh: -2, wp: -1, h: -1 }); if (a < 20 && U.chance(0.15)) p.school && (p.school.gr = U.clamp((p.school.gr ?? 60) - 4)); }
+    if (s.hrs === 0 && lvl === 2) S.applyFx(p, { im: 0 });
+    s.sec = U.clamp(s.sec - 4, 0, 100);
+    s.rep = U.clamp(s.rep + (s.rep > 50 ? -1 : 1));
+  });
+  S.addHook('hpTarget', p => { const s = p.net; return s && access(p) ? (s.hrs === 2 ? -1.2 : s.hrs === 1 ? 0.2 : 0.4) : 0; }, 'add');
+  S.addHook('relGain', (p, o, act) => (access(p) && p.net?.hrs === 2 && act === 'time' ? -1 : 0), 'add');
+
+  /* ---------- events ---------- */
+  function events(p) {
+    const lvl = access(p), a = S.age(p), s = state(p), cc = p.cc, cz = censorship(cc), out = [];
+    if (!lvl || a < 8) return out;
+    const sec = s.sec / 100;
+    out.push({ id: 'net-scam', p: 0.07 * (1 - sec * 0.7), min: 14, from: 1996, t: 'An email says you have won a fortune, if you will only send a small fee first.', ch: [
+      { l: 'Ignore it', fx: {}, t: 'You deleted it.' },
+      { l: 'Pay the fee', fx: { $c: -0.12, mh: -3 }, t: 'It was a scam, of course.' },
+      { l: 'Report it', fx: { rep: 1, sm: 1 }, t: 'The authorities thanked you and did nothing.' }] });
+    out.push({ id: 'net-hack', p: 0.04 * (1 - sec * 0.8), min: 14, from: 1998, t: 'Someone broke into your accounts.', ch: [
+      { l: 'Reset everything', fx: { $c: -0.02, mh: -2, wp: 1 }, t: 'It took a weekend, but you got it all back.' },
+      { l: 'Pay the ransom', fx: { $c: -0.3, mh: -4 }, t: 'You paid. They asked for more.' },
+      { l: 'Go to the police', odds: 0.35, win: { fx: { rep: 1 }, t: 'They traced the intruder.' }, alt: { fx: { mh: -2 }, t: 'They shrugged.' } }] });
+    if (a >= 10 && a <= 24) out.push({ id: 'net-bully', p: 0.06 + (s.hrs === 2 ? 0.03 : 0), min: 10, max: 24, from: 2004, t: `Classmates are mocking you online, on ${platform(cc)}.`, ch: [
+      { l: 'Block them and tell an adult', fx: { mh: -2, famc: 3 }, t: 'It helped, a little.' },
+      { l: 'Hit back online', odds: 0.4, win: { fx: { rep: 2, wp: 2 }, t: 'You humiliated them in turn.' }, alt: { fx: { mh: -7, rep: -2 }, t: 'It made things much worse.' } },
+      { l: 'Log off for a while', fx: { mh: 1, hp: -1 }, t: 'You stayed away until it blew over.', } ] });
+    if (a >= 14) out.push({ id: 'net-viralshame', p: 0.025 + (s.hrs === 2 ? 0.015 : 0), min: 14, from: 2008, t: 'A clip of something you said goes viral, and not kindly.', ch: [
+      { l: 'Apologise publicly', fx: { rep: -1, mh: -2, fm: 2 }, t: 'It blew over in a week.' },
+      { l: 'Lay low', fx: { rep: -3, mh: -3 }, t: 'You waited for the next scandal to bury yours.' },
+      { l: 'Double down', odds: 0.35, win: { fx: { fm: 10, rep: 2 }, t: 'You turned the shame into a following.' }, alt: { fx: { fm: 4, rep: -8, mh: -6 }, t: 'You became a meme and lost your job prospects.' } }] });
+    if (a >= 12 && a <= 80) out.push({ id: 'net-friend', p: 0.07, min: 12, from: 1995, t: 'An online friend from another country wants to meet in person.', ch: [
+      { l: 'Meet them', fx: { $c: -0.15, hp: 6, im: 3, mh: 3 }, t: 'You met at last and it was just like talking online, only better.' },
+      { l: 'Stay online friends', fx: { hp: 2 }, t: 'You kept chatting across the distance.' }] });
+    if (cz >= 2 && lvl) {
+      out.push({ id: 'net-censor', p: 0.06 * cz, min: 14, from: 1998, t: `The authorities in ${S.world.name(cc)} block the sites you used.`, ch: [
+        { l: 'Use a VPN', odds: 0.5 + sec * 0.4, win: { fx: { sm: 1, im: 2, mh: 1 }, t: 'You slipped past the filters.' }, alt: { fx: { rep: -4, mh: -4, $c: -0.1 }, t: 'You were flagged and fined.' } },
+        { l: 'Do without', fx: { mh: -2, im: -1 }, t: 'You made do with the approved web.' },
+        { l: 'Join the protest online', odds: 0.4, win: { fx: { rep: 3, fm: 3 }, t: 'Thousands joined you.' }, alt: { fx: { rep: -6, h: -6, mh: -4 }, t: 'You were arrested for “spreading rumours”.' } }] });
+      out.push({ id: 'net-blackout', p: 0.02 * cz, min: 12, from: 2005, t: 'The internet goes dark across the country: a shutdown during unrest.', fx: { mh: -3, $c: -0.05 } });
+    }
+    if (yr() >= 2024 && a >= 14) out.push({ id: 'net-deepfake', p: 0.025, min: 14, t: 'A convincing fake video of you circulates online.', ch: [
+      { l: 'Fight it', fx: { $c: -0.1, wp: 2, mh: -2 }, t: 'You had it taken down, eventually.' },
+      { l: 'Ignore it', fx: { rep: -3, mh: -3 }, t: 'People believed some of it.' }] });
+    if (a >= 14 && a <= 60 && lvl === 2 && yr() >= 2010) out.push({ id: 'net-remote', p: 0.03, min: 18, max: 60, t: 'A company abroad offers you remote work at foreign pay.', ch: [
+      { l: 'Take it', fx: { $c: 0.3, sm: 1 }, t: 'Your salary now comes from far away, and goes far.' },
+      { l: 'Stay where you are', fx: { mh: 1 }, t: 'You turned it down.' }] });
+    return out;
+  }
+  S.addHook('events', p => events(p), 'cat');
+
+  return { state, access, pen, censorship, era, ERAS, levelText, platform, ACTS, available, act, setHours, HRS, events };
 })();
 
 /* ---- personality.js ---- */
@@ -9262,7 +9885,7 @@ const Pol = (() => {
 
   /* ---------- wars ---------- */
   const warsNow = () => (W().wars || []).filter(h => yr() >= h.y && yr() <= h.end);
-  const atWar = (a, b) => S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b);
+  const atWar = (a, b) => (typeof Geo !== 'undefined' ? Geo.atWar(a, b) : S.activeWars().some(h => h.where && h.where.includes(a) && h.where.includes(b) && a !== b));
   function strength(cc) {
     const pop = S.world.popAt(cc) || 0.01, r = reg(cc);
     const pl = S.me(), lead = pl && pl.cc === cc && pl.office?.lvl >= 4 ? (pl.sm + (pl.wp ?? 50)) / 60 + (S.pers?.has(pl, 'brave') ? 0.5 : 0) : 0;
@@ -9580,6 +10203,210 @@ LATE.push(() => {
   const nat = S.world.nations;
   S.world.nations = () => nat().map(n => ({ ...n, ruler: Po.rulerName(Po.ruler(n.cc)), gov: S.world.gov(n.cc) }));
 });
+
+/* ---- geo.js ---- */
+/* =====================================================================
+   GEO — the world as a map and a board.
+   * Shapes: the map data (src/data-map.js) decoded into rings of
+     longitude/latitude, cached.
+   * Fog of war: a person knows their own land, its neighbours and, as
+     the ages pass, farther lands; travel, ancestry, friends abroad and
+     the news widen what is known.
+   * Great powers: a score for every land from people, wealth, arms and
+     stability, with a ranking that moves through history.
+   * Alliances: lands that like each other and share neighbours or
+     enemies pair up; when a war breaks out their allies are drawn in,
+     and a quarrel between two can become a world war.
+   * Diplomacy for those in office: alliance, trade pact, sanctions, aid,
+     and peace envoys.
+   ===================================================================== */
+
+const Geo = (() => {
+  const S = Sim, A = Atlas, M = DATA.map, yr = () => S.W.year;
+  const state = () => (S.W.geo ||= { allies: [], pacts: [], hist: [], sanc: [] });
+
+  /* ---------- shapes ---------- */
+  const cache = {};
+  function decode(str) {
+    const out = []; let i = 0, x = 0, y = 0;
+    const next = () => { let r = 0, s = 0, b; do { b = str.charCodeAt(i++) - 63; r |= (b & 0x1f) << s; s += 5; } while (b >= 0x20); return r & 1 ? ~(r >> 1) : r >> 1; };
+    while (i < str.length) { x += next(); y += next(); out.push(x / 100, y / 100); }
+    return Float32Array.from(out);
+  }
+  function shape(id) {
+    if (cache[id]) return cache[id];
+    const s = M.shapes[id]; if (!s) return null;
+    return (cache[id] = { id, rings: s.r.map(decode), c: s.c, bb: s.bb, a: s.a, pt: !!s.pt });
+  }
+  const ids = () => Object.keys(M.shapes);
+
+  /* ---------- who is next to whom ---------- */
+  const rad = d => d * Math.PI / 180;
+  const dist = (a, b) => {   // great-circle distance between centroids, km
+    const A_ = M.shapes[a]?.c, B_ = M.shapes[b]?.c; if (!A_ || !B_) return 99999;
+    const dl = rad(B_[0] - A_[0]), p1 = rad(A_[1]), p2 = rad(B_[1]);
+    return 6371 * Math.acos(Math.min(1, Math.sin(p1) * Math.sin(p2) + Math.cos(p1) * Math.cos(p2) * Math.cos(dl)));
+  };
+  const nearCache = {};
+  function near(cc) {
+    if (nearCache[cc]) return nearCache[cc];
+    const set = new Set(M.nb[cc] || []);
+    const mine = M.shapes[cc]; if (!mine) return (nearCache[cc] = []);
+    const reach = Math.max(900, Math.min(2200, Math.sqrt(mine.a) * 140));
+    for (const id of ids()) if (id !== cc && dist(cc, id) < reach) set.add(id);
+    return (nearCache[cc] = [...set]);
+  }
+  // depth of knowledge by era
+  const REACH = { prehistory: 1, ancient: 2, medieval: 3, renaissance: 4, colonial: 5, industrial: 6, wars: 99, modern: 99, digital: 99, near: 99, far: 99 };
+  function known(p) {
+    const y = yr(), era = S.era().id, depth = REACH[era] ?? 99;
+    const all = ids();
+    if (depth >= 99 || S.W.mode === 'sandbox' || S.W.god) return new Set(all);
+    const seen = new Set(), q = [];
+    const add = (cc, d) => { if (cc && M.shapes[cc] && !seen.has(cc)) { seen.add(cc); q.push([cc, d]); } };
+    add(p.cc, 0);
+    for (const cc of p.nats || []) add(cc, 0);
+    for (const cc of p.travels || []) add(cc, 0);
+    for (const o of S.known(p)) if (o.cc && o.cc !== p.cc) add(o.cc, 1);
+    for (const n of S.W.news.slice(-80)) for (const cc of n.where || []) if (U.span(n.y, y) < 40) add(cc, depth - 1);
+    while (q.length) { const [cc, d] = q.shift(); if (d >= depth) continue; for (const n of near(cc)) add(n, d + 1); }
+    return seen;
+  }
+
+  /* ---------- the great powers ---------- */
+  const TIER_W = [0, 1.25, 1, 0.8, 0.6, 0.45];
+  function power(cc, y = yr()) {
+    const c = A.C(cc); if (!c || y < c.from) return 0;
+    const pop = S.world.popAt(cc) || 0.01, t = TIER_W[A.tier(cc)] ?? 0.7, mil = (c.at?.mil ?? 3) / 9;
+    const stab = (S.W.nat?.[cc]?.stab ?? 60) / 60;
+    const era = y < 0 ? 0.5 : y < 1500 ? 0.8 : 1;
+    return Math.pow(pop, 0.62) * t * (0.5 + mil * 1.2) * stab * era * 10;
+  }
+  function ranking(y = yr(), n = 12) {
+    return S.world.countriesAt(y).filter(c => c.region !== 'space' || y > 2100).map(c => ({ cc: c.id, power: power(c.id, y) })).sort((a, b) => b.power - a.power).slice(0, n);
+  }
+
+  /* ---------- alliances ---------- */
+  const key = (a, b) => [a, b].sort().join('|');
+  const allied = (a, b) => state().allies.some(x => x.k === key(a, b));
+  const alliesOf = cc => state().allies.filter(x => x.k.split('|').includes(cc)).map(x => x.k.split('|').find(z => z !== cc));
+  function ally(a, b, quiet) {
+    if (a === b || allied(a, b)) return;
+    state().allies.push({ k: key(a, b), y: yr() });
+    S.world.addRel(a, b, 18);
+    if (!quiet) news(`${S.world.name(a)} and ${S.world.name(b)} sign a treaty of alliance.`, [a, b], 'politics');
+  }
+  function unally(a, b, why) {
+    const g = state(); const i = g.allies.findIndex(x => x.k === key(a, b)); if (i < 0) return;
+    g.allies.splice(i, 1);
+    news(`The alliance between ${S.world.name(a)} and ${S.world.name(b)} ${why || 'collapses'}.`, [a, b], 'politics');
+  }
+  function news(t, where, type) {
+    S.W.news.push({ y: yr(), t, type, where });
+    const p = S.me(); if (p && where.includes(p.cc)) S.log(p, t, 'world');
+  }
+  // who fought on which side of the great wars (the history gives only the list of lands involved)
+  const SIDES = {
+    war1914: { a: 'ENG FRA ITA RUS USA JPN GRC PRT BEL SRB MNE ROU CAN AUS NZL IND ZAF EGY LUX MLI NER BFA SEN LBR GHA NGA KEN UGA ZMB MWI MOZ MDG HTI UKR BLR MDA EST LVA LTU ARM',
+      b: 'DEU AUT HUN CZE SVK SVN HRV BIH TUR SYR LBN JOR ISR PSE IRQ KWT BGR TZA RWA BDI NAM CMR TGO' },
+    war1939: { a: 'ENG FRA USA RUS CHN POL GRC NLD BEL LUX NOR DNK CZE SVK SRB MNE ALB MKD BIH AUS NZL CAN IND ZAF EGY MEX ETH IRN KOS UKR BLR EST LVA LTU MLT MOR DZA TUN LBY SEN CIV GHA NGA KEN TZA',
+      b: 'DEU ITA JPN HUN ROU BGR FIN AUT HRV KOR PRK TWN VNM MMR MYS SGP IDN PHL BRN TLS THA MNG' },
+  };
+  const sideSets = {};
+  const sideOf = (h, cc) => {
+    if (h.a && h.b) { if (cc === h.a || h.joined?.[cc] === h.a) return 'a'; if (cc === h.b || h.joined?.[cc] === h.b) return 'b'; return null; }
+    const sd = SIDES[h.key]; if (!sd) return '?';
+    const set = (sideSets[h.key] ||= { a: new Set(sd.a.split(' ')), b: new Set(sd.b.split(' ')) });
+    return set.a.has(cc) ? 'a' : set.b.has(cc) ? 'b' : null;
+  };
+  const atWar = (a, b) => a !== b && S.activeWars().some(h => {
+    if (!h.where || !h.where.includes(a) || !h.where.includes(b)) return false;
+    const sa = sideOf(h, a), sb = sideOf(h, b);
+    return sa === '?' ? true : !!(sa && sb && sa !== sb);
+  });
+  // lands at war with anyone this year (for the map)
+  const fighting = () => { const out = new Set(); for (const h of S.activeWars()) for (const cc of h.where || []) { const sd = sideOf(h, cc); if (sd) out.add(cc); } return out; };
+  function tick() {
+    const w = state(), y = yr();
+    if (y < -3000) return;
+    const lands = S.world.countriesAt().filter(c => c.region !== 'space' || y > 2100).map(c => c.id);
+    // alliances form between friendly neighbours
+    for (let i = 0; i < 5; i++) {
+      const a = U.pick(lands), b = U.pick(near(a));
+      if (!b || !lands.includes(b) || allied(a, b) || atWar(a, b)) continue;
+      const r = S.world.rel(a, b), shared = near(a).filter(z => near(b).includes(z) && S.world.rel(a, z) < -20).length;
+      const sameBloc = A.blocs(a, y).some(z => A.blocs(b, y).includes(z));
+      if ((r > 45 || (r > 25 && (shared || sameBloc))) && U.chance(0.12 + (sameBloc ? 0.1 : 0))) { ally(a, b); break; }
+    }
+    // and they fray
+    for (const x of w.allies.slice()) {
+      const [a, b] = x.k.split('|');
+      if (!lands.includes(a) || !lands.includes(b)) { w.allies.splice(w.allies.indexOf(x), 1); continue; }
+      const r = S.world.rel(a, b);
+      if (atWar(a, b)) unally(a, b, 'ends in war between them');
+      else if (r < 5 && U.chance(0.25)) unally(a, b, 'falls apart');
+      else { S.world.addRel(a, b, 1.2); }
+    }
+    // blocs warm their members' relations a little
+    for (let i = 0; i < 4; i++) {
+      const a = U.pick(lands), bl = A.blocs(a, y); if (!bl.length) continue;
+      const b = U.pick(lands); if (a !== b && bl.some(z => A.blocs(b, y).includes(z))) S.world.addRel(a, b, 2);
+    }
+    // an invasion draws in the invaded land's friends, and sometimes the aggressor's
+    for (const war of S.activeWars().filter(h => h.dyn && !h.geo && h.a && h.b)) {
+      war.geo = 1;
+      for (const [side, other] of [[war.b, war.a], [war.a, war.b]]) for (const f of alliesOf(side)) {
+        if (war.where.includes(f) || !lands.includes(f) || allied(f, other)) continue;
+        if (U.chance(side === war.b ? 0.7 : 0.45) && S.world.rel(f, other) < 40) {
+          war.where.push(f); (war.joined ||= {})[f] = side;
+          news(`${S.world.name(f)} enters the ${war.n} on the side of ${S.world.name(side)}.`, [f, side, other], 'war');
+        }
+      }
+      if ((war.joined && Object.keys(war.joined).length >= 3) && !war.world) { war.world = 1; war.n = `${war.n}, a world war`; news(`A quarrel has become a world war: ${war.where.slice(0, 6).map(S.world.name).join(', ')} are at arms.`, war.where, 'war'); }
+    }
+    if (y % 10 === 0) { w.hist.push({ y, top: ranking(y, 8) }); if (w.hist.length > 40) w.hist.shift(); }
+  }
+  S.addHook('preYear', () => { try { tick(); } catch (e) { console.error(e); } });
+  S.addHook('migrate', w => { w.geo ||= { allies: [], pacts: [], hist: [], sanc: [] }; });
+
+  /* ---------- the player's diplomacy ---------- */
+  const isLeader = p => (p.office?.lvl ?? 0) >= 3 || (S.world.inOffice ? S.world.inOffice(p) : false);
+  function diplomacy(cc, kind) {
+    const p = S.me(), mine = p.cc;
+    if (!isLeader(p)) return 'Only people in high office can conduct foreign policy.';
+    if (cc === mine) return 'That is your own land.';
+    if (p.did['geo:' + cc + kind]) return 'You already tried that this year.';
+    p.did['geo:' + cc + kind] = 1;
+    const r = S.world.rel(mine, cc), lvl = p.office?.lvl ?? 3, c = S.era().cost;
+    const name = S.world.name(cc);
+    switch (kind) {
+      case 'alliance': {
+        if (allied(mine, cc)) return 'You are already allies.';
+        if (atWar(mine, cc)) return 'You are at war with them.';
+        if (U.chance(U.clamp((r + 20) / 100 + lvl * 0.05, 0.05, 0.85))) { ally(mine, cc); S.applyFx(p, { fm: 4, rep: 2 }); return `${name} agreed to an alliance.`; }
+        S.world.addRel(mine, cc, -3); return `${name} declined, politely.`;
+      }
+      case 'break': if (!allied(mine, cc)) return 'You have no alliance with them.'; unally(mine, cc, 'is dissolved by your government'); S.world.addRel(mine, cc, -20); S.applyFx(p, { fm: 2, rep: -2 }); return 'The alliance is over.';
+      case 'trade': {
+        const g = state(); if (g.pacts.some(x => x.k === key(mine, cc))) return 'You already trade freely.';
+        if (r < -15) return `${name} will not talk trade with you.`;
+        g.pacts.push({ k: key(mine, cc), y: yr() }); S.world.addRel(mine, cc, 10);
+        for (const z of [mine, cc]) { const n = S.world.nations().find(x => x.cc === z); const st = S.W.nat[z]; if (st) st.stab = U.clamp(st.stab + 3); }
+        S.applyFx(p, { fm: 2, rep: 2 }); news(`${S.world.name(mine)} and ${name} sign a trade agreement.`, [mine, cc], 'politics'); return 'A trade agreement was signed.';
+      }
+      case 'sanction': { S.world.addRel(mine, cc, -18); const st = S.W.nat[cc]; if (st) st.stab = U.clamp(st.stab - 5); state().sanc.push({ by: mine, on: cc, y: yr() }); S.applyFx(p, { fm: 3, rep: -1 }); news(`${S.world.name(mine)} imposes sanctions on ${name}.`, [mine, cc], 'politics'); return 'Sanctions imposed.'; }
+      case 'aid': { const cost = S.toVal(c * 0.4 * lvl); if (p.money < cost) return `Aid costs ${S.money(cost)}.`; p.money -= cost; S.world.addRel(mine, cc, 14); const st = S.W.nat[cc]; if (st) st.stab = U.clamp(st.stab + 5); S.applyFx(p, { rep: 3, fm: 2 }); return `Your aid reached ${name}.`; }
+      case 'peace': {
+        const war = S.activeWars().find(h => h.dyn && h.where.includes(mine) && h.where.includes(cc)); if (!war) return 'You are not at war with them.';
+        if (U.chance(U.clamp(0.25 + (-Math.abs(war.score || 0) / 40) + lvl * 0.1 + (r + 50) / 300, 0.1, 0.8))) { Pol.endWar(war, null); return 'The envoys agreed a peace.'; }
+        return 'The other side refused to talk.';
+      }
+    }
+    return '';
+  }
+
+  return { sideOf, fighting, shape, ids, decode, near, dist, known, power, ranking, allied, alliesOf, ally, unally, atWar, tick, diplomacy, isLeader, state, REACH };
+})();
 
 /* ---- ui.js ---- */
 /* =====================================================================
@@ -10308,9 +11135,10 @@ const UI = (() => {
 
   ui.on.adopt = () => {
     const p = S.me(), e = S.era();
-    sheet(`<h2>Adopt a pet</h2><div class="field" style="margin:10px 0"><label for="petname">Name (optional)</label><input id="petname" maxlength="20" placeholder="Random"></div>
+    sheet(`<h2>Adopt a pet</h2><div class="field" style="margin:10px 0"><label for="petname">Name (optional)</label><input id="petname" maxlength="20" placeholder="Random"><div class="chips">${(typeof Identity !== 'undefined' ? Identity.petNames('default', 8) : []).map(n => `<button class="chip" data-act="petNameUse" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div></div>
       <div class="list">${S.petsAvail(p).map(x => `<button class="row" data-act="adoptKind" data-k="${x.id}"><span class="av sm petav" aria-hidden="true">${esc(x.n[0])}</span><div class="main"><div class="t">${esc(x.n)}</div><div class="s">Lives ${x.life[0]}–${x.life[1]} years${x.cls ? ' · a status symbol' : ''}</div></div><div class="end mono">${S.money(S.toVal(e.cost * x.cost))}</div></button>`).join('')}</div>`, { label: 'Adopt a pet' });
   };
+  ui.on.petNameUse = el => { const f = $('#petname'); if (f) f.value = el.dataset.n; };
   ui.on.adoptKind = el => { const t = S.adoptPet(el.dataset.k, $('#petname')?.value); ui.open = null; $('#modal').innerHTML = ''; render(); toast(t); };
   function petSheet(id, res) {
     const pet = S.W.pets[id], sp = S.petSpec(pet.kind), acts = [...sp.acts, 'vet', 'rehome'];
@@ -10659,6 +11487,472 @@ LATE.push(() => {
   ui.extraTabs.push({ id: 'identity', n: 'Identity', order: 5 });
   ui.on.idApply = el => { const t = I.apply(el.dataset.cc); S.settle?.(); render(); toast(t); ui.save?.(); };
   ui.on.idRenounce = el => { const t = I.renounce(el.dataset.cc); render(); toast(t); ui.save?.(); };
+});
+
+/* ---- faith-ui.js ---- */
+/* =====================================================================
+   FAITH, CULTURE and MARRIAGE — screens, as sections of the Identity tab.
+   ===================================================================== */
+
+LATE.push(() => {
+  const S = Sim, ui = UI, A = Atlas, { $, esc, toast, render, sheet } = ui;
+  const pct = v => `${Math.round(v * 100)}%`;
+  const DIMS = [['I', 'Individualism', 'Community first', 'Self first'], ['H', 'Respect for hierarchy', 'Egalitarian', 'Deferential'], ['T', 'Tradition', 'Change-seeking', 'Tradition-bound'], ['F', 'Family ties', 'Loose', 'Close'], ['O', 'Openness to outsiders', 'Wary', 'Welcoming'], ['R', 'Religiosity', 'Secular', 'Devout'], ['G', 'Gender equality', 'Unequal', 'Equal']];
+  const FCOL = ['#c9953a', '#3a8aa8', '#a85a8a', '#5a9a5a', '#c0603a', '#6a6ac0', '#8a8a3a', '#9a6a4a'];
+  const tone = v => (v >= 0.75 ? 'welcomed' : v >= 0.5 ? 'accepted with reluctance' : v >= 0.25 ? 'frowned on' : 'strongly opposed');
+
+  function mixBar(cc) {
+    const m = Faith.mixAt(cc).slice(0, 7);
+    return `<div class="ethbar">${m.map(([id, v], i) => `<i style="width:${v * 100}%;background:${FCOL[i % FCOL.length]}" title="${esc(Faith.f(id).n)} ${pct(v)}"></i>`).join('')}</div>
+      <div class="ethkey">${m.map(([id, v], i) => `<span><b style="background:${FCOL[i % FCOL.length]}"></b>${esc(Faith.f(id).n)} ${pct(v)}</span>`).join('')}</div>`;
+  }
+  function faithSection(p) {
+    const id = Faith.get(p), fa = Faith.f(id), piety = Math.round(p.piety ?? 40);
+    const acts = S.activities(p).filter(a => a.id.startsWith('e:faith-'));
+    const circle = Faith.circle(p).filter(q => Faith.get(q) !== id).slice(0, 3);
+    const hd = fa.hd && fa.hd.length ? `<p class="faint" style="margin:8px 0 0">Holy days: ${fa.hd.map(esc).join(' · ')}</p>` : '';
+    return `<div class="panel"><div class="eyebrow">Faith</div><h3 style="margin:2px 0 4px">${esc(fa.n)}</h3>
+      <div class="faint" style="margin-bottom:8px">${piety >= 75 ? 'Devout' : piety >= 50 ? 'Observant' : piety >= 25 ? 'Casual' : 'Lapsed'} · piety ${piety}${Faith.minority(p) ? ' · a minority here' : ''}</div>
+      <div class="bar era"><i style="width:${piety}%"></i></div>
+      <div class="chips" style="margin-top:10px">${acts.map(a => `<button class="chip" data-act="activity" data-id="${esc(a.id)}" ${a.done || a.young || a.broke ? 'disabled' : ''}>${esc(a.n)}${a.cost ? ` · ${esc(S.money(a.cost))}` : ''}</button>`).join('') || '<span class="faint">No practices open to you yet.</span>'}</div>
+      ${hd}
+      ${circle.length ? `<p class="faint" style="margin:8px 0 0">${circle.map(q => `${esc(q.first)} follows ${esc(Faith.adj(Faith.get(q)))} ways`).join('; ')}.</p>` : ''}
+      <details style="margin-top:10px"><summary class="faint">What ${esc(Faith.adj(id))}s hold dear</summary><ul class="plain">
+        <li>Divorce is ${tone(fa.div)}</li><li>Same-sex love is ${tone(fa.ss)}</li><li>Marrying outside the faith is ${tone(fa.ifm)}</li><li>Arranged marriage is ${fa.arr >= 0.7 ? 'expected' : fa.arr >= 0.4 ? 'common' : 'uncommon'}</li><li>Other faiths are ${tone(fa.tol)}</li></ul></details>
+      <div class="eyebrow" style="margin-top:12px">Belief in ${esc(S.world.name(p.cc))}</div>${mixBar(p.cc)}
+      <button class="btn sm" style="margin-top:10px" data-act="faithExplore">Explore other faiths</button></div>`;
+  }
+  function cultureSection(p) {
+    const c = A.culture(p.cc, S.W.year), at = A.C(p.cc)?.at || {};
+    const bar = ([k, n, lo, hi]) => `<div class="dim"><div class="dn"><span>${n}</span><span class="faint">${c[k] >= 65 ? hi : c[k] <= 35 ? lo : 'Balanced'}</span></div><div class="bar era"><i style="width:${c[k]}%"></i></div></div>`;
+    const list = (title, a) => (a && a.length ? `<div class="kv"><b>${title}</b><span>${a.map(esc).join(' · ')}</span></div>` : '');
+    const clean = a => (a || []).map(x => String(x).replace(/@-?\d+$/, '')).slice(0, 5);
+    const y = S.W.year;
+    const aged = a => (a || []).filter(x => { const m = String(x).match(/@(-?\d+)$/); return !m || +m[1] <= y; });
+    return `<div class="panel"><div class="eyebrow">Culture of ${esc(S.world.name(p.cc))}</div>
+      <div class="dims">${DIMS.map(bar).join('')}</div>
+      <div class="kvs">${list('Languages', at.lg)}${list('Food', clean(aged(at.fd)))}${list('Festivals', clean(aged(at.fs)))}${list('Sport and play', clean(aged(at.sp)))}${list('Customs', at.cs)}${list('What stands out', at.tr)}</div></div>`;
+  }
+  function marriageSection(p) {
+    const v = Marriage.prevalence(p.cc, p), dow = Marriage.dowType(p.cc), sp = S.spouse(p);
+    const arr = sp && p.rels[sp.id]?.arr;
+    const dowTxt = { dowry: 'The bride’s family gives a dowry.', bride: 'The groom’s family pays a bride-price.', mutual: 'Families exchange gifts at the wedding.', none: 'No dowry or bride-price is expected.' }[dow];
+    const fam = { nuclear: 'Couples set up their own household', extended: 'Several generations share a home', stem: 'The eldest son’s household keeps the elders', clan: 'The clan shapes every marriage', matrifocal: 'Households centre on mothers' }[A.culture(p.cc, S.W.year).fam] || '';
+    const eng = Object.entries(p.rels).filter(([id, r]) => r.k === 'fiance' && r.arr && S.alive(S.P(+id)));
+    return `<div class="panel"><div class="eyebrow">Marriage customs</div><h3 style="margin:2px 0 8px">${esc(Marriage.label(v))}</h3>
+      <div class="bar era"><i style="width:${v * 100}%"></i></div>
+      <p class="faint" style="margin:8px 0 0">${esc(dowTxt)} ${esc(fam)}.</p>
+      ${arr ? `<p style="margin:8px 0 0">Your marriage to ${esc(sp.first)} was arranged. ${Math.round(p.rels[sp.id].c) >= 70 ? 'It has grown into real affection.' : 'Affection is still growing, year by year.'}</p>` : ''}
+      ${eng.map(([id]) => `<p style="margin:8px 0 0">Engaged by arrangement to ${esc(S.P(+id).first)}. The wedding is soon.</p>`).join('')}</div>`;
+  }
+  ui.identitySections.push({ id: 'faith', order: 30, html: faithSection }, { id: 'culture', order: 40, html: cultureSection }, { id: 'marriage', order: 35, html: marriageSection });
+
+  /* ---------- exploring other faiths ---------- */
+  ui.on.faithExplore = () => {
+    const p = S.me(), opts = Faith.options(p).slice(0, 14);
+    sheet(`<div class="eyebrow">Explore</div><h2>Other ways of believing</h2><p class="faint" style="margin:2px 0 10px">Changing faith is a big step. Your family may not understand, and your community may not welcome it.</p>
+      <div class="list">${opts.map(id => { const f = Faith.f(id), cost = Faith.conversionCost(p, id); return `<button class="row" data-act="faithConvert" data-id="${id}"><div class="main"><div class="t">${esc(f.n)}</div><div class="s">${Faith.share(p.cc, id) > 0.01 ? `${pct(Faith.share(p.cc, id))} of ${esc(S.world.name(p.cc))}` : 'Few follow it here'} · welcomes newcomers ${f.mis >= 0.5 ? 'eagerly' : f.mis >= 0.2 ? 'warmly' : 'quietly'}</div></div><div class="end">${cost.strict > 0.7 ? '<span class="tag bad">family may object</span>' : ''}</div></button>`; }).join('')}</div>`, { label: 'Other faiths' });
+  };
+  ui.on.faithConvert = el => {
+    const p = S.me(), id = el.dataset.id, f = Faith.f(id);
+    sheet(`<div class="eyebrow">Convert</div><h2>${esc(f.n)}</h2><p>Become ${/^[aeiou]/i.test(f.adj) ? 'an' : 'a'} ${esc(f.adj)}? Those close to you who follow ${esc(Faith.adj(Faith.get(p)))} ways may take it hard.</p>
+      <div class="acts"><button class="btn era" data-act="faithDo" data-id="${id}">Yes, I want this</button><button class="btn" data-act="close">Not now</button></div>`, { label: 'Confirm' });
+  };
+  ui.on.faithDo = el => { const t = Faith.convert(S.me(), el.dataset.id); ui.open = null; $('#modal').innerHTML = ''; render(); toast(t); ui.save?.(); };
+});
+
+/* ---- net-ui.js ---- */
+/* =====================================================================
+   NET — the Web tab (from 1991).
+   ===================================================================== */
+
+LATE.push(() => {
+  const S = Sim, ui = UI, A = Atlas, N = Net, { $, esc, toast, render } = ui;
+  const pct = v => `${Math.round(v * 100)}%`;
+  const FREE = ['Free and open', 'Lightly filtered', 'Heavily filtered', 'Closely watched and censored'];
+
+  function view(p) {
+    const era = N.era(), lvl = N.access(p), s = N.state(p), cc = p.cc, pen = N.pen(cc);
+    const cz = N.censorship(cc);
+    const head = `<div class="panel"><div class="eyebrow">${esc(era ? era[2] : 'Offline')}</div><h3 style="margin:2px 0 6px">${esc(N.levelText(lvl))}</h3>
+      <div class="faint">${esc(S.world.name(cc))}: ${pct(pen)} of people are online · ${esc(FREE[cz])}${N.platform ? ` · popular: ${esc(N.platform(cc))}` : ''}</div>
+      <div class="bar era" style="margin-top:8px"><i style="width:${pen * 100}%"></i></div>
+      ${lvl === 0 ? `<p class="faint" style="margin:10px 0 0">You have no way online yet. ${S.age(p) < 5 ? 'You are too young.' : 'It may come with time, work, schooling or the spread of the network.'}</p>` : ''}</div>`;
+    if (!lvl) return head;
+    const hrs = N.HRS.map(([n], i) => `<button class="chip" data-act="netHrs" data-v="${i}" aria-pressed="${s.hrs === i}">${n}</button>`).join('');
+    const acts = N.available(p).map(a => `<div class="prow"><button class="row ${a.why ? 'off' : ''}" data-act="netDo" data-id="${a.id}" ${a.why ? 'disabled' : ''}><div class="main"><div class="t">${esc(a.n)}</div></div><div class="end">${a.why ? `<span class="why">${esc(a.why)}</span>` : ''}</div></button></div>`).join('');
+    const ph = p.phone;
+    return head + `<div class="panel"><div class="eyebrow">Time online</div><div class="chips">${hrs}</div><p class="faint" style="margin:8px 0 0">${esc(N.HRS[s.hrs][1])}</p></div>
+      <div class="sec-h"><h3>Do something</h3></div><div class="list">${acts}</div>
+      <div class="panel" style="margin-top:12px"><div class="eyebrow">Your online life</div>
+        <div class="kvs"><div class="kv"><b>Reputation</b><span>${Math.round(s.rep)}/100</span></div><div class="kv"><b>Security</b><span>${Math.round(s.sec)}/100</span></div>
+        ${ph && ph.followers ? `<div class="kv"><b>Followers</b><span>${ph.followers.toLocaleString()}</span></div>` : ''}
+        ${s.income ? `<div class="kv"><b>Earned online</b><span>${esc(S.money(s.income))}</span></div>` : ''}
+        ${s.comms.length ? `<div class="kv"><b>Communities</b><span>${s.comms.map(esc).join(' · ')}</span></div>` : ''}</div></div>`;
+  }
+  ui.views.web = view;
+  ui.extraTabs.push({ id: 'web', n: 'Web', order: 6, show: p => S.W.year >= 1991 });
+  ui.on.netDo = el => { const t = N.act(el.dataset.id); S.settle?.(); render(); toast(t); ui.save?.(); };
+  ui.on.netHrs = el => { const t = N.setHours(S.me(), +el.dataset.v); render(); toast(t); };
+});
+
+/* ---- map-ui.js ---- */
+/* =====================================================================
+   ATLAS — the world map and the strategy board.
+   A canvas map of every country in the world, drawn from the map data
+   and coloured by what you want to see: realms and empires, faith,
+   wealth, population, internet, stability, government, or how every
+   land stands toward yours. Drag to pan, wheel or pinch to zoom, tap a
+   country for its page. Slide the clock back to see the world as it
+   was. Lands you have not heard of stay in the fog.
+   ===================================================================== */
+
+LATE.push(() => {
+  const S = Sim, ui = UI, A = Atlas, G = Geo, { $, esc, toast, render, sheet } = ui;
+  const pct = v => `${Math.round(v * 100)}%`;
+  const st = { mode: 'political', cx: 10, cy: -30, k: 3, sel: null, year: null, hover: null, w: 0, h: 0, fog: true, drag: null, dpr: 1 };
+  const MODES = [
+    ['political', 'Realms', 'Countries and empires'], ['faith', 'Faith', 'Majority belief'], ['wealth', 'Wealth', 'Prosperity of the land'], ['people', 'People', 'Population density'],
+    ['culture', 'Culture', 'Cultural families'], ['gov', 'Rule', 'Kind of government'], ['net', 'Internet', 'Share online (from 1991)'], ['stab', 'Stability', 'Calm or unrest'], ['rel', 'Diplomacy', 'How lands stand toward yours'],
+  ];
+  const yearNow = () => S.W.year;
+  const viewYear = () => (st.year == null ? yearNow() : Math.min(st.year, yearNow()));
+  const live = () => viewYear() === yearNow();
+  const nameAt = (id, y) => { const c = A.C(id); if (!c) return id; if (y === yearNow()) return S.world.name(id); for (const x of c.names) if (y <= x[0]) return x[1]; return c.names[c.names.length - 1][1]; };
+  const shortName = n => n.replace(/^(the|The) /, '').replace(/ \(under .*\)$/, '');
+
+  /* ---------- colour ---------- */
+  const PAL_L = ['#d9b28c', '#9fc5a0', '#9db7d9', '#d9a0a0', '#c9b6e0', '#e0d28a', '#8fcfc8', '#e0a8c8', '#b9c98a', '#c8a07a'];
+  const PAL_D = ['#8a6a4a', '#4f7a58', '#4a6a92', '#8f4f4f', '#6f5c92', '#8f8440', '#3f8580', '#8f5878', '#6f7f3f', '#7a5a3a'];
+  const pal = () => (ui.isDark() ? PAL_D : PAL_L);
+  let paintOf = null;
+  function landColours() {
+    if (paintOf) return paintOf;
+    const ids = Object.keys(DATA.map.shapes).sort((a, b) => DATA.map.shapes[b].a - DATA.map.shapes[a].a), out = {};
+    for (const id of ids) { const used = new Set(G.near(id).map(n => out[n]).filter(v => v != null)); let c = 0; while (used.has(c) && c < 9) c++; out[id] = c; }
+    return (paintOf = out);
+  }
+  const FAITH_COL = { ch: '#d9a441', pr: '#d9784f', or: '#5f8fd0', co: '#8aa4d6', pe: '#e08a5f', su: '#3f9a6a', sh: '#2f7a5a', ib: '#6fb07a', ju: '#5a78c8', ba: '#a98fd0', hi: '#e8863a', bt: '#d6b132', bm: '#c9a02a', bv: '#c28a2a', sk: '#e0b050', jn: '#c9702a', sn: '#c25f85', cf: '#b85a5a', ct: '#a85a68', sc: '#9aa3ad', an: '#8b6b4a', tn: '#6a8aa8', pa: '#7a9a5a', ce: '#5a9a7a', no: '#4a7a9a', sl: '#8a9a4a', ag: '#c8a86a', eg: '#d8b04a', me: '#b89a5a', zo: '#d86a3a', ma: '#9a6a4a', in: '#a8784a', po: '#4a9aa8', ab: '#c27a4a', na: '#8a6a3a', at: '#9a7a3a', vo: '#a05a8a', ot: '#9a9a9a', fu: '#5ac0d0' };
+  const FAM_COL = { folk: '#8b6b4a', ancient: '#b89a5a', abrahamic: '#6a8ad0', dharmic: '#e0a040', east: '#c25f6f', none: '#9aa3ad' };
+  const GOV_COL = { monarchy: '#d9a441', const: '#e08fa0', republic: '#5f8fd0', party: '#c25050', theo: '#9a6ac8', tribal: '#7a9a5a', colony: '#d28fc0', charter: '#4fb0b0' };
+  const CULT_COL = {};
+  function cultCol(id) { return CULT_COL[id] ||= `hsl(${[...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7)} 45% ${ui.isDark() ? 42 : 68}%)`; }
+  const ramp = (v, a, b) => { const t = Math.max(0, Math.min(1, v)); const m = x => Math.round(x[0] + (x[1] - x[0]) * t); return `rgb(${m([a[0], b[0]])},${m([a[1], b[1]])},${m([a[2], b[2]])})`; };
+  const RAMP = () => (ui.isDark() ? [[40, 52, 68], [120, 190, 190]] : [[226, 232, 220], [28, 118, 128]]);
+  const HEAT = () => (ui.isDark() ? [[170, 70, 64], [90, 170, 120]] : [[214, 100, 90], [94, 170, 120]]);
+
+  function areaKm2(id) { const s = DATA.map.shapes[id]; const lat = s.c[1] * Math.PI / 180; return Math.max(5, s.a * 111 * 111 * Math.cos(lat)); }
+  // the fill for a land in the current mode, and what the legend should say
+  function fillOf(id, y, me) {
+    const c = A.C(id), exists = c && y >= c.from;
+    if (!exists) return ui.isDark() ? '#232932' : '#cfd6cc';
+    const t = live();
+    switch (st.mode) {
+      case 'faith': { const f = Faith.mixAt(id, y)[0]?.[0]; return FAITH_COL[f] || FAM_COL[Faith.f(f).fam] || '#999'; }
+      case 'wealth': return ramp(1 - (A.tier(id) - 1) / 4, ...RAMP());
+      case 'people': { const d = (S.world.popAt(id) || 0) * 1e6 / areaKm2(id); return ramp(Math.log10(1 + d) / 2.6, ...RAMP()); }
+      case 'culture': return cultCol(c.at?.cu?.id || 'x');
+      case 'gov': { if (!t) return '#9aa3ad'; return GOV_COL[Pol.kindOf(id)] || '#999'; }
+      case 'net': return y < 1991 ? (ui.isDark() ? '#2a313b' : '#dde3da') : ramp(A.net(id, y), ...RAMP());
+      case 'stab': return t ? ramp((S.W.nat?.[id]?.stab ?? 60) / 100, ...HEAT()) : '#9aa3ad';
+      case 'rel': {
+        if (!t) return '#9aa3ad';
+        if (id === me) return '#3a7bd5';
+        if (G.allied(me, id)) return '#2fa36b';
+        if (G.atWar(me, id)) return '#c0392b';
+        return ramp((S.world.rel(me, id) + 100) / 200, ...HEAT());
+      }
+      default: { const po = A.polity(id, y); if (po) return po.color; return pal()[landColours()[id] % 10]; }
+    }
+  }
+  function legend() {
+    const sw = (c, t) => `<span class="lg"><i style="background:${c}"></i>${esc(t)}</span>`, y = viewYear();
+    switch (st.mode) {
+      case 'faith': { const seen = new Set(); const out = []; for (const id of Object.keys(DATA.map.shapes)) { const c = A.C(id); if (!c || y < c.from) continue; const f = Faith.mixAt(id, y)[0]?.[0]; if (f && !seen.has(f)) { seen.add(f); out.push([f, 0]); } } return out.slice(0, 9).map(([f]) => sw(FAITH_COL[f] || '#999', Faith.f(f).n.replace(/ Christianity| Islam| Buddhism/, m => m.trim().split(' ')[1] ? ' ' + m.trim().split(' ')[1] : ''))).join(''); }
+      case 'wealth': return [1, 2, 3, 4, 5].map(t => sw(ramp(1 - (t - 1) / 4, ...RAMP()), ['Rich', 'Prosperous', 'Middling', 'Poor', 'Poorest'][t - 1])).join('');
+      case 'people': return [[0.1, 'Empty'], [0.35, 'Sparse'], [0.6, 'Dense'], [1, 'Crowded']].map(([v, t]) => sw(ramp(v, ...RAMP()), t)).join('');
+      case 'gov': return Object.entries({ monarchy: 'Monarchy', const: 'Constitutional', republic: 'Republic', party: 'One-party', theo: 'Theocracy', tribal: 'Tribal', colony: 'Colony' }).map(([k, t]) => sw(GOV_COL[k], t)).join('');
+      case 'net': return [[0.05, '5%'], [0.35, '35%'], [0.65, '65%'], [0.95, '95%']].map(([v, t]) => sw(ramp(v, ...RAMP()), t)).join('');
+      case 'stab': return [[0.1, 'Unrest'], [0.5, 'Uneasy'], [0.9, 'Calm']].map(([v, t]) => sw(ramp(v, ...HEAT()), t)).join('');
+      case 'rel': return sw('#3a7bd5', 'Your land') + sw('#2fa36b', 'Ally') + sw(ramp(0.8, ...HEAT()), 'Friendly') + sw(ramp(0.5, ...HEAT()), 'Neutral') + sw(ramp(0.2, ...HEAT()), 'Hostile') + sw('#c0392b', 'At war');
+      case 'culture': return '<span class="lg faint">Colour marks a cultural family</span>';
+      default: return '<span class="lg faint">Colour marks a realm; empires cover several lands</span>';
+    }
+  }
+
+  /* ---------- the canvas ---------- */
+  let canvas, ctx, raf = 0, known = null, hit = null;
+  const worldToScreen = (lon, lat) => [(lon - st.cx) * st.k + st.w / 2, (-lat - st.cy) * st.k + st.h / 2];
+  const screenToWorld = (x, y) => [(x - st.w / 2) / st.k + st.cx, -((y - st.h / 2) / st.k + st.cy)];
+  function clampView() {
+    const minK = Math.max(st.w / 360, st.h / 142);
+    st.k = Math.max(minK, Math.min(60, st.k));
+    st.cx = Math.max(-180 + st.w / 2 / st.k, Math.min(180 - st.w / 2 / st.k, st.cx));
+    st.cy = Math.max(-84 + st.h / 2 / st.k, Math.min(58 - st.h / 2 / st.k, st.cy));
+  }
+  function focusOn(id, zoom) {
+    const s = DATA.map.shapes[id], sh = G.shape(id); if (!s) return;
+    // the biggest piece of land, so far-off territories do not decide the zoom
+    let best = null, ba = -1;
+    for (const r of sh.rings) { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (let i = 0; i < r.length; i += 2) { x0 = Math.min(x0, r[i]); x1 = Math.max(x1, r[i]); y0 = Math.min(y0, r[i + 1]); y1 = Math.max(y1, r[i + 1]); } const a = (x1 - x0) * (y1 - y0); if (a > ba) { ba = a; best = [x0, y0, x1, y1]; } }
+    const bb = best || s.bb;
+    st.cx = (bb[0] + bb[2]) / 2; st.cy = -(bb[1] + bb[3]) / 2;
+    if (zoom) { const w = Math.max(3, bb[2] - bb[0]), h = Math.max(3, bb[3] - bb[1]); st.k = Math.min(st.w / (w * 2.4), st.h / (h * 2.4), 24); }
+    clampView();
+  }
+  function draw() {
+    raf = 0; if (!canvas || !canvas.isConnected) return;
+    const dark = ui.isDark(), y = viewYear(), me = S.me().cc;
+    ctx.setTransform(st.dpr, 0, 0, st.dpr, 0, 0);
+    ctx.fillStyle = dark ? '#0f1822' : '#cfe0ea'; ctx.fillRect(0, 0, st.w, st.h);
+    // graticule
+    ctx.strokeStyle = dark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.06)'; ctx.lineWidth = 1; ctx.beginPath();
+    for (let lon = -180; lon <= 180; lon += 30) { const [x] = worldToScreen(lon, 0); ctx.moveTo(x, 0); ctx.lineTo(x, st.h); }
+    for (let lat = -60; lat <= 80; lat += 20) { const [, yy] = worldToScreen(0, lat); ctx.moveTo(0, yy); ctx.lineTo(st.w, yy); }
+    ctx.stroke();
+    const wars = live() ? G.fighting() : new Set();
+    const ids = G.ids(), edge = dark ? 'rgba(10,14,20,.75)' : 'rgba(255,255,255,.8)';
+    const fog = st.fog && live() ? known : null;
+    for (const id of ids) {
+      const sh = G.shape(id); if (!sh) continue;
+      const [x0, y0] = worldToScreen(sh.bb[0], sh.bb[3]), [x1, y1] = worldToScreen(sh.bb[2], sh.bb[1]);
+      if (x1 < -20 || y1 < -20 || x0 > st.w + 20 || y0 > st.h + 20) continue;
+      const dim = fog && !fog.has(id);
+      ctx.beginPath();
+      for (const r of sh.rings) { for (let i = 0; i < r.length; i += 2) { const x = (r[i] - st.cx) * st.k + st.w / 2, yy = (-r[i + 1] - st.cy) * st.k + st.h / 2; i ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy); } ctx.closePath(); }
+      ctx.fillStyle = dim ? (dark ? '#1a222d' : '#b9c3c8') : fillOf(id, y, me);
+      ctx.fill();
+      ctx.strokeStyle = id === st.sel ? '#fff' : id === st.hover ? (dark ? '#fff' : '#223') : edge; ctx.lineWidth = id === st.sel ? 2.4 : id === st.hover ? 1.8 : 0.6; ctx.stroke();
+      if (wars.has(id) && !dim) { ctx.strokeStyle = 'rgba(210,50,40,.95)'; ctx.lineWidth = 2; ctx.setLineDash([4, 3]); ctx.stroke(); ctx.setLineDash([]); }
+      if (id === me && !dim) { ctx.strokeStyle = dark ? '#8fb4ff' : '#1b4fd1'; ctx.lineWidth = 2.2; ctx.stroke(); }
+    }
+    // microstates get a marker so they can be found and tapped
+    for (const id of ids) {
+      const sh = G.shape(id); if (!sh || !sh.pt) continue; if (fog && !fog.has(id)) continue;
+      const c = A.C(id); if (!c || y < c.from) continue;
+      const [x, yy] = worldToScreen(sh.c[0], sh.c[1]); if (x < 0 || yy < 0 || x > st.w || yy > st.h) continue;
+      ctx.beginPath(); ctx.arc(x, yy, id === st.sel ? 5 : 3.2, 0, 7); ctx.fillStyle = fillOf(id, y, me); ctx.fill(); ctx.strokeStyle = dark ? '#000' : '#fff'; ctx.lineWidth = 1; ctx.stroke();
+    }
+    // alliances and wars between capitals
+    if (live() && st.mode === 'rel' && st.k > 2) {
+      for (const x of G.state().allies) { const [a, b] = x.k.split('|'); if (fog && (!fog.has(a) || !fog.has(b))) continue; line(a, b, 'rgba(47,163,107,.9)'); }
+      for (const h of S.activeWars()) if (h.a && h.b && (!fog || (fog.has(h.a) && fog.has(h.b)))) line(h.a, h.b, 'rgba(192,57,43,.95)', true);
+    }
+    // labels
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+    const labs = [];
+    for (const id of ids) {
+      const sh = G.shape(id); if (!sh) continue; const c = A.C(id); if (!c || y < c.from) continue; if (fog && !fog.has(id)) continue;
+      const w = (sh.bb[2] - sh.bb[0]) * st.k, h = (sh.bb[3] - sh.bb[1]) * st.k;
+      const [x, yy] = worldToScreen(sh.c[0], sh.c[1]); if (x < -30 || yy < -10 || x > st.w + 30 || yy > st.h + 10) continue;
+      let nm = shortName(nameAt(id, y)); if (nm.length > 24) nm = c.short.replace(/^the /, '');
+      const need = Math.min(110, nm.length * 5.6);
+      if (w < need * (sh.pt ? 99 : 0.78) && id !== st.sel && id !== st.hover) continue;
+      labs.push([id, nm, x, yy, Math.min(14, Math.max(9, w / (nm.length * 0.65)))]);
+    }
+    for (const [id, nm, x, yy, fs] of labs) {
+      ctx.font = `${id === me ? '700 ' : '600 '}${Math.round(fs)}px system-ui, sans-serif`;
+      ctx.strokeStyle = dark ? 'rgba(10,14,20,.85)' : 'rgba(255,255,255,.9)'; ctx.lineWidth = 3; ctx.strokeText(nm, x, yy + (DATA.map.shapes[id].pt ? 11 : 0));
+      ctx.fillStyle = dark ? '#eef2f6' : '#1b2430'; ctx.fillText(nm, x, yy + (DATA.map.shapes[id].pt ? 11 : 0));
+    }
+    // your own marker
+    const ms = DATA.map.shapes[me];
+    if (ms && live()) { const [x, yy] = worldToScreen(ms.c[0], ms.c[1]); ctx.beginPath(); ctx.arc(x, yy, 4.5, 0, 7); ctx.fillStyle = dark ? '#8fb4ff' : '#1b4fd1'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(); }
+  }
+  function line(a, b, col, dash) {
+    const A_ = DATA.map.shapes[a], B_ = DATA.map.shapes[b]; if (!A_ || !B_) return;
+    const [x0, y0] = worldToScreen(A_.c[0], A_.c[1]), [x1, y1] = worldToScreen(B_.c[0], B_.c[1]);
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo((x0 + x1) / 2, (y0 + y1) / 2 - Math.hypot(x1 - x0, y1 - y0) * 0.18, x1, y1);
+    ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.setLineDash(dash ? [6, 4] : []); ctx.stroke(); ctx.setLineDash([]);
+  }
+  const redraw = () => { if (!raf) raf = requestAnimationFrame(draw); };
+
+  /* ---------- hit testing ---------- */
+  function inRing(r, lon, lat) {
+    let inside = false;
+    for (let i = 0, j = r.length - 2; i < r.length; j = i, i += 2) {
+      const xi = r[i], yi = r[i + 1], xj = r[j], yj = r[j + 1];
+      if ((yi > lat) !== (yj > lat) && lon < (xj - xi) * (lat - yi) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+  }
+  function pick(px, py) {
+    const [lon, lat] = screenToWorld(px, py), y = viewYear(); let best = null, bd = 1e9;
+    for (const id of G.ids()) {
+      const sh = G.shape(id); if (!sh) continue;
+      if (sh.pt) { const [x, yy] = worldToScreen(sh.c[0], sh.c[1]); const d = Math.hypot(x - px, yy - py); if (d < 9 && d < bd) { best = id; bd = d; } continue; }
+      if (lon < sh.bb[0] - 0.2 || lon > sh.bb[2] + 0.2 || lat < sh.bb[1] - 0.2 || lat > sh.bb[3] + 0.2) continue;
+      for (const r of sh.rings) if (inRing(r, lon, lat)) return id;
+    }
+    return best;
+  }
+
+  /* ---------- the page ---------- */
+  function view(p) {
+    known = G.known(p);
+    const y = viewYear(), sel = st.sel, fogOn = st.fog;
+    const modes = MODES.filter(m => !(m[0] === 'net' && yearNow() < 1991)).map(([id, n, d]) => `<button class="chip" data-act="mapMode" data-v="${id}" aria-pressed="${st.mode === id}" title="${esc(d)}">${n}</button>`).join('');
+    const eras = DATA.eras;
+    return `<div class="mapbox"><div class="maptools"><div class="chips">${modes}</div></div>
+      <div class="mapwrap" id="mapwrap"><canvas id="worldmap" aria-label="World map" tabindex="0"></canvas>
+        <div class="mapzoom"><button class="iconbtn" data-act="mapZoom" data-v="1" aria-label="Zoom in">+</button><button class="iconbtn" data-act="mapZoom" data-v="-1" aria-label="Zoom out">−</button><button class="iconbtn" data-act="mapHome" aria-label="Centre on my land">◎</button></div>
+        <div class="maptip" id="maptip" hidden></div>
+        <div class="mapcard" id="mapcard" ${sel ? '' : 'hidden'}>${sel ? card(sel) : ''}</div></div>
+      <div class="maplegend" id="maplegend">${legend()}</div>
+      <div class="mapclock"><label for="mapyear">${live() ? 'Today' : 'Viewing'}: <b id="mapyearl">${U.fmtYearAD(y)}</b></label><input id="mapyear" type="range" min="-10000" max="${yearNow()}" step="10" value="${y}" data-input="mapYear" aria-label="Year shown on the map">
+        ${live() ? '' : '<button class="btn sm" data-act="mapNow">Back to now</button>'}<label class="check" style="margin:0"><input type="checkbox" data-input="mapFog" ${fogOn ? 'checked' : ''}> Fog of war</label></div></div>
+      <div id="mapsel" class="mapsel">${sel ? panel(sel) : intro()}</div>
+      ${board(p)}`;
+  }
+  function intro() { return `<div class="panel"><p class="lede" style="margin:0">Tap any country to learn about it${st.fog ? '. Dark lands are still unknown to you; travel, trade and time will reveal them' : ''}. Drag to move, pinch or scroll to zoom, and slide the clock to see the world of another age.</p></div>`; }
+
+  function panel(id) {
+    const p = S.me(), y = viewYear(), c = A.C(id);
+    if (!c) return '';
+    if (known && st.fog && live() && !known.has(id)) return `<div class="panel"><div class="eyebrow">Unknown lands</div><h3 style="margin:2px 0 4px">Beyond your knowledge</h3><p class="faint" style="margin:0">Travellers speak of far countries here, but you know nothing yet. Meet people from there or travel closer.</p></div>`;
+    if (y < c.from) return `<div class="panel"><div class="eyebrow">${esc(c.short)}</div><h3 style="margin:2px 0 4px">No one lives here yet</h3><p class="faint" style="margin:0">People first reach this land around ${esc(U.fmtYearAD(c.from))}.</p></div>`;
+    const t = live(), at = c.at || {}, nm = nameAt(id, y), po = A.polity(id, y);
+    const fm = Faith.mixAt(id, y).slice(0, 4), tier = A.tier(id);
+    const pop = t ? S.world.popAt(id) : popAtYear(c, y);
+    const nb = G.near(id).filter(n => A.C(n) && y >= A.C(n).from).slice(0, 8);
+    const rel = t && id !== p.cc ? Math.round(S.world.rel(p.cc, id)) : null;
+    const wars = t ? S.world.wars(id) : [];
+    const allies = t ? G.alliesOf(id) : [];
+    const rows = [];
+    const ruler = t ? Pol.ruler(id) : null;
+    rows.push(['Government', S.world.gov(id)?.replace(/^./, m => m.toUpperCase()) || '—']);
+    if (ruler) rows.push(['Ruler', `${ruler.t || ''} ${ruler.n || ruler.first || ''}`.trim()]);
+    rows.push(['People', fmtPop(pop)]);
+    if (t) rows.push(['Capital', S.world.cap(id)]);
+    if (t) { const cur = DATA.countries.find(x => x.id === id); rows.push(['Wealth', ['', 'High income', 'Prosperous', 'Middle income', 'Low income', 'Very poor'][tier]]); }
+    if (y >= 1991) rows.push(['Online', pct(A.net(id, y))]);
+    const bl = A.blocs(id, y).map(b => DATA.atlas.blocs[b][1]);
+    if (bl.length) rows.push(['Blocs', bl.join(' · ')]);
+    if (po) rows.push(['Part of', po.name]);
+    if (allies.length) rows.push(['Allies', allies.slice(0, 5).map(a => shortName(S.world.name(a))).join(', ')]);
+    const cu = A.culture(id, y);
+    const btn = (act, txt, extra = '', cls = '') => `<button class="btn sm ${cls}" data-act="${act}" data-cc="${id}" ${extra}>${txt}</button>`;
+    const acts = [];
+    if (t && id !== p.cc) {
+      acts.push(btn('mapTravel', `Visit (${esc(S.money(S.world.tripCost(p, id)))})`, '', 'era'), btn('mapMove', `Move there (${esc(S.money(S.world.tripCost(p, id) * 3))})`));
+      if (!Identity.isCitizen(p, id)) { const ap = Identity.canApply(p, id); if (ap.ok) acts.push(btn('mapCitizen', 'Seek citizenship')); }
+      acts.push(btn('mapInvest', 'Invest'));
+      if (G.isLeader(p)) {
+        acts.push(G.allied(p.cc, id) ? btn('mapDip', 'End alliance', 'data-k="break"') : btn('mapDip', 'Propose alliance', 'data-k="alliance"'), btn('mapDip', 'Trade pact', 'data-k="trade"'), btn('mapDip', 'Send aid', 'data-k="aid"'), btn('mapDip', 'Sanctions', 'data-k="sanction"'));
+        if (S.world.wars(id).some(h => h.where.includes(p.cc))) acts.push(btn('mapDip', 'Send peace envoys', 'data-k="peace"'));
+      }
+    }
+    return `<div class="panel cpanel"><div class="eyebrow">${esc(c.short)}${po ? ` · ${esc(po.name)}` : ''}</div><h3 style="margin:2px 0 4px">${esc(nm)}</h3>
+      ${rel != null ? `<div class="faint" style="margin-bottom:6px">${relTag(rel)} Relations ${rel > 0 ? '+' : ''}${rel}${G.allied(p.cc, id) ? ' · allied with your land' : ''}</div>` : ''}
+      ${wars.length ? `<p style="margin:0 0 6px"><span class="tag bad">${id !== p.cc && G.atWar(p.cc, id) ? 'At war with you' : 'At war'}</span> ${wars.filter(h => h.n.length < 42).map(h => esc(h.n)).join(', ')}</p>` : ''}
+      <div class="kvs">${rows.map(([k, v]) => `<div class="kv"><b>${k}</b><span>${esc(v)}</span></div>`).join('')}</div>
+      <div class="eyebrow" style="margin-top:10px">Belief</div><div class="ethbar">${fm.map(([f, v]) => `<i style="width:${v * 100}%;background:${FAITH_COL[f] || '#999'}" title="${esc(Faith.f(f).n)} ${pct(v)}"></i>`).join('')}</div>
+      <div class="ethkey">${fm.map(([f, v]) => `<span><b style="background:${FAITH_COL[f] || '#999'}"></b>${esc(Faith.f(f).n)} ${pct(v)}</span>`).join('')}</div>
+      <details style="margin-top:8px"><summary class="faint">Culture and customs</summary><div class="kvs" style="margin-top:6px">
+        <div class="kv"><b>Marriage</b><span>${esc(Marriage.label(A.arranged(id, y)))}</span></div>
+        <div class="kv"><b>Society</b><span>${cu.T >= 65 ? 'Tradition-bound' : cu.T <= 35 ? 'Change-seeking' : 'Balanced'} · ${cu.I >= 65 ? 'individualist' : cu.I <= 35 ? 'collectivist' : 'mixed'} · ${cu.R >= 65 ? 'devout' : cu.R <= 35 ? 'secular' : 'moderately religious'}</span></div>
+        ${at.lg ? `<div class="kv"><b>Languages</b><span>${at.lg.map(esc).join(', ')}</span></div>` : ''}${at.cs ? `<div class="kv"><b>Customs</b><span>${at.cs.slice(0, 3).map(esc).join(' · ')}</span></div>` : ''}${at.tr ? `<div class="kv"><b>Notes</b><span>${at.tr.slice(0, 3).map(esc).join(' · ')}</span></div>` : ''}</div></details>
+      ${nb.length ? `<div class="eyebrow" style="margin-top:10px">Neighbours</div><div class="chips">${nb.map(n => `<button class="chip" data-act="mapSelect" data-cc="${n}">${esc(shortName(nameAt(n, y)))}</button>`).join('')}</div>` : ''}
+      ${acts.length ? `<div class="row-actions" style="margin-top:12px">${acts.join('')}</div>` : ''}</div>`;
+  }
+  function card(id) {
+    const p = S.me(), y = viewYear(), c = A.C(id); if (!c) return '';
+    const unk = known && st.fog && live() && !known.has(id);
+    const nm = unk ? 'Unknown lands' : shortName(nameAt(id, y)), t = live() && !unk && y >= c.from;
+    const pop = t ? S.world.popAt(id) : y >= c.from ? popAtYear(c, y) : 0;
+    const rel = t && id !== p.cc ? Math.round(S.world.rel(p.cc, id)) : null;
+    return `<button class="x" data-act="mapCardClose" aria-label="Close">✕</button><div class="eyebrow">${unk ? 'Beyond your knowledge' : esc(c.short)}</div><h4>${esc(nm)}</h4>
+      <div class="faint">${unk ? 'Nothing is known of this land yet.' : y < c.from ? 'Nobody lives here yet.' : `${esc(fmtPop(pop))}${rel != null ? ` · ${relTag(rel)}` : ''}${t && id !== p.cc && G.atWar(p.cc, id) ? ' <span class="tag bad">at war</span>' : ''}`}</div>
+      ${unk ? '' : `<div class="row-actions" style="margin-top:8px"><button class="btn sm era" data-act="mapDetails" data-cc="${id}">Details</button>${t && id !== p.cc ? `<button class="btn sm" data-act="mapTravel" data-cc="${id}">Visit</button>` : ''}</div>`}`;
+  }
+  const relTag = v => (v >= 50 ? '<span class="tag good">Close</span>' : v >= 15 ? '<span class="tag good">Friendly</span>' : v > -15 ? '<span class="tag">Neutral</span>' : v > -50 ? '<span class="tag bad">Tense</span>' : '<span class="tag bad">Hostile</span>');
+  const fmtPop = m => (m >= 1000 ? `${(m / 1000).toFixed(2)} billion` : m >= 1 ? `${m.toFixed(m < 10 ? 1 : 0)} million` : m >= 0.001 ? `${Math.round(m * 1000).toLocaleString()} thousand` : 'a few hundred');
+  function popAtYear(c, y) { const pts = c.pop || []; let v = pts[0]?.[1] ?? 0.001; for (let i = 0; i < pts.length; i++) { if (pts[i][0] <= y) v = pts[i][1]; else { const [y0, v0] = pts[i - 1] || pts[i]; const [y1, v1] = pts[i]; if (y1 > y0) v = v0 + (v1 - v0) * (y - y0) / (y1 - y0); break; } } return v; }
+
+  /* ---------- the board under the map: powers, alliances, wars, news ---------- */
+  function board(p) {
+    const y = viewYear(), lands = G.ranking(y, 10);
+    const hist = G.state().hist, prev = hist.length > 1 ? hist[hist.length - 2].top.map(x => x.cc) : [];
+    const wars = live() ? S.activeWars().filter(h => h.where?.length > 1) : [];
+    const allies = live() ? G.state().allies.slice(-8) : [];
+    const news = live() ? S.W.news.filter(n => n.type === 'war' || n.type === 'politics' || n.type === 'revolution').slice(-8).reverse() : [];
+    return `<div class="sec-h"><h3>Great powers${live() ? '' : ` in ${U.fmtYearAD(y)}`}</h3></div>
+      <div class="list">${lands.map((x, i) => `<button class="row" data-act="mapSelect" data-cc="${x.cc}"><span class="flagchip">${i + 1}</span><div class="main"><div class="t">${esc(shortName(nameAt(x.cc, y)))}${x.cc === p.cc ? ' <span class="tag era">home</span>' : ''}</div><div class="s">${fmtPop(live() ? S.world.popAt(x.cc) : popAtYear(A.C(x.cc), y))} · ${['', 'high income', 'prosperous', 'middle income', 'low income', 'very poor'][A.tier(x.cc)]}${wars.some(h => h.where.includes(x.cc)) ? ' · at war' : ''}</div></div>
+        <div class="end">${live() && prev.length ? (prev.indexOf(x.cc) < 0 ? '↑' : prev.indexOf(x.cc) > i ? '↑' : prev.indexOf(x.cc) < i ? '↓' : '') : ''}</div></button>`).join('')}</div>
+      ${live() ? `<div class="sec-h"><h3>Wars and alliances</h3></div><div class="list">
+        ${wars.map(h => `<div class="row"><span class="flagchip" style="--c:#c0392b">⚔</span><div class="main"><div class="t">${esc(h.n)}</div><div class="s">${h.where.slice(0, 6).map(c => esc(shortName(S.world.name(c)))).join(', ')}${h.world ? ' · a world war' : ''}</div></div></div>`).join('') || '<div class="row muted">No wars between nations at this time.</div>'}
+        ${allies.map(x => { const [a, b] = x.k.split('|'); return `<div class="row"><span class="flagchip" style="--c:#2fa36b">⚑</span><div class="main"><div class="t">${esc(shortName(S.world.name(a)))} and ${esc(shortName(S.world.name(b)))}</div><div class="s">Allied since ${esc(U.fmtYearAD(x.y))}</div></div></div>`; }).join('')}</div>
+      ${news.length ? `<div class="sec-h"><h3>Dispatches</h3></div><div class="list">${news.map(n => `<div class="row"><div class="main"><div class="t">${esc(n.t)}</div><div class="s">${esc(U.fmtYearAD(n.y))}</div></div></div>`).join('')}</div>` : ''}` : ''}`;
+  }
+
+  /* ---------- mounting and input ---------- */
+  function mount() {
+    canvas = $('#worldmap'); if (!canvas) return;
+    const wrap = $('#mapwrap'); const r = wrap.getBoundingClientRect();
+    st.dpr = Math.min(2, window.devicePixelRatio || 1);
+    st.w = Math.round(r.width); st.h = Math.round(Math.max(300, Math.min(window.innerHeight * 0.62, st.w < 520 ? st.w * 1.05 : st.w * 0.52)));
+    wrap.style.height = st.h + 'px';
+    canvas.width = st.w * st.dpr; canvas.height = st.h * st.dpr; canvas.style.width = st.w + 'px'; canvas.style.height = st.h + 'px';
+    ctx = canvas.getContext('2d');
+    if (!st.init) { st.init = 1; focusOn(S.me().cc, true); if (st.k < 2.5) st.k = 2.5; clampView(); }
+    else clampView();
+    bind();
+    redraw();
+  }
+  function bind() {
+    const pts = new Map(); let start = null, pinch = null, moved = 0;
+    const pos = e => { const b = canvas.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+    canvas.addEventListener('pointerdown', e => { canvas.setPointerCapture(e.pointerId); pts.set(e.pointerId, pos(e)); start = pos(e); moved = 0; if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = { d: Math.hypot(a[0] - b[0], a[1] - b[1]), k: st.k }; } });
+    canvas.addEventListener('pointermove', e => {
+      const p = pos(e);
+      if (pts.has(e.pointerId)) {
+        const o = pts.get(e.pointerId); pts.set(e.pointerId, p);
+        if (pts.size === 2 && pinch) { const [a, b] = [...pts.values()]; st.k = pinch.k * Math.hypot(a[0] - b[0], a[1] - b[1]) / pinch.d; }
+        else { st.cx -= (p[0] - o[0]) / st.k; st.cy -= (p[1] - o[1]) / st.k; moved += Math.abs(p[0] - o[0]) + Math.abs(p[1] - o[1]); }
+        clampView(); redraw(); tip(null);
+      } else if (e.pointerType === 'mouse') { const id = pick(p[0], p[1]); if (id !== st.hover) { st.hover = id; tip(id, p); redraw(); } else if (id) tip(id, p); }
+    });
+    const up = e => { const was = pts.has(e.pointerId); pts.delete(e.pointerId); if (pts.size < 2) pinch = null; if (was && start && moved < 6 && pts.size === 0) { const id = pick(...pos(e)); select(id); } };
+    canvas.addEventListener('pointerup', up); canvas.addEventListener('pointercancel', e => { pts.delete(e.pointerId); pinch = null; });
+    canvas.addEventListener('pointerleave', () => { if (st.hover) { st.hover = null; tip(null); redraw(); } });
+    canvas.addEventListener('wheel', e => { e.preventDefault(); const [px, py] = pos(e), [lon, lat] = screenToWorld(px, py); st.k *= e.deltaY < 0 ? 1.18 : 1 / 1.18; clampView(); const [nx, ny] = worldToScreen(lon, lat); st.cx += (nx - px) / st.k; st.cy += (ny - py) / st.k; clampView(); redraw(); }, { passive: false });
+    canvas.addEventListener('keydown', e => { const s = 20 / st.k; if (e.key === 'ArrowLeft') st.cx -= s; else if (e.key === 'ArrowRight') st.cx += s; else if (e.key === 'ArrowUp') st.cy -= s; else if (e.key === 'ArrowDown') st.cy += s; else if (e.key === '+') st.k *= 1.3; else if (e.key === '-') st.k /= 1.3; else return; e.preventDefault(); clampView(); redraw(); });
+  }
+  function tip(id, p) {
+    const t = $('#maptip'); if (!t) return;
+    if (!id) { t.hidden = true; return; }
+    const y = viewYear(), unk = st.fog && live() && known && !known.has(id);
+    t.textContent = unk ? 'Unknown lands' : shortName(nameAt(id, y));
+    t.hidden = false; t.style.left = Math.min(st.w - 130, (p?.[0] ?? 0) + 12) + 'px'; t.style.top = Math.max(4, (p?.[1] ?? 0) - 28) + 'px';
+  }
+  function select(id) {
+    st.sel = id; const box = $('#mapsel'); if (box) box.innerHTML = id ? panel(id) : intro();
+    const cd = $('#mapcard'); if (cd) { cd.innerHTML = id ? card(id) : ''; cd.hidden = !id; }
+    redraw();
+  }
+  const sync = () => { const lg = $('#maplegend'); if (lg) lg.innerHTML = legend(); redraw(); };
+
+  (ui.afterRender ||= []).push(() => { if (ui.tab === 'map' && $('#worldmap')) mount(); });
+  window.addEventListener?.('resize', () => { if (ui.tab === 'map' && $('#worldmap')) { mount(); } });
+
+  ui.views.map = view;
+  ui.extraTabs.push({ id: 'map', n: 'Atlas', order: 8 });
+  ui.on.mapMode = el => { st.mode = el.dataset.v; document.querySelectorAll('[data-act="mapMode"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === st.mode))); sync(); };
+  ui.on.mapSelect = el => { const id = el.dataset.cc; select(id); focusOn(id, false); redraw(); if ($('#modal .sheet')) sheet(panel(id), { label: 'Country' }); };
+  ui.on.mapCardClose = () => select(null);
+  ui.on.mapDetails = el => sheet(panel(el.dataset.cc), { label: 'Country' });
+  ui.on.mapZoom = el => { st.k *= +el.dataset.v > 0 ? 1.5 : 1 / 1.5; clampView(); redraw(); };
+  ui.on.mapHome = () => { focusOn(S.me().cc, true); redraw(); };
+  ui.on.mapNow = () => { st.year = null; render(); };
+  ui.input.mapYear = el => { st.year = +el.value; const l = $('#mapyearl'); if (l) l.textContent = U.fmtYearAD(viewYear()); if (st.mode === 'gov' || st.mode === 'stab' || st.mode === 'rel') st.mode = 'political'; sync(); const sel = $('#mapsel'); if (sel && st.sel) sel.innerHTML = panel(st.sel); };
+  ui.input.mapFog = el => { st.fog = el.checked; redraw(); };
+  const after = f => { S.settle?.(); render(); ui.save?.(); };
+  ui.on.mapTravel = el => { const t = S.world.travel(el.dataset.cc); toast(t); after(); };
+  ui.on.mapMove = el => { const t = S.world.emigrate(el.dataset.cc, true); toast(t); after(); };
+  ui.on.mapInvest = el => { const t = S.world.invest(el.dataset.cc, 0.2); toast(t); after(); };
+  ui.on.mapCitizen = el => { const t = Identity.apply(el.dataset.cc); toast(t); after(); };
+  ui.on.mapDip = el => { const t = G.diplomacy(el.dataset.cc, el.dataset.k); toast(t); after(); };
+  ui.mapState = st;
 });
 
 /* ---- delta.js ---- */
@@ -12228,7 +13522,7 @@ LATE.push(() => {
     const intro = { runner: 'News travels by runner and by word of mouth.', letter: 'Letters travel by messenger, ship and post. Those far away take a year to answer.', telegraph: 'Letters, or telegrams for when it cannot wait.', telephone: 'A telephone in the hall, and the post for everything else.', mobile: d.social ? 'Texts, calls and the endless feed.' : 'Texts and calls, wherever you are.', neural: 'Thoughts, shared directly, mind to mind.' }[d.id];
     if (sub === 'contacts') {
       const people = S.known(p).filter(S.alive).sort((a, b) => (p.rels[b.id]?.c ?? 0) - (p.rels[a.id]?.c ?? 0));
-      return head + `<p class="lede" style="margin:2px 2px 10px">${esc(intro)}</p><div class="list">${people.map(o => `<div class="row contact">${ui.av(o, 'sm')}<div class="main"><button class="linkbtn t" data-act="person" data-id="${o.id}">${esc(S.fullName(o))}</button><div class="s">${esc(S.relLabel(p, o))}${o.cc !== p.cc ? ` · in ${esc(S.world.C(o.cc).short)}` : ''}${p.rels[o.id] ? ` · closeness ${Math.round(p.rels[o.id].c)}` : ''}</div>
+      return head + `<p class="lede" style="margin:2px 2px 10px">${esc(intro)}</p><div class="list">${people.map(o => `<div class="row contact">${ui.av(o, 'sm')}<div class="main"><button class="linkbtn t" data-act="person" data-id="${o.id}">${esc(S.fullName(o))}</button><div class="s">${esc(S.relLabel(p, o))}${o.cc !== p.cc ? ` · in ${esc(S.world.C(o.cc)?.short || "abroad")}` : ''}${p.rels[o.id] ? ` · closeness ${Math.round(p.rels[o.id].c)}` : ''}</div>
         <div class="btnrow" style="margin-top:6px">${Ph.contactActs(p, o).map(([k, l]) => `<button class="btn sm" data-act="phoneAct" data-id="${o.id}" data-a="${k}" data-label="${esc(l)} (${esc(o.first)})" ${p.did[`ph:${o.id}:${k}`] ? 'disabled' : ''}>${esc(l)}</button>${ui.pinBtn('phoneAct', { id: String(o.id), a: k }, `${l} (${o.first})`)}`).join('')}</div></div></div>`).join('') || '<div class="row muted">You know no one yet.</div>'}</div>`;
     }
     if (sub === 'feed' && d.social) {
